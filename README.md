@@ -106,6 +106,34 @@ This was a real bug hiding in the code, not just a "too-fast" press:
 - **🔔 Global toast fix** — `showMilestoneToast` was private to one file, so
   most toast messages app-wide silently never appeared. It's now global;
   toasts work everywhere.
+- **🎚️ Music volume slider** — the Lofi Player now has its own volume slider
+  (defaults to 35%: soft but clearly audible). It controls every lofi track
+  live while it plays, plus the background/custom music.
+- **🛠️ Admin mode is now reachable on phones** — no more keyboard shortcut
+  needed. Three ways in: `Ctrl/Cmd+Shift+A`, the **🛠️ Admin Mode** button at
+  the bottom of Settings, or **tap "Hive Progress" 5 times** quickly. The code
+  is typed into a proper in-app box (the old browser `prompt()` was
+  unreliable on mobile). Codes: `QUEEN-ADMIN-2026` or `propolis`.
+- **❤️ Quote hearting actually usable** — the quote + heart used to sit at
+  the very bottom of a super-tall card, off-screen (the heart was a 9px dot
+  you had to scroll to). The quote block now sits near the top of the card,
+  right under the clock — always visible — and the heart is a proper 27px
+  tap target. Favouriting, un-favouriting and the ✕-remove in the list all
+  work.
+- **📦 More Tools panels are a bit larger** — panels went from 280px to
+  320px wide with bigger headings and buttons (not too big, promise).
+- **✍️ Pledge card opens & closes** — click the pledge to expand the full
+  promise, click again to collapse (with an edit + close action inside).
+  Pressing **🆘 Calm** now auto-opens your pledge with a gentle highlight so
+  you're reminded of your promise while you breathe.
+- **📜 Hive Studio scrolls** — the Studio panel had a CSS grid bug that
+  clipped the feature list and tool bodies instead of scrolling them.
+  Fixed: the 20-tool list and every tool page now scroll properly on
+  desktop and mobile.
+- **🎓 Bee hats sit ON the heads** — the model emojis (🌱🎓⚗️✨👑) used to
+  float above/behind the bees; they now sit properly on their heads (with a
+  little settle animation), and the new bees got a subtle polish pass
+  (rounder bodies, soft wing shimmer, brighter eyes). Old bees untouched.
 
 ---
 

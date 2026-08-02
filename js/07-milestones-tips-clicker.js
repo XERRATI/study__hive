@@ -897,6 +897,18 @@
     $('sosMessageText').textContent = SOS_LINES[Math.floor(Math.random() * SOS_LINES.length)];
     sosVeil.classList.add('show');
     sosMessage.classList.add('show');
+    /* CALM REMINDER: open the pledge card so the user is reminded of the
+       promise they made to themselves while they breathe. */
+    if (typeof window.openPledge === 'function') {
+      try {
+        setTimeout(function(){ window.openPledge(); }, 350);
+        var pc = document.getElementById('pledgeCard');
+        if (pc) {
+          pc.classList.add('pledge-nudge');
+          setTimeout(function(){ pc.classList.remove('pledge-nudge'); }, 2200);
+        }
+      } catch(e){}
+    }
   });
   function closeSos(){
     if (sosVeil) sosVeil.classList.remove('show');

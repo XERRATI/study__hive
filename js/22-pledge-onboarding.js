@@ -66,9 +66,9 @@
       if (!val) { $('pledgeLockInput').classList.add('pledge-required-error'); $('pledgeLockInput').focus(); return; }
       try { localStorage.setItem('studyhive-pledge-v1', val); } catch(e) {}
       $('pledgeLockVeil').remove();
-      // Refresh visible pledge if that renderer exists in later patches.
-      var old = document.querySelector('.pledge-pill'); if (old) old.remove();
-      var sub = $('mainSubtitle'); if (sub) sub.insertAdjacentHTML('afterend','<div class="pledge-pill">✍️ '+val.replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];})+' <button id="editPledgeInline">edit</button></div>');
+      // Refresh visible pledge (shared renderer from js/12 when available).
+      if (typeof window.renderPledge === 'function') { try { window.renderPledge(); } catch(e){} }
+      else { document.querySelectorAll('.pledge-pill,.pledge-card').forEach(function(n){ n.remove(); }); }
     });
   }
   setTimeout(showPledgeLock, 1800);

@@ -34,9 +34,39 @@
   function editGoalPct(){ var val=prompt('Set your red goal percentage (base/default is 90):', getGoalPct()); if(val===null) return; var n=Math.max(1,Math.min(100,parseInt(val,10)||90)); localStorage.setItem('studyhive-red-goal-pct-v1', String(n)); applyGoalPct(); showMsg('Goal set to '+n+'%'); }
   applyGoalPct(); setInterval(applyGoalPct,5000);
 
-  /* Pledge */
+  /* Pledge — now an expandable card: click the head to open/close the full
+     promise. Exposed globally so the Calm (SOS) button can open it too. */
   function pledge(){ return localStorage.getItem('studyhive-pledge-v1')||''; }
-  function renderPledge(){ var old=document.querySelector('.pledge-pill'); if(old) old.remove(); var p=pledge(); if(!p) return; var sub=$('mainSubtitle'); if(sub) sub.insertAdjacentHTML('afterend','<div class="pledge-pill">✍️ '+p+' <button id="editPledgeInline">edit</button></div>'); var e=$('editPledgeInline'); if(e) e.onclick=editPledge; }
+  function escPledge(t){ return String(t||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function renderPledge(){
+    document.querySelectorAll('.pledge-card').forEach(function(n){ n.remove(); });
+    var p=pledge(); if(!p) return;
+    var sub=$('mainSubtitle'); if(!sub) return;
+    var card=document.createElement('div'); card.className='pledge-card'; card.id='pledgeCard';
+    card.innerHTML='<button type="button" class="pledge-head" id="pledgeHeadBtn" aria-expanded="false"><span>✍️</span><span class="pledge-head-text">'+escPledge(p)+'</span><span class="pledge-chev">▾</span></button>'+
+      '<div class="pledge-body"><span class="pledge-full-text">'+escPledge(p)+'</span><div class="pledge-actions"><button type="button" id="editPledgeInline">edit pledge</button><button type="button" id="closePledgeInline">close</button></div></div>';
+    sub.insertAdjacentElement('afterend', card);
+    var head=$('pledgeHeadBtn'); if(head) head.onclick=function(){ togglePledge(); };
+    var e=$('editPledgeInline'); if(e) e.onclick=function(){ editPledge(); };
+    var c=$('closePledgeInline'); if(c) c.onclick=function(){ closePledge(); };
+    if (typeof window.__pledgeOpenRequested === 'number' && Date.now() - window.__pledgeOpenRequested < 2500) openPledge();
+  }
+  function isPledgeOpen(){ var c=document.getElementById('pledgeCard'); return !!(c && c.classList.contains('pledge-open')); }
+  function openPledge(){
+    var c=document.getElementById('pledgeCard'); if(!c) { window.__pledgeOpenRequested=Date.now(); return; }
+    c.classList.add('pledge-open');
+    var h=document.getElementById('pledgeHeadBtn'); if(h) h.setAttribute('aria-expanded','true');
+  }
+  function closePledge(){
+    var c=document.getElementById('pledgeCard'); if(!c) return;
+    c.classList.remove('pledge-open');
+    var h=document.getElementById('pledgeHeadBtn'); if(h) h.setAttribute('aria-expanded','false');
+  }
+  function togglePledge(){ isPledgeOpen() ? closePledge() : openPledge(); }
+  window.renderPledge = renderPledge;
+  window.openPledge = openPledge;
+  window.closePledge = closePledge;
+  window.togglePledge = togglePledge;
   /* ROBUSTNESS FIX: some in-app browsers (Instagram/Facebook webviews, and
      any context where dialogs are suppressed) return undefined from prompt()
      rather than null. The old code only checked !== null, then called

@@ -187,10 +187,58 @@
     }
     $('adminPanel').classList.add('show');
   }
-  function askAdmin(){ var code=prompt('Admin code:'); if(code===ADMIN_CODE || code==='propolis'){ openAdmin(); } else if(code!==null){ toast('Wrong admin code.'); } }
+  /* ADMIN ACCESS FIX: prompt() is unreliable on phones and in-app browsers
+     (it can return undefined or never show), and Ctrl+Shift+A needs a
+     keyboard. Now the code is entered in a small in-app modal, and there are
+     three ways to open it: Ctrl/Cmd+Shift+A, the 🛠️ Admin button in
+     Settings, or tapping "Hive Progress" 5 times quickly. */
+  function ensureAdminLock(){
+    if (document.getElementById('adminLockVeil')) return;
+    var veil=document.createElement('div'); veil.className='admin-lock-veil'; veil.id='adminLockVeil';
+    veil.innerHTML='<div class="admin-lock-card"><h3>🛠️ Admin Mode</h3><p>Enter the admin code to open the testing controls.</p><input type="password" class="admin-lock-input" id="adminLockInput" placeholder="Admin code" autocomplete="off"><div class="admin-lock-row"><button id="adminLockOk">Enter</button><button class="secondary" id="adminLockCancel">Cancel</button></div></div>';
+    document.body.appendChild(veil);
+    var input=document.getElementById('adminLockInput'), ok=document.getElementById('adminLockOk'), cancel=document.getElementById('adminLockCancel');
+    function tryOpen(){
+      var code=(input.value||'').trim();
+      if(code===ADMIN_CODE || code==='propolis'){ veil.classList.remove('show'); input.value=''; openAdmin(); }
+      else { veil.classList.remove('show'); input.value=''; toast('Wrong admin code.'); }
+    }
+    ok.onclick=tryOpen;
+    cancel.onclick=function(){ veil.classList.remove('show'); input.value=''; };
+    veil.addEventListener('click', function(e){ if(e.target===veil){ veil.classList.remove('show'); input.value=''; } });
+    input.addEventListener('keydown', function(e){ if(e.key==='Enter') tryOpen(); });
+  }
+  function askAdmin(){ ensureAdminLock(); document.getElementById('adminLockVeil').classList.add('show'); setTimeout(function(){ var i=document.getElementById('adminLockInput'); if(i) i.focus(); }, 60); }
+  window.askAdmin = askAdmin;
   document.addEventListener('keydown',function(e){ if((e.ctrlKey||e.metaKey)&&e.shiftKey&&e.key.toLowerCase()==='a'){ e.preventDefault(); askAdmin(); } });
+
+  /* Tap "Hive Progress" 5x quickly — mobile-friendly admin entry. */
+  (function(){
+    var taps=[], label=null;
+    function wire(){
+      label=document.querySelector('.hive-progress-label');
+      if(!label || label.dataset.adminTaps==='1') return;
+      label.dataset.adminTaps='1';
+      label.style.cursor='pointer';
+      label.addEventListener('click', function(){
+        taps.push(Date.now());
+        taps=taps.filter(function(t){ return Date.now()-t<1800; });
+        if(taps.length>=5){ taps=[]; askAdmin(); }
+      });
+    }
+    wire(); setInterval(wire, 3000);
+  })();
   document.addEventListener('click',function(e){ if(e.target&&e.target.dataset&&e.target.dataset.hiveAction==='admin'){ e.preventDefault(); askAdmin(); } },true);
-  function addAdminToHive(){ var panel=$('hiveMenuPanel'); if(panel && !panel.querySelector('[data-hive-action="admin"]')) panel.insertAdjacentHTML('beforeend','<button data-hive-action="admin">🛠️ Admin Mode</button>'); }
+  function addAdminToHive(){
+    var panel=$('hiveMenuPanel'); if(panel && !panel.querySelector('[data-hive-action="admin"]')) panel.insertAdjacentHTML('beforeend','<button data-hive-action="admin">🛠️ Admin Mode</button>');
+    var settings=$('settingsPanel');
+    if(settings && !document.getElementById('settingsAdminBtn')){
+      var row=document.createElement('button'); row.id='settingsAdminBtn'; row.className='settings-action-btn'; row.style.cssText='width:100%;margin-top:8px;';
+      row.textContent='🛠️ Admin Mode';
+      row.onclick=function(){ askAdmin(); };
+      settings.appendChild(row);
+    }
+  }
   addAdminToHive(); setInterval(addAdminToHive,5000);
 
   /* Massive contextual Sergeant bank (100+ lines) */

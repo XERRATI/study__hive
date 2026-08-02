@@ -2307,10 +2307,18 @@
   #upgradeHubBtn:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(226,155,28,0.48); filter: brightness(1.04); }
   .upgrade-panel {
     position: fixed; inset: 50% auto auto 50%; transform: translate(-50%,-50%);
-    z-index: 120; width: min(980px, 94vw); max-height: 86vh; overflow: hidden;
+    z-index: 120; width: min(980px, 94vw);
+    /* HIVE STUDIO SCROLL FIX: the panel used max-height + overflow:hidden with
+       auto-sized grid rows, so the inner panes grew to full content height and
+       got CLIPPED instead of scrolling (their overflow-y:auto had nothing to
+       scroll). A definite height + minmax(0,1fr) row + min-height:0 children
+       makes both the feature list and the tool body scroll properly. */
+    height: min(86vh, 920px); max-height: 86vh; overflow: hidden;
     background: var(--pearl); border-radius: 28px; box-shadow: 0 28px 70px rgba(70,45,18,.38);
-    display: none; grid-template-columns: 300px 1fr; color: var(--deep-brown);
+    display: none; grid-template-columns: 300px 1fr; grid-template-rows: minmax(0, 1fr);
+    color: var(--deep-brown);
   }
+  .upgrade-sidebar, .upgrade-body { min-height: 0; }
   .upgrade-panel.show { display: grid; animation: upgPanelIn .28s cubic-bezier(.18,.9,.24,1.12); }
   @keyframes upgPanelIn { from { opacity:0; transform: translate(-50%,-47%) scale(.97); } to { opacity:1; transform: translate(-50%,-50%) scale(1); } }
   body.night-mode .upgrade-panel { background:#16202f; color:#cdd6e4; box-shadow: 0 28px 70px rgba(0,0,0,.55); }
@@ -2374,9 +2382,9 @@
   .upg-full-overlay.show { display:flex; }
   .upg-full-overlay h2 { font-family:'Baloo 2',sans-serif; font-size:clamp(28px,7vw,56px); margin-bottom:8px; }
   @media (max-width: 760px) {
-    .upgrade-panel { grid-template-columns:1fr; width:94vw; }
-    .upgrade-sidebar { max-height:220px; border-right:none; border-bottom:1px solid rgba(139,111,82,.16); }
-    .upgrade-body { max-height:54vh; }
+    .upgrade-panel { grid-template-columns:1fr; grid-template-rows:auto minmax(0,1fr); width:94vw; height:88vh; }
+    .upgrade-sidebar { max-height:38vh; border-right:none; border-bottom:1px solid rgba(139,111,82,.16); }
+    .upgrade-body { max-height:none; }
     .upg-grid { grid-template-columns:1fr; }
     #upgradeHubBtn { bottom: calc(82px + env(safe-area-inset-bottom)); right: 10px; }
   }
@@ -4660,3 +4668,154 @@ body.welcome-locked { overflow: hidden; }
 }
 .quote-fav-remove:hover { opacity: 1; color: var(--rose, #c1392b); background: rgba(193,57,43,0.1); }
 body.night-mode .quote-fav-remove { color: #cdd6e4; }
+
+/* ==========================================================================
+   ROUND 3 — heart button, More Tools size, pledge card, admin modal,
+   lofi volume slider, bee model hats & polish
+   ========================================================================== */
+
+/* ---------- Quote heart: bigger, easier to tap, always visible ---------- */
+.quote-fav-btn {
+  font-size: 19px !important; padding: 4px 8px; margin-left: 8px;
+  border-radius: 10px; line-height: 1; touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.quote-fav-btn:hover { transform: scale(1.2); background: rgba(244,196,48,.18); }
+.quote-fav-btn:active { transform: scale(0.9); }
+.quote-fav-list-btn {
+  margin-top: 8px; background: rgba(244,196,48,.16); border: 1px solid rgba(226,155,28,.3);
+  color: var(--deep-brown); border-radius: 12px; padding: 6px 12px; font-weight: 800;
+  font-size: 12.5px; cursor: pointer; font-family: 'Fredoka', sans-serif;
+  touch-action: manipulation;
+}
+.quote-fav-list-btn:hover { background: rgba(244,196,48,.28); }
+
+/* ---------- More Tools: a bit larger, not too large ---------- */
+.misc-panel { width: 320px; padding: 20px; }
+.misc-panel h4 { font-size: 16px; margin-bottom: 14px; }
+.misc-panel .settings-action-btn, .misc-panel .breathing-action-btn, .misc-panel .settings-danger-btn {
+  font-size: 14px; padding: 11px 14px; }
+.misc-panel .notes-textarea, .misc-panel .onboard-input { font-size: 14px; }
+.misc-btn { font-size: 14px; padding: 8px 12px; }
+@media (max-width: 780px) {
+  .misc-panel { width: min(320px, 92vw); }
+}
+
+/* ---------- Pledge: expandable card that opens/closes ---------- */
+.pledge-card {
+  margin: 12px auto 0; max-width: 92%; border-radius: 18px;
+  background: rgba(244,196,48,.14); border: 1px solid rgba(226,155,28,.22);
+  overflow: hidden; text-align: left;
+}
+.pledge-head {
+  width: 100%; display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px; background: none; border: none; cursor: pointer;
+  font-family: 'Fredoka', sans-serif; color: var(--deep-brown); font-size: 13px; font-weight: 800;
+  touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+}
+.pledge-head:hover { background: rgba(244,196,48,.10); }
+.pledge-chev { margin-left: auto; font-size: 11px; color: var(--brown); transition: transform .25s ease; flex: none; }
+.pledge-card.pledge-open .pledge-chev { transform: rotate(180deg); }
+.pledge-head-text { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pledge-card.pledge-open .pledge-head-text { white-space: normal; }
+.pledge-body {
+  max-height: 0; opacity: 0; overflow: hidden;
+  transition: max-height .35s ease, opacity .3s ease, padding .3s ease;
+  padding: 0 14px; font-size: 13px; line-height: 1.5; color: var(--deep-brown); font-weight: 600;
+}
+.pledge-card.pledge-open .pledge-body { max-height: 260px; opacity: 1; padding: 2px 14px 12px; }
+.pledge-actions { display: flex; gap: 8px; margin-top: 8px; }
+.pledge-actions button {
+  border: none; background: transparent; color: var(--brown); text-decoration: underline;
+  cursor: pointer; font-weight: 800; font-size: 12px; font-family: 'Fredoka', sans-serif;
+  padding: 2px 4px;
+}
+body.night-mode .pledge-card { background: #3d2e1e; color: #e8c89a; border-color: rgba(226,155,28,.2); }
+body.night-mode .pledge-head { color: #e8c89a; }
+body.night-mode .pledge-body { color: #e8c89a; }
+body.night-mode .pledge-head:hover { background: rgba(244,196,48,.08); }
+
+/* ---------- Admin code modal (mobile-friendly, no prompt()) ---------- */
+.admin-lock-veil {
+  position: fixed; inset: 0; z-index: 100010; display: none;
+  align-items: center; justify-content: center; padding: 20px;
+  background: rgba(43,33,23,.55); backdrop-filter: blur(4px);
+}
+.admin-lock-veil.show { display: flex; }
+.admin-lock-card {
+  width: min(340px, 92vw); background: var(--pearl); border-radius: 22px;
+  padding: 22px; box-shadow: 0 24px 70px rgba(0,0,0,.4); text-align: center;
+}
+body.night-mode .admin-lock-card { background: #16202f; }
+.admin-lock-card h3 { font-family: 'Baloo 2', sans-serif; margin: 0 0 6px; font-size: 20px; color: var(--deep-brown); }
+body.night-mode .admin-lock-card h3 { color: #e8c89a; }
+.admin-lock-card p { font-size: 12px; color: var(--brown); margin: 0 0 14px; line-height: 1.45; }
+body.night-mode .admin-lock-card p { color: #94a3b8; }
+.admin-lock-input {
+  width: 100%; border: 2px solid var(--tan); border-radius: 14px; padding: 12px;
+  font-size: 16px; text-align: center; font-family: 'Fredoka', sans-serif;
+  background: var(--cream); color: var(--deep-brown); outline: none; margin-bottom: 12px;
+}
+.admin-lock-input:focus { border-color: var(--honey2); }
+.admin-lock-row { display: flex; gap: 10px; }
+.admin-lock-row button {
+  flex: 1; padding: 11px; border: none; border-radius: 14px; cursor: pointer;
+  font-family: 'Fredoka', sans-serif; font-weight: 900; font-size: 14px;
+  background: linear-gradient(135deg, var(--honey1), var(--honey3)); color: var(--pearl);
+}
+.admin-lock-row button.secondary { background: var(--tan); color: var(--deep-brown); }
+
+/* ---------- Lofi volume slider ---------- */
+.lofi-volume-box {
+  display: flex; align-items: center; gap: 10px; margin: 10px 0 4px;
+  padding: 9px 12px; border-radius: 14px; background: rgba(244,196,48,.12);
+}
+.lofi-volume-box label { font-size: 12px; font-weight: 850; color: var(--deep-brown); flex: none; }
+.lofi-volume-box .lofi-volume-value { font-size: 11px; color: var(--brown); font-weight: 700; min-width: 34px; text-align: right; }
+.lofi-volume-box input[type=range] { flex: 1; accent-color: var(--honey2); height: 22px; }
+body.night-mode .lofi-volume-box label { color: #e8c89a; }
+body.night-mode .lofi-volume-box { background: rgba(244,196,48,.08); }
+
+/* ---------- Bee model hats: sit ON the head, not floating ---------- */
+.hive-bee-el.model-seedling .bee-core::before,
+.hive-bee-el.model-scholar .bee-core::before,
+.hive-bee-el.model-chemist .bee-core::before,
+.hive-bee-el.model-golden .bee-core::before,
+.hive-bee-el.model-royal .bee-core::before {
+  position: absolute; right: -1px; top: -2px; font-size: 12px; z-index: 6;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,.3));
+  transform: rotate(-8deg); animation: beeHatSettle 3.2s ease-in-out infinite;
+}
+@keyframes beeHatSettle {
+  0%, 100% { transform: rotate(-8deg) translateY(0); }
+  50% { transform: rotate(-5deg) translateY(-1px); }
+}
+/* Queen crown sits on her head too */
+.hive-bee-el.type-queen .bee-crown-art { top: -3px; left: 26px; font-size: 14px; }
+
+/* ---------- New bee art: small polish (keeps the models) ---------- */
+.bee-body-art {
+  border-radius: 60% 48% 48% 60%;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.35), transparent 45%),
+    repeating-linear-gradient(90deg, #ffd85c 0 5px, #27221c 5px 8px, #ffd85c 8px 12px);
+}
+.bee-head-art {
+  background: radial-gradient(circle at 35% 30%, #4a4038, #2b241d 70%);
+}
+.bee-eye-art { width: 3.5px; height: 3.5px; border-radius: 50%; background: #fff; box-shadow: 0 0 1px rgba(0,0,0,.4); }
+.bee-wing-art {
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.98), rgba(190,225,255,.7) 60%, rgba(255,255,255,.18));
+  animation: beeWingFlap .12s ease-in-out infinite alternate, beeWingShimmer 2.1s ease-in-out infinite;
+}
+@keyframes beeWingShimmer { 0%,100% { opacity: .95; } 50% { opacity: .7; } }
+.bee-core { filter: drop-shadow(0 2px 4px rgba(91,63,25,.3)); }
+.bee-antenna-art { border-top-width: 2px; border-right-width: 2px; }
+
+/* ---------- Pledge nudge (when Calm/SOS opens it) ---------- */
+.pledge-card.pledge-nudge { animation: pledgeNudge 2.2s ease; box-shadow: 0 0 0 3px rgba(244,196,48,.5); }
+@keyframes pledgeNudge {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.03); }
+  50% { transform: scale(1.01); }
+}

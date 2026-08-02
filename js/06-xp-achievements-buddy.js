@@ -490,8 +490,16 @@
     for (var i = 0; i < bufferSize; i++) data[i] = Math.random()*2 - 1;
     return buffer;
   }
+  /* LOUDNESS CONTROL: all lofi tracks scale through this. Default 35% —
+     soft but clearly audible. Slider lives in the Lofi Player panel. */
+  function lofiVol(){
+    var v = parseInt(localStorage.getItem('studyhive-bg-volume-v1') || '35', 10);
+    if (isNaN(v)) v = 35;
+    return Math.max(0, Math.min(2.5, v / 40));
+  }
+  window.lofiVol = lofiVol;
   function playHiveHum(ctx){
-    var master = ctx.createGain(); master.gain.value = 0.18; master.connect(ctx.destination);
+    var master = ctx.createGain(); master.gain.value = 0.18 * lofiVol(); master.connect(ctx.destination); window.__lofiMaster = master;
     [110, 112].forEach(function(freq){
       var osc = ctx.createOscillator(); osc.type = 'sine'; osc.frequency.value = freq;
       var g = ctx.createGain(); g.gain.value = 0.5;
@@ -511,7 +519,7 @@
     }, 2200);
   }
   function playStudyRain(ctx){
-    var master = ctx.createGain(); master.gain.value = 0.16; master.connect(ctx.destination);
+    var master = ctx.createGain(); master.gain.value = 0.16 * lofiVol(); master.connect(ctx.destination); window.__lofiMaster = master;
     var noise = ctx.createBufferSource(); noise.buffer = makeNoiseBuffer(ctx); noise.loop = true;
     var filter = ctx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = 900;
     noise.connect(filter); filter.connect(master); noise.start();
@@ -526,7 +534,7 @@
     }, 900);
   }
   function playDawnFocus(ctx){
-    var master = ctx.createGain(); master.gain.value = 0.16; master.connect(ctx.destination);
+    var master = ctx.createGain(); master.gain.value = 0.16 * lofiVol(); master.connect(ctx.destination); window.__lofiMaster = master;
     var pluckNotes = [392, 440, 494, 587];
     stopTrack._beatInterval = setInterval(function(){
       var osc = ctx.createOscillator(); osc.type = 'triangle';
@@ -549,7 +557,7 @@
     }, 1600);
   }
   function playOceanWaves(ctx){
-    var master = ctx.createGain(); master.gain.value = 0.2; master.connect(ctx.destination);
+    var master = ctx.createGain(); master.gain.value = 0.2 * lofiVol(); master.connect(ctx.destination); window.__lofiMaster = master;
     var noise = ctx.createBufferSource(); noise.buffer = makeNoiseBuffer(ctx); noise.loop = true;
     var filter = ctx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = 500;
     var waveLfo = ctx.createOscillator(); waveLfo.type = 'sine'; waveLfo.frequency.value = 0.12;
@@ -559,7 +567,7 @@
     trackNodes.push(noise); trackNodes.push(filter); trackNodes.push(master); trackNodes.push(waveLfo); trackNodes.push(waveGain);
   }
   function playForest(ctx){
-    var master = ctx.createGain(); master.gain.value = 0.14; master.connect(ctx.destination);
+    var master = ctx.createGain(); master.gain.value = 0.14 * lofiVol(); master.connect(ctx.destination); window.__lofiMaster = master;
     var noise = ctx.createBufferSource(); noise.buffer = makeNoiseBuffer(ctx); noise.loop = true;
     var filter = ctx.createBiquadFilter(); filter.type = 'bandpass'; filter.frequency.value = 700; filter.Q.value = 0.5;
     var windGain = ctx.createGain(); windGain.gain.value = 0.06;
@@ -651,11 +659,35 @@
   }
 
   function playWhiteNoise(ctx){
-    var master = ctx.createGain(); master.gain.value = 0.1; master.connect(ctx.destination);
+    var master = ctx.createGain(); master.gain.value = 0.1 * lofiVol(); master.connect(ctx.destination); window.__lofiMaster = master;
     var noise = ctx.createBufferSource(); noise.buffer = makeNoiseBuffer(ctx); noise.loop = true;
     noise.connect(master); noise.start();
     trackNodes.push(noise); trackNodes.push(master);
   }
+  (function(){
+    function ensureLofiVolume(){
+      var panel=document.getElementById('musicPanel');
+      if(!panel || document.getElementById('lofiVolumeSlider')) return;
+      var v=parseInt(localStorage.getItem('studyhive-bg-volume-v1')||'35',10); if(isNaN(v)) v=35;
+      var box=document.createElement('div'); box.className='lofi-volume-box';
+      box.innerHTML='<label>🎚️ Volume</label><input id="lofiVolumeSlider" type="range" min="0" max="100" value="'+v+'"><span class="lofi-volume-value" id="lofiVolumeValue">'+v+'%</span>';
+      var h4=panel.querySelector('h4'); if(h4) h4.insertAdjacentElement('afterend', box); else panel.insertAdjacentElement('afterbegin', box);
+      document.getElementById('lofiVolumeSlider').addEventListener('input', function(){
+        var val=parseInt(this.value,10)||0;
+        localStorage.setItem('studyhive-bg-volume-v1', String(val));
+        localStorage.setItem('studyhive-master-volume-v1', String(val));
+        var out=document.getElementById('lofiVolumeValue'); if(out) out.textContent=val+'%';
+        if(window.__lofiMaster && window.__lofiMaster.gain){
+          try{ window.__lofiMaster.gain.setValueAtTime(lofiVol(), window.__lofiMaster.context?window.__lofiMaster.context.currentTime:0); }catch(e){}
+        }
+        try{ var au=document.getElementById('customUploadedBackgroundMusic'); if(au) au.volume=val/100; }catch(e){}
+        var old=document.getElementById('masterMusicVolume'); if(old) old.value=val;
+        var oldv=document.getElementById('masterMusicVolumeValue'); if(oldv) oldv.textContent=val+'%';
+      });
+    }
+    ensureLofiVolume(); setInterval(ensureLofiVolume, 3000);
+  })();
+
   document.querySelectorAll('.lofi-track-btn').forEach(function(btn){
     btn.addEventListener('click', function(){
       var track = btn.dataset.track;
