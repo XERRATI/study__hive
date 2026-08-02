@@ -13,10 +13,13 @@
     document.querySelectorAll('.bee-wrap').forEach(function(bee,i){
       if(bee.dataset.oldBeeTiming)return;
       bee.dataset.oldBeeTiming='1';
-      bee.style.setProperty('--old-route-duration',(27+i*3+Math.random()*3).toFixed(1)+'s');
-      bee.style.setProperty('--old-bob-duration',(.48+Math.random()*.24).toFixed(2)+'s');
-      bee.style.setProperty('--old-wing-duration',(.14+Math.random()*.08).toFixed(2)+'s');
-      bee.style.animationDelay=(-Math.random()*25).toFixed(2)+'s';
+      /* SYNC FIX: use the CSS variable names the stylesheet actually reads. */
+      bee.style.setProperty('--old-bee-route-delay',(-Math.random()*30).toFixed(2)+'s');
+      bee.style.setProperty('--old-bee-route-speed',(22+Math.random()*16).toFixed(1)+'s');
+      bee.style.setProperty('--old-bee-bob-delay',(-Math.random()*2).toFixed(2)+'s');
+      bee.style.setProperty('--old-bee-bob-speed',(.36+Math.random()*.30).toFixed(2)+'s');
+      bee.style.setProperty('--old-bee-wing-delay',(-Math.random()*1).toFixed(2)+'s');
+      bee.style.setProperty('--old-bee-wing-speed',(.09+Math.random()*.11).toFixed(2)+'s');
     });
     document.querySelectorAll('.hive-bee-el').forEach(function(bee){
       if(bee.dataset.xpBeeTiming)return;

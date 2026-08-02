@@ -815,9 +815,13 @@
     document.querySelectorAll('#ambientSoundBtns .focus-preset-btn').forEach(function(b){ b.classList.remove('active'); });
   }
   function playAmbientSound(type){
-    stopAmbientSound();
+    /* AMBIENT SOUND FIX: this used to call stopAmbientSound() first, which
+       strips the 'active' class from every button AFTER the handler just
+       added it — so the button never stayed lit. The handler already stops
+       the previous sound before calling us, so the duplicate stop is gone. */
     try {
       if (!ambientCtx) ambientCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (ambientCtx.state === 'suspended' && ambientCtx.resume) { try { ambientCtx.resume(); } catch(e){} }
       var bufferSize = 2 * ambientCtx.sampleRate;
       var buffer = ambientCtx.createBuffer(1, bufferSize, ambientCtx.sampleRate);
       var data = buffer.getChannelData(0);
@@ -832,7 +836,7 @@
       else { filter.type = 'lowpass'; filter.frequency.value = 4000; }
       var gain = ambientCtx.createGain();
       gain.gain.setValueAtTime(0.0001, ambientCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(type === 'outside' ? 0.10 : 0.12, ambientCtx.currentTime + 0.8);
+      gain.gain.exponentialRampToValueAtTime(type === 'outside' ? 0.15 : 0.18, ambientCtx.currentTime + 0.8);
       noise.connect(filter); filter.connect(gain); gain.connect(ambientCtx.destination);
       noise.start();
       ambientSource = noise; ambientGain = gain;

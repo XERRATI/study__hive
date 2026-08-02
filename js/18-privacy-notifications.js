@@ -12,10 +12,16 @@
   function set(k,v){ try{localStorage.setItem(k,v);}catch(e){} }
   function toast(msg){ if(typeof showMilestoneToast==='function') showMilestoneToast(msg,3600); }
 
-  /* Ensure ambient sound buttons can never start Focus with NaN. */
+  /* AMBIENT SOUND FIX: this listener used to call e.stopPropagation() in the
+     CAPTURE phase for ambient buttons (.focus-preset-btn[data-sound]).
+     Capture-phase stopPropagation stops the event BEFORE it reaches the
+     button, so the button's own play-sound listener never fired and the
+     Ambient Focus Sounds were dead. The NaN fix is already handled below by
+     the guard interval + the [data-mins] filter in the focus presets, so the
+     stopPropagation is simply removed. */
   document.addEventListener('click', function(e){
-    var b=e.target.closest&&e.target.closest('.focus-preset-btn:not([data-mins])');
-    if(b && b.dataset && b.dataset.sound){ e.stopPropagation(); }
+    var b=e.target.closest&&e.target.closest('.focus-preset-btn[data-sound]');
+    if(b){ /* intentional: let the button's own listener run */ }
   }, true);
   setInterval(function(){ var t=$('focusSessionTime'); if(t && /NaN/.test(t.textContent)){ t.textContent='00:00'; var f=$('focusSessionFill'); if(f) f.style.width='0%'; } },500);
 

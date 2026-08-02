@@ -1,0 +1,17 @@
+Copyright © 2026 Study Hive. All rights reserved.
+
+Study Hive is proprietary software and creative work owned solely by Study Hive.co .
+Contact: studyhive.co.za@gmail.com
+
+No permission is granted to copy, modify, redistribute, rebrand, resell, publish,
+host, mirror, sublicense, or create derivative works from this project or any
+substantial part of it without prior written permission from Study Hive.co .
+
+Protected materials include, but are not limited to: source code, HTML, CSS,
+JavaScript, app structure, Study Hive branding, feature names, copywriting,
+bee characters, Queen Bee, Sergeant Bee, Buddy Bee, Hive Coach, Garden World,
+No-touch Focus, Hive Controls, visual design, layouts, documentation, and all
+associated files.
+
+Viewing or using the app does not transfer ownership or grant a licence to reuse
+or reproduce the project. Permission requests must be sent to studyhive.co.za@gmail.com.

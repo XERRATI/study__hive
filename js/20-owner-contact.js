@@ -6,8 +6,8 @@
 
 
 (function(){
-  var OWNER = 'the Creator';
-  var EMAIL = 'studyhive.co.za@gmail.com';
+  var OWNER = 'Omphemetse Mogale';
+  var EMAIL = 'omphemetse.mogale0409@gmail.com';
   var NOTICE = 'Study Hive © 2026 ' + OWNER + '. All rights reserved. Unauthorized copying, cloning, rebranding, resale, redistribution, hosting, mirroring, or derivative works are prohibited. Contact: ' + EMAIL;
   try {
     Object.defineProperty(window, 'STUDY_HIVE_OWNER', { value: OWNER, writable: false, configurable: false });
@@ -24,7 +24,7 @@
       var n=document.createElement('div');
       n.id='studyHiveOwnershipNotice';
       n.setAttribute('aria-label','Study Hive ownership notice');
-      n.textContent='Study Hive © 2026 the Creator. All rights reserved.';
+      n.textContent='Study Hive © 2026 Omphemetse Mogale. All rights reserved.';
       n.style.cssText='position:fixed;left:8px;bottom:6px;z-index:1;font:10px Arial,sans-serif;color:rgba(91,68,47,.55);pointer-events:none;user-select:none;';
       document.body.appendChild(n);
     }

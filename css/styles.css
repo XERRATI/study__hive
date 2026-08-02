@@ -2863,7 +2863,7 @@
 
 /* ===== style block 12 ===== */
 
-  .admin-panel { position:fixed; inset:50% auto auto 50%; transform:translate(-50%,-50%); z-index:700; width:min(760px,94vw); max-height:86vh; overflow:auto; display:none; background:var(--pearl); color:var(--deep-brown); border-radius:28px; padding:22px; box-shadow:0 30px 90px rgba(0,0,0,.48); }
+  .admin-panel { position:fixed; inset:50% auto auto 50%; transform:translate(-50%,-50%); z-index:100000; width:min(760px,94vw); max-height:86vh; overflow:auto; display:none; background:var(--pearl); color:var(--deep-brown); border-radius:28px; padding:22px; box-shadow:0 30px 90px rgba(0,0,0,.48); }
   .admin-panel.show { display:block; }
   body.night-mode .admin-panel { background:#16202f; color:#cdd6e4; }
   .admin-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
@@ -4487,8 +4487,8 @@
 
   /* These classes only affect the Old and Both settings. New/Off remain
      controlled by the app's existing bee-style toggle. */
-  body.bee-style-old .bee-wrap.balance-hidden,
-  body.bee-style-both .bee-wrap.balance-hidden { display:none !important; }
+  /* Old bees are rare now: extras beyond the target are always hidden. */
+  .bee-wrap.balance-hidden { display:none !important; }
 
 
 /* ===== style block 48 ===== */
@@ -4538,3 +4538,116 @@
   .startup-report-btn{width:100%;margin-top:10px;border:1.5px dashed var(--tan);border-radius:11px;padding:8px;background:transparent;color:var(--brown);font:800 11px 'Fredoka',sans-serif;cursor:pointer}
   .startup-report-box{margin-top:8px;white-space:pre-wrap;max-height:145px;overflow:auto;border-radius:10px;padding:9px;background:var(--cream);color:var(--deep-brown);font:11px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace}
   body.night-mode .startup-report-box{background:#1c2738;color:#cdd6e4}
+
+/* ==========================================================================
+   NEW FEATURES — welcome screen, step-by-step setup, bee sliders
+   ========================================================================== */
+
+/* ---------- Welcome screen (front page, shows first every visit) ---------- */
+.welcome-screen {
+  position: fixed; inset: 0; z-index: 99999;
+  display: flex; align-items: center; justify-content: center;
+  background:
+    radial-gradient(ellipse at 20% 15%, rgba(244,196,48,0.22), transparent 55%),
+    radial-gradient(ellipse at 85% 85%, rgba(201,122,18,0.25), transparent 55%),
+    linear-gradient(160deg, #f4ead9 0%, #e8d5b7 55%, #d3b995 100%);
+  overflow: hidden; padding: 20px;
+}
+body.welcome-locked { overflow: hidden; }
+.welcome-screen.hidden { display: none; }
+
+.welcome-honeycomb {
+  position: absolute; inset: 0; opacity: 0.5; pointer-events: none;
+  background-image: radial-gradient(circle at 25% 25%, rgba(255,250,242,0.5) 2px, transparent 2.5px),
+                    radial-gradient(circle at 75% 75%, rgba(255,250,242,0.45) 2px, transparent 2.5px);
+  background-size: 46px 46px;
+}
+.welcome-card {
+  position: relative; max-width: 480px; width: 100%; text-align: center;
+  background: rgba(255,250,242,0.9); border-radius: 34px;
+  padding: 34px 28px 28px; box-shadow: 0 18px 50px rgba(139,111,82,0.35);
+  border: 1px solid rgba(244,196,48,0.55);
+}
+.welcome-bee {
+  font-size: 64px; line-height: 1; display: inline-block;
+  animation: welcomeFloat 2.6s ease-in-out infinite;
+  filter: drop-shadow(0 6px 10px rgba(139,111,82,0.35));
+}
+@keyframes welcomeFloat {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50% { transform: translateY(-12px) rotate(4deg); }
+}
+.welcome-title {
+  font-family: 'Baloo 2', 'Fredoka', sans-serif; font-size: 40px; margin: 10px 0 4px;
+  background: linear-gradient(120deg, #e29b1c, #c97a12);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.welcome-tagline { font-size: 15px; color: var(--deep-brown); margin: 0 0 18px; line-height: 1.5; }
+.welcome-bullets { text-align: left; margin: 0 0 20px; display: flex; flex-direction: column; gap: 10px; }
+.welcome-bullet { display: flex; gap: 10px; align-items: flex-start; background: rgba(244,196,48,0.10); border-radius: 14px; padding: 10px 12px; }
+.welcome-bullet span { font-size: 20px; line-height: 1.3; }
+.welcome-bullet p { margin: 0; font-size: 13px; color: var(--brown); line-height: 1.45; }
+.welcome-bullet b { color: var(--deep-brown); }
+.welcome-enter-btn {
+  width: 100%; padding: 15px 20px; font-size: 18px; font-weight: 700; cursor: pointer;
+  font-family: 'Fredoka', sans-serif; color: var(--pearl);
+  background: linear-gradient(135deg, #f4c430, #e29b1c, #c97a12);
+  border: none; border-radius: 18px; box-shadow: 0 8px 20px rgba(201,122,18,0.4);
+  transition: transform 0.12s ease, box-shadow 0.2s ease;
+}
+.welcome-enter-btn:hover { box-shadow: 0 10px 26px rgba(201,122,18,0.55); transform: translateY(-2px); }
+.welcome-enter-btn:active { transform: scale(0.96); }
+.welcome-footnote { font-size: 12px; color: var(--brown); margin: 14px 0 0; }
+@media (max-width: 520px) {
+  .welcome-card { padding: 24px 18px 20px; }
+  .welcome-title { font-size: 32px; }
+  .welcome-bee { font-size: 52px; }
+}
+
+/* ---------- Onboarding: bee slider + one-step-at-a-time ---------- */
+.onboard-slider-wrap { margin: 14px 0 16px; }
+.onboard-slider-track {
+  position: relative; height: 14px; border-radius: 10px;
+  background: var(--tan); border: 1px solid rgba(139,111,82,0.25); overflow: visible;
+}
+.onboard-slider-fill {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 0%; border-radius: 10px;
+  background: linear-gradient(90deg, #f4c430, #e29b1c);
+  transition: width 0.45s cubic-bezier(.2,.8,.2,1);
+}
+.onboard-slider-bee {
+  position: absolute; top: 50%; left: 0%; font-size: 18px; line-height: 1;
+  transform: translate(-50%, -50%);
+  transition: left 0.45s cubic-bezier(.2,.8,.2,1);
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+  z-index: 2;
+}
+.onboard-slider-label { text-align: center; font-size: 12px; color: var(--brown); font-weight: 600; margin-top: 6px; }
+.onboard-step { display: none; animation: stepIn 0.3s ease; }
+.onboard-step.active { display: block; }
+@keyframes stepIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.onboard-step-hint { font-size: 12px; color: var(--brown); line-height: 1.5; margin: 8px 0 0; }
+.onboard-nav { display: flex; gap: 10px; margin-top: 16px; }
+.onboard-nav-btn {
+  flex: 1; padding: 11px; font-size: 14px; font-weight: 700; cursor: pointer;
+  font-family: 'Fredoka', sans-serif; border-radius: 14px;
+  background: var(--tan); color: var(--deep-brown); border: 1px solid rgba(139,111,82,0.3);
+  transition: transform 0.1s ease, background 0.2s ease;
+}
+.onboard-nav-btn:hover { background: #e0c9a6; }
+.onboard-nav-btn:active { transform: scale(0.96); }
+.onboard-nav-btn.primary {
+  background: linear-gradient(135deg, #f4c430, #e29b1c); color: var(--pearl);
+  border: none; box-shadow: 0 4px 12px rgba(201,122,18,0.35);
+}
+.onboard-nav-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ---------- Main-screen bee slider (rides the hive progress bar) ---------- */
+.hive-progress-track { position: relative; }
+.hive-progress-bee {
+  position: absolute; top: 50%; left: 0%; font-size: 15px; line-height: 1;
+  transform: translate(-50%, -50%); z-index: 2;
+  transition: left 1s ease;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+  pointer-events: none;
+}

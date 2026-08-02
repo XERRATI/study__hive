@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <!--
   Study Hive — Proprietary Source Code
-  Copyright © 2026 the Creator. All rights reserved.
+  Copyright © 2026 Omphemetse Mogale. All rights reserved.
 
-  Sole owner / copyright holder: the Creator
-  Contact: studyhive.co.za@gmail.com
+  Sole owner / copyright holder: Omphemetse Mogale
+  Contact: omphemetse.mogale0409@gmail.com
 
   This file and the Study Hive project may not be copied, cloned, rebranded,
   resold, redistributed, hosted, mirrored, sublicensed, or used to create
-  derivative works without written permission from the Creator.
+  derivative works without written permission from Omphemetse Mogale.
+  See LICENSE.txt and COPYRIGHT_NOTICE.txt in this repository.
 -->
 <html lang="en">
 <head>
 <script src="js/01-idle-timer-scheduler.js"></script>
 
 <meta charset="UTF-8">
-<meta name="author" content="the Creator">
-<meta name="copyright" content="Copyright © 2026 the Creator. All rights reserved.">
-<meta name="owner" content="the Creator">
-<meta name="contact" content="studyhive.co.za@gmail.com">
-<meta name="rights" content="Proprietary. No copying, cloning, rebranding, resale, redistribution, or derivative works without written permission.">
+<meta name="author" content="Omphemetse Mogale">
+<meta name="copyright" content="Copyright © 2026 Omphemetse Mogale. All rights reserved.">
+<meta name="owner" content="Omphemetse Mogale">
+<meta name="contact" content="omphemetse.mogale0409@gmail.com">
+<meta name="rights" content="Proprietary. No copying, cloning, rebranding, resale, redistribution, or derivative works without written permission. See LICENSE.txt.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
 <title>Study Hive — Countdown, Focus & Flashcards</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐝</text></svg>">
@@ -32,37 +33,95 @@
 </head>
 <body class="startup-soft">
 <div class="startup-honey-glow" id="startupHoneyGlow" aria-hidden="true"><span>🐝</span></div>
+<!-- ===== FRONT PAGE: welcome screen (shows first on every visit) ===== -->
+<div class="welcome-screen" id="welcomeScreen" role="dialog" aria-label="Welcome to Study Hive">
+  <div class="welcome-honeycomb" aria-hidden="true"></div>
+  <div class="welcome-card">
+    <div class="welcome-bee" id="welcomeBee">🐝</div>
+    <h1 class="welcome-title">Study Hive</h1>
+    <p class="welcome-tagline">Your personal hive of focus, flashcards and friendly discipline.</p>
+    <div class="welcome-bullets">
+      <div class="welcome-bullet"><span>⏳</span><p><b>One countdown that matters</b> — keep your goal day in sight, every single day.</p></div>
+      <div class="welcome-bullet"><span>🍅</span><p><b>A focus timer that coaches you</b> — the Sergeant keeps you honest, the Buddy keeps you kind.</p></div>
+      <div class="welcome-bullet"><span>🗂️</span><p><b>Cards, notes, garden and more</b> — everything a studying bee needs lives in one hive.</p></div>
+    </div>
+    <button class="welcome-enter-btn" id="welcomeEnterBtn">🍯 Enter the Hive</button>
+    <p class="welcome-footnote">Every session you finish makes the hive grow. Start buzzing.</p>
+  </div>
+</div>
 <script src="js/02-startup-fade.js"></script>
 <div class="onboard-veil" id="onboardVeil">
   <div class="onboard-card">
     <div class="onboard-bee">🐝</div>
     <h2>Welcome to Study Hive</h2>
-    <p class="onboard-sub">Quick setup — the hive uses this to build your subjects, daily goal and coaching style. You can change it later.</p>
-    <label class="onboard-label" for="onboardName">What should we call you?</label>
-    <input type="text" id="onboardName" class="onboard-input" placeholder="e.g. Sam" maxlength="24">
-    <label class="onboard-label" for="onboardGoal">What are you counting down to?</label>
-    <input type="text" id="onboardGoal" class="onboard-input" placeholder="e.g. Finals, Graduation, SATs" maxlength="40">
-    <label class="onboard-label" for="onboardDate">When is it?</label>
-    <input type="date" id="onboardDate" class="onboard-input">
-    <label class="onboard-label" for="onboardSubjects">What subjects should the hive track?</label>
-    <textarea id="onboardSubjects" class="onboard-input" rows="2" placeholder="Maths, Biology, English..." style="resize:vertical;"></textarea>
-    <label class="onboard-label" for="onboardDailyGoal">Daily study goal (minutes)</label>
-    <input type="number" id="onboardDailyGoal" class="onboard-input" min="10" max="480" value="60">
-    <label class="onboard-label" for="onboardVibe">How should the hive coach you?</label>
-    <select id="onboardVibe" class="onboard-input">
-      <option value="balanced" selected>Balanced — supportive but honest</option>
-      <option value="calm">Calm — gentle reminders</option>
-      <option value="strict">Strict — drill-sergeant energy</option>
-      <option value="fun">Fun — jokes and tiny challenges</option>
-    </select>
-    <label style="display:flex; align-items:flex-start; gap:8px; text-align:left; font-size:12px; color:var(--brown); margin-top:12px; line-height:1.35;">
-      <input type="checkbox" id="onboardMobileMode" style="margin-top:2px;"> Use the simplified mobile layout on this device
-    </label>
-    <label class="onboard-label" for="onboardWorry">Biggest thing you want help with</label>
-    <textarea id="onboardWorry" class="onboard-input" rows="2" placeholder="e.g. procrastination, exam panic, staying consistent..." style="resize:vertical;"></textarea>
-    <label class="onboard-label" for="onboardPledge">Write a pledge to yourself</label>
-    <textarea id="onboardPledge" class="onboard-input" rows="2" placeholder="I promise to show up honestly, one focused session at a time." style="resize:vertical;"></textarea>
-    <button class="onboard-start-btn" id="onboardStartBtn">Start my hive 🍯</button>
+    <p class="onboard-sub">A few short questions and your hive is built around you. One at a time — no rush.</p>
+
+    <!-- Bee slider: shows how far through setup you are -->
+    <div class="onboard-slider-wrap">
+      <div class="onboard-slider-track">
+        <div class="onboard-slider-fill" id="onboardSliderFill"></div>
+        <span class="onboard-slider-bee" id="onboardSliderBee">🐝</span>
+      </div>
+      <div class="onboard-slider-label" id="onboardSliderLabel">Step 1 of 9</div>
+    </div>
+
+    <div class="onboard-step" data-step="1">
+      <label class="onboard-label" for="onboardName">What should we call you?</label>
+      <input type="text" id="onboardName" class="onboard-input" placeholder="e.g. Sam" maxlength="24">
+      <p class="onboard-step-hint">Your name personalises your hive — the Sergeant and Buddy Bee will use it. You can skip this if you like.</p>
+    </div>
+    <div class="onboard-step" data-step="2">
+      <label class="onboard-label" for="onboardGoal">What are you counting down to?</label>
+      <input type="text" id="onboardGoal" class="onboard-input" placeholder="e.g. Finals, Graduation, SATs" maxlength="40">
+      <p class="onboard-step-hint">This becomes the big goal on your countdown card. Pick something that will feel amazing to reach.</p>
+    </div>
+    <div class="onboard-step" data-step="3">
+      <label class="onboard-label" for="onboardDate">When is it?</label>
+      <input type="date" id="onboardDate" class="onboard-input">
+      <p class="onboard-step-hint">Your countdown counts down to this day. Already set to 90 days from now — change it if yours is sooner or later.</p>
+    </div>
+    <div class="onboard-step" data-step="4">
+      <label class="onboard-label" for="onboardSubjects">What subjects should the hive track?</label>
+      <textarea id="onboardSubjects" class="onboard-input" rows="2" placeholder="Maths, Biology, English..." style="resize:vertical;"></textarea>
+      <p class="onboard-step-hint">Separate with commas. Each subject gets its own progress so you can see where the effort is going.</p>
+    </div>
+    <div class="onboard-step" data-step="5">
+      <label class="onboard-label" for="onboardDailyGoal">Daily study goal (minutes)</label>
+      <input type="number" id="onboardDailyGoal" class="onboard-input" min="10" max="480" value="60">
+      <p class="onboard-step-hint">A realistic daily target keeps the hive honest. Start smaller than you think — 60 minutes done well beats 3 hours done badly.</p>
+    </div>
+    <div class="onboard-step" data-step="6">
+      <label class="onboard-label" for="onboardVibe">How should the hive coach you?</label>
+      <select id="onboardVibe" class="onboard-input">
+        <option value="balanced" selected>Balanced — supportive but honest</option>
+        <option value="calm">Calm — gentle reminders</option>
+        <option value="strict">Strict — drill-sergeant energy</option>
+        <option value="fun">Fun — jokes and tiny challenges</option>
+      </select>
+      <p class="onboard-step-hint">This sets the coaching tone across the whole hive. You can change it anytime in Settings.</p>
+    </div>
+    <div class="onboard-step" data-step="7">
+      <label style="display:flex; align-items:flex-start; gap:8px; text-align:left; font-size:12px; color:var(--brown); margin-top:12px; line-height:1.35;">
+        <input type="checkbox" id="onboardMobileMode" style="margin-top:2px;"> Use the simplified mobile layout on this device
+      </label>
+      <p class="onboard-step-hint">Recommended if you study on a phone — it keeps the hive tidy on small screens. Tick it and the layout adapts.</p>
+    </div>
+    <div class="onboard-step" data-step="8">
+      <label class="onboard-label" for="onboardWorry">Biggest thing you want help with</label>
+      <textarea id="onboardWorry" class="onboard-input" rows="2" placeholder="e.g. procrastination, exam panic, staying consistent..." style="resize:vertical;"></textarea>
+      <p class="onboard-step-hint">The hive coach reads this and aims its advice at your real struggle. Be honest — nobody else sees it.</p>
+    </div>
+    <div class="onboard-step" data-step="9">
+      <label class="onboard-label" for="onboardPledge">Write a pledge to yourself</label>
+      <textarea id="onboardPledge" class="onboard-input" rows="2" placeholder="I promise to show up honestly, one focused session at a time." style="resize:vertical;"></textarea>
+      <p class="onboard-step-hint">Finish the sentence below — it becomes your pledge. It stays under your countdown as a quiet reminder of why you started.</p>
+    </div>
+
+    <div class="onboard-nav">
+      <button type="button" class="onboard-nav-btn" id="onboardPrevBtn">← Back</button>
+      <button type="button" class="onboard-nav-btn primary" id="onboardNextBtn">Next →</button>
+    </div>
+    <button class="onboard-start-btn" id="onboardStartBtn" style="display:none;">Start my hive 🍯</button>
     <button class="onboard-skip-btn" id="onboardSkipBtn">Skip for now</button>
   </div>
 </div>
@@ -782,7 +841,7 @@
 
   <div class="hive-progress-wrap">
     <div class="hive-progress-label">Hive Progress</div>
-    <div class="hive-progress-track"><div class="hive-progress-fill" id="hiveFill"></div></div>
+    <div class="hive-progress-track"><div class="hive-progress-fill" id="hiveFill"></div><span class="hive-progress-bee" id="hiveProgressBee">🐝</span></div>
     <div class="hive-progress-pct" id="hivePct">0%</div>
   </div>
 
@@ -844,7 +903,7 @@
       <a href="study-hive-terms-of-service.html">Terms of Service</a> ·
       <!-- The old host (Cloudflare) rewrote this to a /cdn-cgi/ email-protection
            URL that only worked there. On GitHub Pages a plain mailto: works. -->
-      <a href="mailto:studyhive.co.za@gmail.com">Meet the Creator</a>
+      <a href="mailto:omphemetse.mogale0409@gmail.com">Meet the Creator</a>
     </div>
 
     <div class="quote-rotator" id="quoteRotator">
@@ -1162,6 +1221,8 @@
 <!-- STARTUP DIAGNOSTICS: reports only real local JavaScript errors -->
 
 <script src="js/53-error-log.js"></script>
+<script src="js/54-welcome-screen.js"></script>
+<script src="js/55-onboarding-wizard.js"></script>
 
 </body>
 </html>

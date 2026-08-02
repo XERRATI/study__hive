@@ -18,7 +18,7 @@
   /* Admin Mode */
   function openAdmin(){
     if(!$('adminPanel')){
-      document.body.insertAdjacentHTML('beforeend','<div class="admin-panel" id="adminPanel"><h2 style="font-family:Baloo 2;margin:0 0 6px;">🛠️ Study Hive Admin Mode</h2><p style="font-size:13px;line-height:1.4;margin-top:0;">Safe private testing controls. Enter the private code when prompted.</p><div class="admin-grid"><button id="adminQueen">Trigger Queen 10m</button><button id="adminSergeant">Test Sergeant</button><button id="adminAdd25">Add 25 test minutes</button><button id="adminGarden">Open Garden World</button><button id="adminTourShort">Queen short choice</button><button id="adminTourLong">Queen long guide</button><button id="adminWeather">Fake weather change</button><button id="adminMusic">Test sound ping</button><button id="adminBeeBoth">Bee style: both</button><button id="adminBeeNew">Bee style: new</button><button id="adminMobileOff">Force desktop repair</button><button id="adminDiagnostics">Diagnostics</button><button class="secondary" id="adminCopyState">Copy app state</button><button class="secondary" id="adminClose">Close</button></div><div class="admin-output" id="adminOut">Ready.</div></div>');
+      document.body.insertAdjacentHTML('beforeend','<div class="admin-panel" id="adminPanel"><h2 style="font-family:Baloo 2;margin:0 0 6px;">🛠️ Study Hive Admin Mode</h2><p style="font-size:13px;line-height:1.4;margin-top:0;">Safe private testing controls. Enter the private code when prompted.</p><div class="admin-grid"><button id="adminQueen">Trigger Queen 10m</button><button id="adminSergeant">Test Sergeant</button><button id="adminAdd25">Add 25 test minutes</button><button id="adminGarden">Open Garden World</button><button id="adminTourShort">Queen short choice</button><button id="adminTourLong">Queen long guide</button><button id="adminWeather">Fake weather change</button><button id="adminMusic">Test sound ping</button><button id="adminBeeBoth">Bee style: both</button><button id="adminBeeNew">Bee style: new</button><button id="adminMobileOff">Force desktop repair</button><button id="adminDiagnostics">Diagnostics</button><button id="adminProgress">📈 Progression</button><button id="adminRunTests">🧪 Run all tests</button><button class="secondary" id="adminClearLog">🧹 Clear error log</button><button class="secondary" id="adminCopyState">Copy app state</button><button class="secondary" id="adminClose">Close</button></div><div class="admin-output" id="adminOut">Ready.</div></div>');
       $('adminClose').onclick=function(){ $('adminPanel').classList.remove('show'); };
       $('adminQueen').onclick=function(){ set('studyhive-queen-until-v1', String(Date.now()+10*60*1000)); var q=$('queenVisit'); if(q) q.classList.add('show'); toast('Queen triggered for 10 minutes'); };
       $('adminSergeant').onclick=function(){ if(typeof showSergeantNag==='function') showSergeantNag('Admin test complete. Sergeant systems operational, recruit.', false); };
@@ -33,6 +33,83 @@
       $('adminMobileOff').onclick=function(){ set('studyhive-force-mobile-v1','0'); document.body.classList.remove('force-mobile','is-mobile'); toast('Mobile force off; use Repair layout if needed'); };
       $('adminDiagnostics').onclick=function(){ var checks=['Diagnostics OK','Protocol: '+location.protocol,'localStorage: '+(function(){try{localStorage.setItem('_a','1');localStorage.removeItem('_a');return 'OK';}catch(e){return 'blocked';}})(),'Audio: '+(('AudioContext'in window||'webkitAudioContext'in window)?'OK':'missing'),'Notification: '+(('Notification'in window)?Notification.permission:'unsupported'),'Puter AI: '+(window.puter&&window.puter.ai?'loaded':'not loaded')]; $('adminOut').textContent=checks.join('\n'); };
       $('adminCopyState').onclick=function(){ var keys=Object.keys(localStorage).filter(function(k){return /hive|study|goal|queen|admin|vocab|flash|todo/i.test(k);}); var out={}; keys.forEach(function(k){out[k]=localStorage.getItem(k);}); var txt=JSON.stringify(out,null,2); $('adminOut').textContent=txt; if(navigator.clipboard) navigator.clipboard.writeText(txt); };
+
+      /* ---------------- ADMIN: Progression report ---------------- */
+      $('adminProgress').onclick=function(){
+        var sd=getJSON('study-data-v2',{subjects:{},totalMinutes:0,dailyLog:{},sessionsTotal:0,currentStreak:0,bestStreak:0});
+        var xpData=(function(){ try{ return JSON.parse(localStorage.getItem('hive-xp-v1')||'{}'); }catch(e){ return {}; } })();
+        var xp=typeof xpData.xp==='number'?xpData.xp:0;
+        var unlocked=Array.isArray(xpData.unlocked)?xpData.unlocked:[];
+        var LEVELS=[{name:'Egg',icon:'🥚',min:0},{name:'Larva',icon:'🐛',min:100},{name:'Worker',icon:'🐝',min:300},{name:'Drone',icon:'🐝',min:700},{name:'Guard',icon:'🛡️',min:1300},{name:'Queen Bee',icon:'👑',min:2200}];
+        var idx=0; for(var i=0;i<LEVELS.length;i++){ if(xp>=LEVELS[i].min) idx=i; }
+        var lvl=LEVELS[idx], next=LEVELS[idx+1];
+        var pct=next?Math.min(100,Math.round((xp-lvl.min)/(next.min-lvl.min)*100)):100;
+        var d=new Date(), todayKey=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+        var todayMin=(sd.dailyLog&&sd.dailyLog[todayKey])||0;
+        var subs=sd.subjects||{};
+        var subLines=Object.keys(subs).sort(function(a,b){return subs[b]-subs[a];}).slice(0,8)
+          .map(function(k){ return '    • '+k+' — '+Math.round(subs[k]/60)+' min'; });
+        if(!subLines.length) subLines.push('    (no subjects yet)');
+        var lines=[];
+        lines.push('📈 PROGRESSION REPORT');
+        lines.push('────────────────────────');
+        lines.push(lvl.icon+' Level: '+lvl.name+' ('+xp+' XP)'+(next?' · '+pct+'% to '+next.name:' · MAX'));
+        lines.push('🏆 Achievements unlocked: '+unlocked.length);
+        lines.push('⏱ Sessions: '+sd.sessionsTotal+' · Total time: '+Math.round((sd.totalMinutes||0)/60)+' h '+(sd.totalMinutes||0)%60+' min');
+        lines.push('🔥 Streak: '+(sd.currentStreak||0)+' day'+(sd.currentStreak===1?'':'s')+' · Best: '+(sd.bestStreak||0));
+        lines.push('🍯 Today: '+todayMin+' min');
+        lines.push('🐝 Bees working: '+(document.querySelectorAll('.hive-bee-el').length)+' new · '+(document.querySelectorAll('.bee-wrap:not(.balance-hidden)').length)+' old');
+        lines.push('📚 Subjects (by minutes):');
+        lines=lines.concat(subLines);
+        lines.push('');
+        lines.push('Daily goal: '+(localStorage.getItem('studyhive-daily-goal-v1')||localStorage.getItem('daily-goal-v1')||'60')+' min/day');
+        lines.push('Coach vibe: '+(localStorage.getItem('studyhive-coach-vibe-v1')||'balanced'));
+        lines.push('Pledge saved: '+((localStorage.getItem('studyhive-pledge-v1')||'').trim()?'yes':'no'));
+        $('adminOut').textContent=lines.join('\n');
+      };
+
+      /* ---------------- ADMIN: Run all tests ---------------- */
+      $('adminRunTests').onclick=function(){
+        function ok(name,pass,extra){ return (pass?'✅':'❌')+' '+name+(extra?' — '+extra:''); }
+        var out=[];
+        out.push('🧪 FULL APP TEST RUN — '+(new Date().toLocaleTimeString()));
+        out.push('────────────────────────');
+        var scripts=Array.prototype.slice.call(document.scripts).filter(function(s){return s.src&&s.src.indexOf('/js/')>-1;});
+        out.push(ok('Scripts loaded', scripts.length===53, scripts.length+' of 53'));
+        var cssLoaded=Array.prototype.slice.call(document.styleSheets).some(function(sh){return sh.href&&sh.href.indexOf('styles.css')>-1;});
+        out.push(ok('Stylesheet loaded', cssLoaded));
+        var ls='blocked'; try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); ls='ok'; }catch(e){}
+        out.push(ok('localStorage', ls==='ok', ls));
+        out.push(ok('Welcome screen', !!document.getElementById('welcomeScreen')));
+        out.push(ok('Hive button', !!document.getElementById('hiveWrap')));
+        out.push(ok('Motivation bubble', !!document.getElementById('motivationBubble')));
+        var days=document.getElementById('days');
+        out.push(ok('Countdown ticking', !!days && /^\d+$/.test(days.textContent||''), days?days.textContent:'missing'));
+        out.push(ok('Google font ready', !!(document.fonts&&document.fonts.check('12px Fredoka')), document.fonts&&document.fonts.check('12px Fredoka')?'yes':'no'));
+        out.push(ok('Web Audio API', !!(window.AudioContext||window.webkitAudioContext)));
+        out.push(ok('Manifest link', !!document.querySelector('link[rel="manifest"]')));
+        out.push(ok('XP bar', !!document.getElementById('xpBarFill')&&!!document.getElementById('levelBadge')));
+        out.push(ok('Sergeant', !!document.getElementById('sergeantPersistent')));
+        out.push(ok('Focus panel', !!document.getElementById('focusPanel')));
+        out.push(ok('Grades panel', !!document.getElementById('gradePanel')));
+        out.push(ok('Settings panel', !!document.getElementById('settingsPanel')));
+        out.push(ok('Tasks panel', !!document.getElementById('todoPanel')));
+        out.push(ok('Water tracker', !!document.getElementById('waterPanel')));
+        out.push(ok('Flashcards', !!document.querySelector('[data-hive-action="flashcards"],#flashcardPanel,#cardsPanel')));
+        out.push(ok('Garden', !!document.getElementById('gardenBtn')));
+        out.push(ok('Ambient sound buttons', document.querySelectorAll('#ambientSoundBtns .focus-preset-btn').length===4, document.querySelectorAll('#ambientSoundBtns .focus-preset-btn').length+' buttons'));
+        out.push(ok('Quote rotator', (document.getElementById('quoteText')||{}).textContent!=='Loading...'));
+        var errLog=(function(){ try{ return JSON.parse(localStorage.getItem('studyhive-error-log-v1')||'[]'); }catch(e){ return []; }})();
+        out.push(ok('Error log', errLog.length===0, errLog.length+' logged errors'));
+        $('adminOut').textContent=out.join('\n');
+      };
+
+      /* ---------------- ADMIN: Clear the stored error log ---------------- */
+      $('adminClearLog').onclick=function(){
+        try{ localStorage.removeItem('studyhive-error-log-v1'); }catch(e){}
+        toast('🧹 Error log cleared');
+        $('adminOut').textContent='Error log cleared.';
+      };
     }
     $('adminPanel').classList.add('show');
   }
@@ -73,7 +150,27 @@
   };
   function keyFor(el){ var id=(el&&el.id||'').toLowerCase(), txt=(el&&el.textContent||'').toLowerCase(); if(id.includes('focus')||txt.includes('focus')) return 'focus'; if(id.includes('card')||txt.includes('card')||txt.includes('flash')) return 'cards'; if(id.includes('notes')||txt.includes('notes')) return 'notes'; if(id.includes('garden')||txt.includes('garden')) return 'garden'; if(id.includes('music')||txt.includes('music')||txt.includes('background')) return 'music'; if(id.includes('setting')||txt.includes('setting')) return 'settings'; if(id.includes('coach')||txt.includes('coach')) return 'coach'; if(id.includes('weather')) return 'weather'; return 'default'; }
   var lastSarge=0;
-  function sargeFor(el, hover){ if(typeof showSergeantNag!=='function') return; if(Date.now()-lastSarge<9000) return; if(Math.random()>(hover?0.16:0.42)) return; lastSarge=Date.now(); var arr=BANK[keyFor(el)]||BANK.default; showSergeantNag(arr[Math.floor(Math.random()*arr.length)], false); }
+  /* LONGER SERGEANT LINES (new voice): longer, more encouraging sentences.
+     One in three times the Sergeant speaks, he uses these instead of the
+     short drill lines — same honesty, more heart. */
+  var SERGEANT_LONG = [
+    'Listen up, recruit. You showed up today, and showing up is the first battle of every session. The rest is just repetition, and repetition is your friend.',
+    'I have seen a lot of study plans die of enthusiasm. Yours will not, because you do not need enthusiasm — you need a timer, a subject, and ten honest minutes. Go.',
+    'You do not have to be the smartest bee in the hive. You have to be the most consistent one. Consistency outlasts talent every single time.',
+    'Right now there is exactly one thing you should be doing. The fact that you are reading this means you are avoiding it. Close this tab and do that one thing for five minutes.',
+    'A weak start still moves you forward. Ten minutes of ugly, messy, half-focused work beats an hour of planning how to work. Start ugly.',
+    'You have finished every hard day you have ever had so far. That is a perfect record. Today is not the day you break it.',
+    'The Queen does not ask for perfect sessions. She asks for returned sessions. Sit down, log the time, come back tomorrow. That is the whole system.',
+    'Motivation is a weather report. Discipline is the hive. You built this hive with real minutes, and it does not care how you felt getting here.',
+    'Do not negotiate with your own future self. Set the timer, do the block, and let future-you thank present-you. That deal never loses.',
+    'Some days you will study like a champion. Other days you will drag yourself through ten minutes. Both days count exactly the same in the hive. Both.',
+    'Every expert was once a beginner who refused to quit being confused. Your confusion is not a wall — it is a doorway. Keep walking through it.',
+    'Rest is not quitting. Rest is rearming. But rearming means you go back to the front line after, and the front line is that open textbook. Go.',
+    'You are not behind your whole life. You are exactly at the next step, and the next step is small enough to take right now. Take it.',
+    'The hive remembers every hour you gave it, not the ones you planned. Planned hours are dreams. Logged hours are honey. Log some.',
+    'If it were easy, everyone would be at the top of the class. You are not everyone. Prove it with one focused block tonight.'
+  ];
+  function sargeFor(el, hover){ if(typeof showSergeantNag!=='function') return; if(Date.now()-lastSarge<9000) return; if(Math.random()>(hover?0.16:0.42)) return; lastSarge=Date.now(); var arr=BANK[keyFor(el)]||BANK.default; var line=Math.random()<0.3?SERGEANT_LONG[Math.floor(Math.random()*SERGEANT_LONG.length)]:arr[Math.floor(Math.random()*arr.length)]; showSergeantNag(line, false); }
   document.addEventListener('click',function(e){ var el=e.target.closest&&e.target.closest('button,.misc-btn,.focus-preset-btn,.lofi-track-btn,.settings-toggle,.water-glass,.mood-btn'); if(el) sargeFor(el,false); },true);
   document.addEventListener('mouseover',function(e){ var el=e.target.closest&&e.target.closest('button,.misc-btn,.focus-preset-btn,.lofi-track-btn,.settings-toggle,#weatherWidget,.card'); if(el) sargeFor(el,true); },true);
   setInterval(function(){ if(typeof showSergeantNag!=='function') return; var msg=null; if(document.querySelector('.focus-session.active')) msg=BANK.focus[Math.floor(Math.random()*BANK.focus.length)]; else if(document.body.classList.contains('grind-mode')) msg='Grind Mode active. Clean screen, clean effort.'; else if(document.querySelector('#gardenWorld.show')) msg=BANK.garden[Math.floor(Math.random()*BANK.garden.length)]; if(msg && Date.now()-lastSarge>30000){ lastSarge=Date.now(); showSergeantNag(msg,false); } },45000);

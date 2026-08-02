@@ -135,6 +135,19 @@
     "That focus block had honey in it.",
     "Remember this feeling next time starting feels hard."
   ]);
+  /* Longer, warmer lines — the Buddy talks in sentences now, not just slogans. */
+  buddyLines = buddyLines.concat([
+    "Listen. That session just happened, and it happened because you decided to sit down. That decision is the whole game, and you keep winning it.",
+    "Nobody is keeping score of how fast you go — only that you keep going. You just added another honest block to today, and that counts for everything.",
+    "Some days the hive grows a whole new wall; some days it adds one cell. Both are growth. Both got done today. Be proud of the one cell.",
+    "You didn't wait for motivation to strike. You sat down anyway, and motivation showed up late to find you already working. That's the pro move.",
+    "Future-you is looking back at right now and smiling. Seriously. Every minute you log today is a gift they'll open on results day.",
+    "Progress isn't loud. It's quiet minutes stacked on quiet minutes, and you just stacked another one. The hive sees every single one of them.",
+    "If studying felt hard today, that's not a sign to stop — it's a sign your brain was actually working. Hard is where the learning lives.",
+    "One honest block done is one less thing weighing on you tonight. You can close the laptop with a clean conscience, recruit of the good kind.",
+    "You're not behind. You're exactly where you are, doing exactly what you can, and that's been enough every single day so far.",
+    "Remember this: starting was the hard part, and you already did it today. The rest of the day is downhill from here, bee."
+  ]);
   function showBuddyBee(){
     var wrap = $('buddyBeeWrap');
     $('buddyBubble').textContent = buddyLines[Math.floor(Math.random()*buddyLines.length)];

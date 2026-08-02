@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!--
+  Study Hive — Proprietary Source Code
+  Copyright © 2026 Study Hive.co . All rights reserved.
+
+  Sole owner / copyright holder: study hive.co
+  Contact: studyhive.co.za@gmail.com
+
+  This file and the Study Hive project may not be copied, cloned, rebranded,
+  resold, redistributed, hosted, mirrored, sublicensed, or used to create
+  derivative works without written permission from Study Hive.co .
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="author" content="Omphemetse Mogale">
+<meta name="copyright" content="Copyright © 2026 Omphemetse Mogale. All rights reserved.">
+<meta name="owner" content="Omphemetse Mogale">
+<meta name="contact" content="omphemetse.mogale0409@gmail.com">
+<meta name="rights" content="Proprietary. No copying, cloning, rebranding, resale, redistribution, or derivative works without written permission.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#f4c430">
+<title>Study Hive — Your Focus Hive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700;800&family=Baloo+2:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f4ead9; --tan:#e8d5b7; --taupe:#d3b995; --brown:#8a6f52;
+  --deep:#5a442f; --ink:#2c2117; --pearl:#fffaf2;
+  --honey:#f4c430; --honey2:#e29b1c; --honey3:#c97a12;
+  --green:#5a8a4a; --rose:#c1392b; --night:#20160c;
+  --shadow:0 20px 60px rgba(92,68,47,.22);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Fredoka',sans-serif;color:var(--ink);overflow-x:hidden;
+  background:
+    radial-gradient(circle at 18% 8%,rgba(244,196,48,.36),transparent 26%),
+    radial-gradient(circle at 82% 18%,rgba(90,138,74,.20),transparent 30%),
+    linear-gradient(160deg,var(--cream),var(--tan) 58%,var(--taupe));
+}
+a{color:inherit}.wrap{width:min(1120px,calc(100% - 32px));margin:auto}.glass{background:rgba(255,250,242,.76);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.54);box-shadow:var(--shadow)}
+.honey-noise{position:fixed;inset:0;pointer-events:none;z-index:-2;opacity:.18;background-image:linear-gradient(30deg,rgba(91,68,47,.18) 12%,transparent 12.5%,transparent 87%,rgba(91,68,47,.18) 87.5%,rgba(91,68,47,.18)),linear-gradient(150deg,rgba(91,68,47,.18) 12%,transparent 12.5%,transparent 87%,rgba(91,68,47,.18) 87.5%,rgba(91,68,47,.18)),linear-gradient(30deg,rgba(91,68,47,.18) 12%,transparent 12.5%,transparent 87%,rgba(91,68,47,.18) 87.5%,rgba(91,68,47,.18)),linear-gradient(150deg,rgba(91,68,47,.18) 12%,transparent 12.5%,transparent 87%,rgba(91,68,47,.18) 87.5%,rgba(91,68,47,.18));background-size:64px 112px;background-position:0 0,0 0,32px 56px,32px 56px}.blob{position:fixed;border-radius:50%;filter:blur(28px);opacity:.35;z-index:-1;animation:drift 12s ease-in-out infinite}.blob.one{width:220px;height:220px;background:var(--honey);left:-80px;top:160px}.blob.two{width:260px;height:260px;background:#fff2b8;right:-90px;top:360px;animation-delay:2s}.blob.three{width:190px;height:190px;background:#8fbe6f;left:42%;bottom:40px;animation-delay:4s}@keyframes drift{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-24px) scale(1.08)}}
+nav{position:sticky;top:0;z-index:50;padding:10px max(16px,env(safe-area-inset-left)) 10px max(16px,env(safe-area-inset-right));background:rgba(244,234,217,.68);backdrop-filter:blur(18px);border-bottom:1px solid rgba(92,68,47,.10)}.nav-inner{height:58px;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-family:'Baloo 2';font-weight:900;font-size:22px;text-decoration:none;display:flex;align-items:center;gap:8px;color:var(--deep)}.nav-links{display:flex;gap:14px;align-items:center;font-weight:800;font-size:13px;color:var(--deep)}.nav-links a{text-decoration:none}.nav-links a:hover{text-decoration:underline}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;text-decoration:none;border-radius:18px;padding:13px 18px;font-weight:900;cursor:pointer;background:linear-gradient(145deg,var(--honey),var(--honey3));color:#fffaf2;box-shadow:0 12px 26px rgba(226,155,28,.34);transition:.18s ease}.btn:hover{transform:translateY(-2px);filter:brightness(1.03)}.btn.secondary{background:rgba(255,250,242,.88);color:var(--deep);box-shadow:0 8px 18px rgba(92,68,47,.14)}
+.hero{padding:58px 0 40px}.hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:42px;align-items:center}.tag{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:8px 12px;background:rgba(255,250,242,.74);box-shadow:0 8px 20px rgba(92,68,47,.12);font-weight:900;font-size:12px;color:var(--honey3)}h1{font-family:'Baloo 2';font-size:clamp(42px,8vw,88px);line-height:.88;letter-spacing:-1.5px;color:#24180c;margin:16px 0}.hero p{font-size:18px;line-height:1.58;color:var(--brown);max-width:620px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}.mini-proof{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:24px;max-width:560px}.proof{border-radius:18px;padding:12px;background:rgba(255,250,242,.58);font-size:12px;font-weight:800;color:var(--deep);text-align:center}.proof b{display:block;font-family:'Baloo 2';font-size:23px;color:var(--honey3);line-height:1}
+.phone-stage{position:relative;min-height:620px;display:grid;place-items:center}.phone{position:relative;width:min(365px,92vw);border-radius:44px;padding:14px;background:#2b2118;box-shadow:0 28px 80px rgba(50,35,20,.35);transform:rotate(2deg)}.phone::before{content:'';position:absolute;left:50%;top:9px;transform:translateX(-50%);width:86px;height:9px;border-radius:999px;background:#14100c;z-index:2}.screen{min-height:600px;border-radius:34px;background:linear-gradient(160deg,#fffaf2,#f1ddba);overflow:hidden;padding:22px;text-align:center;position:relative}.screen-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:900;color:var(--brown);margin-top:10px}.screen-card{border-radius:30px;background:rgba(255,250,242,.9);box-shadow:0 18px 40px rgba(92,68,47,.18);padding:24px 18px;margin:18px 0}.now{font-size:11px;letter-spacing:3px;font-weight:900;color:var(--honey2)}.screen-time{font-family:'Baloo 2';font-weight:900;font-size:48px;color:var(--deep);line-height:1;margin:8px 0}.mock-count{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.mock-unit{border-radius:18px;background:linear-gradient(145deg,var(--honey),var(--honey3));color:white;padding:13px 6px}.mock-unit b{font-family:'Baloo 2';font-size:28px;display:block;line-height:1}.mock-unit span{font-size:10px;font-weight:800}.coach-bubble{margin-top:14px;text-align:left;border-radius:20px;background:#fff;padding:14px;box-shadow:0 10px 24px rgba(92,68,47,.12);font-size:12.5px;line-height:1.4;color:var(--brown)}.coach-bubble b{color:var(--deep)}.phone-bee{position:absolute;font-size:32px;filter:drop-shadow(0 8px 12px rgba(0,0,0,.20));animation:beeLoop 7s ease-in-out infinite}.phone-bee.one{right:-14px;top:78px}.phone-bee.two{left:-20px;bottom:120px;animation-delay:2s}.phone-bee.three{right:26px;bottom:-8px;animation-delay:4s}@keyframes beeLoop{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-22px) rotate(8deg)}}
+.section{padding:70px 0}.section h2{text-align:center;font-family:'Baloo 2';font-size:clamp(32px,5vw,54px);line-height:1;color:#24180c;margin-bottom:12px}.section-sub{max-width:760px;margin:0 auto 36px;text-align:center;color:var(--brown);font-size:17px;line-height:1.55}.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.feature{border-radius:28px;padding:24px;min-height:210px}.feature .icon{font-size:38px}.feature h3{font-family:'Baloo 2';font-size:24px;margin:10px 0 6px;color:var(--deep)}.feature p{color:var(--brown);line-height:1.5;font-size:14px}.feature.big{grid-column:span 2;background:linear-gradient(145deg,#fffaf2,#f5e2bf)}.dark-section{background:linear-gradient(160deg,#2a1d11,#4b321b);color:#fffaf2}.dark-section h2{color:#fffaf2}.dark-section .section-sub{color:#e8d5b7}.honeycomb{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;max-width:850px;margin:0 auto}.hex{aspect-ratio:1.05;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);background:linear-gradient(145deg,var(--honey),var(--honey3));display:grid;place-items:center;text-align:center;color:#fffaf2;font-weight:900;padding:14px;font-size:13px;box-shadow:0 12px 20px rgba(0,0,0,.16)}.hex:nth-child(even){background:linear-gradient(145deg,#8fbe6f,var(--green));transform:translateY(22px)}.story{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}.story-card{border-radius:30px;padding:28px}.story-card h3{font-family:'Baloo 2';font-size:28px;color:var(--deep);margin-bottom:8px}.story-card p{color:var(--brown);line-height:1.55}.contact{padding-bottom:86px}.contact-card{max-width:850px;margin:0 auto;border-radius:34px;padding:34px;text-align:center}.contact-card h2{font-family:'Baloo 2';font-size:40px;color:var(--deep)}.contact-card p{color:var(--brown);line-height:1.55;max-width:650px;margin:8px auto 18px}.email{word-break:break-word}.protect-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}.pill{border-radius:16px;background:var(--cream);padding:12px;font-size:12px;font-weight:900;color:var(--deep)}footer{padding:30px 0 54px;text-align:center;color:var(--brown);font-size:12px}.footer-links{margin-top:8px}.footer-links a{margin:0 7px;text-decoration:underline}
+@media(max-width:900px){.nav-links a:not(.btn){display:none}.hero-grid{grid-template-columns:1fr;gap:24px}.hero{text-align:center;padding-top:42px}.hero p{margin:auto}.hero-actions{justify-content:center}.mini-proof{margin-left:auto;margin-right:auto}.phone-stage{min-height:auto}.feature-grid{grid-template-columns:1fr}.feature.big{grid-column:auto}.story{grid-template-columns:1fr}.honeycomb{grid-template-columns:repeat(3,1fr);}.hex:nth-child(even){transform:none}.protect-row{grid-template-columns:1fr}}
+@media(max-width:520px){.wrap{width:min(100% - 24px,1120px)}nav{padding-left:12px;padding-right:12px}.brand{font-size:19px}.nav-inner{height:56px}.nav-links .btn{padding:10px 12px;border-radius:14px;font-size:12px}.hero{padding-top:34px}.hero-actions .btn{width:100%;}.mini-proof{grid-template-columns:1fr}.phone{width:min(330px,96vw);border-radius:36px;padding:10px}.screen{min-height:540px;border-radius:28px;padding:18px}.screen-time{font-size:42px}.mock-count{grid-template-columns:1fr}.phone-stage{margin-top:8px}.section{padding:54px 0}.honeycomb{grid-template-columns:repeat(2,1fr)}.contact-card{padding:26px 18px}.contact-card h2{font-size:31px}}
+</style>
+</head>
+<body>
+<div class="honey-noise"></div><div class="blob one"></div><div class="blob two"></div><div class="blob three"></div>
+<nav><div class="wrap nav-inner"><a class="brand" href="#top">🐝 Study Hive</a><div class="nav-links"><a href="#features">Features</a><a href="#coach">Coach</a><a href="#contact">Contact</a><a class="btn" href="index.html">Open App</a></div></div></nav>
+<header class="hero" id="top"><div class="wrap hero-grid"><div><span class="tag">⚡ Built for students with real deadlines</span><h1>Study harder, calmer, and smarter — with a hive that grows.</h1><p>Study Hive turns your countdown, focus sessions, flashcards, garden, music, topic coaching, and motivation into one mobile-friendly study world.</p><div class="hero-actions"><a class="btn" href="index.html">Launch the Hive</a><a class="btn secondary" href="#features">See the tools</a></div><div class="mini-proof"><div class="proof"><b>25m</b>Pomodoro</div><div class="proof"><b>100+</b>Sergeant lines</div><div class="proof"><b>🐝</b>Progress bees</div></div></div><div class="phone-stage"><div class="phone-bee one">🐝</div><div class="phone-bee two">🐝</div><div class="phone-bee three">👑</div><div class="phone"><div class="screen"><div class="screen-top"><span>🐝 Hive</span><span>Grind ready</span></div><div class="screen-card"><div class="now">RIGHT NOW</div><div class="screen-time">16:20</div><h3 style="font-family:'Baloo 2';font-size:24px;color:var(--deep);">🎓 The Grind</h3><p style="font-size:12px;color:var(--brown);margin:4px 0 14px;">Pledge: one focused session at a time.</p><div class="mock-count"><div class="mock-unit"><b>42</b><span>DAYS</span></div><div class="mock-unit"><b>08</b><span>HRS</span></div><div class="mock-unit"><b>17</b><span>MIN</span></div></div></div><div class="coach-bubble"><b>Hive Coach:</b> Your weakest topic is Biology diagrams. Do 10m recall, 20m practice, then log a review.</div><div class="coach-bubble"><b>Sergeant:</b> Focus mode is open. Choose a time and defend it.</div></div></div></div></div></header>
+<section class="section" id="features"><div class="wrap"><h2>A cooler study dashboard</h2><p class="section-sub">Everything is designed to feel alive, but still useful: no-touch focus, custom music, Garden World, progress bees, and a Queen guide that explains the whole hive.</p><div class="feature-grid"><div class="feature glass big"><div class="icon">🐝</div><h3>Hive Coach</h3><p>Add weak topics, rate mastery, generate adaptive quizzes, build a study plan, and log reflections after sessions.</p></div><div class="feature glass"><div class="icon">🎯</div><h3>No-touch Focus</h3><p>Start a timer and don’t touch the screen. If you do, the bees and Sergeant notice.</p></div><div class="feature glass"><div class="icon">🌷</div><h3>Garden World</h3><p>Study minutes grow flowers in a full-screen garden where you can water, journal, and plant intentions.</p></div><div class="feature glass"><div class="icon">🎵</div><h3>Custom music</h3><p>Uploaded background music, UI sounds, and calm study ambience inside Hive Controls.</p></div><div class="feature glass"><div class="icon">🧠</div><h3>Memory tools</h3><p>Flashcards, CSV import, vocabulary, formula bank, notes question maker, and spaced review.</p></div><div class="feature glass"><div class="icon">🫡</div><h3>Context Sergeant</h3><p>Sergeant Bee reacts to what the student clicks, hovers over, or currently does.</p></div></div></div></section>
+<section class="section dark-section" id="coach"><div class="wrap"><h2>The hive gets smarter as you study</h2><p class="section-sub">Progress bees change models, the Queen explains features, and the garden grows from actual logged minutes.</p><div class="honeycomb"><div class="hex">Countdown</div><div class="hex">Focus</div><div class="hex">Pomodoro</div><div class="hex">Flashcards</div><div class="hex">Garden</div><div class="hex">Coach</div><div class="hex">Notes</div><div class="hex">Tasks</div><div class="hex">Music</div><div class="hex">Weather</div><div class="hex">Grades</div><div class="hex">Privacy</div></div></div></section>
+<section class="section"><div class="wrap story"><div class="story-card glass"><h3>Mobile-first feel</h3><p>This version keeps the mobile-friendly structure from the old page, but adds a stronger hero, phone preview, animated bees, better sections, and clearer contact/protection details.</p></div><div class="story-card glass"><h3>Protected idea</h3><p>Study Hive includes copyright notices, Terms, Privacy, contact details, and clear restrictions against cloning, rebranding, resale, or redistribution without permission.</p></div></div></section>
+<section class="contact" id="contact"><div class="wrap"><div class="contact-card glass"><h2>Talk to the creator</h2><p>For permission, feedback, bugs, school use, collaboration, business, or anything about Study Hive, email the creator directly.</p><a class="btn email" href="mailto:omphemetse.mogale0409@gmail.com?subject=Study%20Hive%20Contact">omphemetse.mogale0409@gmail.com</a><div class="protect-row"><div class="pill">🚫 No cloning</div><div class="pill">📜 Terms + Privacy</div><div class="pill">🐝 Original bee system</div></div></div></div></section>
+<footer><div class="wrap">© 2026 Study Hive / Omphemetse Mogale. All rights reserved.<div class="footer-links"><a href="study-hive-terms-of-service.html">Terms</a><a href="study-hive-privacy-policy.html">Privacy</a><a href="mailto:omphemetse.mogale0409@gmail.com">Contact</a></div></div></footer>
+
+<!-- OWNERSHIP MARKER: repeated in-code copyright notice -->
+<script>
+(function(){
+  var OWNER = 'Study Hive';
+  var EMAIL = 'studyhive.co.za@gmail.com';
+  var NOTICE = 'Study Hive © 2026 ' + OWNER + '. All rights reserved. Unauthorized copying, cloning, rebranding, resale, redistribution, hosting, mirroring, or derivative works are prohibited. Contact: ' + EMAIL;
+  try {
+    Object.defineProperty(window, 'STUDY_HIVE_OWNER', { value: OWNER, writable: false, configurable: false });
+    Object.defineProperty(window, 'STUDY_HIVE_COPYRIGHT_NOTICE', { value: NOTICE, writable: false, configurable: false });
+  } catch(e) {}
+  try { console.info('%c' + NOTICE, 'font-weight:700;color:#c97a12;font-size:13px;'); } catch(e) {}
+  function ensureOwnershipNotice(){
+    document.documentElement.setAttribute('data-study-hive-owner', OWNER);
+    document.documentElement.setAttribute('data-study-hive-copyright', '© 2026 ' + OWNER);
+    if (!document.querySelector('meta[name="owner"]')) {
+      var m=document.createElement('meta'); m.name='owner'; m.content=OWNER; document.head.appendChild(m);
+    }
+    if (!document.getElementById('studyHiveOwnershipNotice')) {
+      var n=document.createElement('div');
+      n.id='studyHiveOwnershipNotice';
+      n.setAttribute('aria-label','Study Hive ownership notice');
+      n.textContent='Study Hive © 2026 Omphemetse Mogale. All rights reserved.';
+      n.style.cssText='position:fixed;left:8px;bottom:6px;z-index:1;font:10px Arial,sans-serif;color:rgba(91,68,47,.55);pointer-events:none;user-select:none;';
+      document.body.appendChild(n);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ensureOwnershipNotice); else ensureOwnershipNotice();
+  setInterval(ensureOwnershipNotice, 5000);
+})();
+</script>
+
+<script>if(location.protocol==='http:'||location.protocol==='https:'){if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});}</script>
+</body>
+</html>
