@@ -398,7 +398,24 @@
 
   // Night Mode
   function isNight() {
-    const h = new Date().getHours();
+    var now = new Date();
+    /* SUNSET NIGHT MODE: use the predicted sunset/sunrise from the weather
+       cache (Open-Meteo daily=sunrise,sunset) when available, so night mode
+       switches on at the real sunset of the user's location. Falls back to
+       the old 18:00-05:00 window when there's no data or it's stale. */
+    try {
+      var c = JSON.parse(localStorage.getItem('hive-weather-cache-v1') || 'null');
+      if (c && c.sunset && c.sunrise) {
+        var today = now.toISOString().slice(0, 10);
+        if (c.sunriseDate === today && c.sunsetDate === today) {
+          var ms = now.getTime();
+          var rise = new Date(c.sunrise).getTime();
+          var set = new Date(c.sunset).getTime();
+          if (!isNaN(rise) && !isNaN(set)) return ms >= set || ms < rise;
+        }
+      }
+    } catch (e) {}
+    var h = now.getHours();
     return h >= 18 || h < 5;
   }
   function updateNightMode() {
@@ -558,6 +575,7 @@
     if (sergeantRankBadge) {
       sergeantRankBadge.textContent = SERGEANT_RANK_ABBR[level];
       sergeantRankBadge.title = SERGEANT_RANKS[level];
+      sergeantRankBadge.setAttribute('data-rank', String(level));
       if (lastRankLevel !== null && level > lastRankLevel) {
         promoted = true;
         sergeantRankBadge.classList.remove('promoted');

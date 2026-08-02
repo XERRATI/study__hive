@@ -58,3 +58,5 @@ Renumbering or reordering them will break things.
 - `53-error-log.js` (1.0 KB)
 - `54-welcome-screen.js` — front page: welcome screen on every visit, "Enter the Hive" button
 - `55-onboarding-wizard.js` — setup is now one question per step with a bee slider; main-screen hive progress bee
+- `56-night-sky.js` — night sky events: shooting stars (every 45s–2.5min) and rare planet collisions while night mode is on
+- `57-sergeant-v2.js` — test feature: Squad Leader Sergeant variant (Settings toggle)

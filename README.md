@@ -130,6 +130,31 @@ This was a real bug hiding in the code, not just a "too-fast" press:
   clipped the feature list and tool bodies instead of scrolling them.
   Fixed: the 20-tool list and every tool page now scroll properly on
   desktop and mobile.
+- **🌙 Night mode follows the real sunset** — the app asks Open-Meteo for
+  the daily sunrise/sunset of your location (via the weather widget) and
+  switches night mode on at the *predicted sunset*, off at sunrise. Falls
+  back to 18:00–05:00 when there's no location data yet.
+- **🌠 Better night sky** — twinkling stars, a soft moon glow, **shooting
+  stars** every 45s–2.5min, and a very rare **planet collision** (two orbs
+  meet with a flash, roughly once every 1–2 hours of night). Admin Mode has
+  ☄️/🪐 buttons to test them.
+- **🫡 Sergeant visual upgrade** — polished badge (colour-coded by rank),
+  glow on hover, softer steam/fists. Plus a **test feature**: a second
+  Sergeant — the Squad Leader (peaked cap, aviator glasses, whistle) — with
+  a toggle in Settings under "Sergeant style (test)". Classic stays default.
+- **🐝 5 new bee models** — 🏅 Athlete, 🎵 Musician, 🔬 Scientist, 🧭
+  Explorer, 🚀 Astronaut join 🌱🎓⚗️✨👑 as your minutes grow.
+- **💬 25 new quotes** — fresh Study Hive lines in the daily rotator.
+- **📱 iPhone onboarding scroll FIXED** — on iOS, the setup overlay could
+  not be scrolled when the card was taller than the screen (a fixed,
+  blur-filtered, flex-centered overlay is a known iPhone Safari bug that
+  makes the scroll area unresponsive, and an old patch's manual
+  touch-scroller fought the native momentum scroll). The overlay now scrolls
+  natively on every phone, the blur was moved off the scroll container, and
+  the welcome screen + admin code box got the same treatment.
+- **📱 Mobile 100x pass** — every tool panel is now a bottom sheet that fits
+  the screen (no more off-screen panels), 44px+ tap targets, no iOS input
+  zoom, internal scrolling everywhere.
 - **🎓 Bee hats sit ON the heads** — the model emojis (🌱🎓⚗️✨👑) used to
   float above/behind the bees; they now sit properly on their heads (with a
   little settle animation), and the new bees got a subtle polish pass

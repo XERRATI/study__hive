@@ -2062,14 +2062,20 @@
   /* ===== Onboarding welcome overlay (first visit only) ===== */
   .onboard-veil {
     position: fixed; inset: 0; z-index: 200;
-    background: rgba(107,86,65,0.45); backdrop-filter: blur(3px);
+    /* IOS SCROLL FIX: no backdrop-filter here — a fixed overlay that both
+       blurs and scrolls is a documented iOS Safari bug that makes the scroll
+       area unresponsive on iPhone. Slightly more opaque bg instead. */
+    background: rgba(96,76,54,0.68);
     display: none; align-items: center; justify-content: center; padding: 20px;
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain; touch-action: pan-y;
   }
   .onboard-veil.show { display: flex; }
   .onboard-card {
     background: var(--pearl); border-radius: 26px; padding: 32px 28px;
     width: 100%; max-width: 360px; box-shadow: 0 24px 60px rgba(0,0,0,0.35);
     text-align: center;
+    margin: auto; /* the iOS-safe centering: fits -> centers, taller -> scrolls */
   }
   .onboard-bee { font-size: 40px; margin-bottom: 6px; }
   .onboard-card h2 {
@@ -2250,10 +2256,11 @@
   /* Smoother onboarding / first-start card */
   .onboard-veil {
     display: flex; opacity: 0; visibility: hidden; pointer-events: none;
+    /* backdrop-filter removed (iOS fixed-overlay scroll bug) — richer
+       gradient keeps the frosted feel */
     background:
-      radial-gradient(circle at 50% 35%, rgba(255,246,208,0.25), rgba(107,86,65,0.48) 64%),
-      rgba(107,86,65,0.42);
-    backdrop-filter: blur(8px) saturate(1.05);
+      radial-gradient(circle at 50% 35%, rgba(255,246,208,0.20), rgba(90,70,48,0.72) 64%),
+      rgba(96,76,54,0.66);
     transition: opacity 0.65s cubic-bezier(.2,.8,.2,1), visibility 0.65s step-end;
   }
   .onboard-veil.show {
@@ -4559,7 +4566,10 @@
     radial-gradient(ellipse at 20% 15%, rgba(244,196,48,0.22), transparent 55%),
     radial-gradient(ellipse at 85% 85%, rgba(201,122,18,0.25), transparent 55%),
     linear-gradient(160deg, #f4ead9 0%, #e8d5b7 55%, #d3b995 100%);
-  overflow: hidden; padding: 20px;
+  /* iOS scroll fix (same as onboarding): never clip the card on short screens */
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain; touch-action: pan-y;
+  padding: 20px;
 }
 body.welcome-locked { overflow: hidden; }
 .welcome-screen.hidden { display: none; }
@@ -4572,6 +4582,8 @@ body.welcome-locked { overflow: hidden; }
 }
 .welcome-card {
   position: relative; max-width: 480px; width: 100%; text-align: center;
+  margin: auto; /* iOS-safe centering */
+  flex: none;
   background: rgba(255,250,242,0.9); border-radius: 34px;
   padding: 34px 28px 28px; box-shadow: 0 18px 50px rgba(139,111,82,0.35);
   border: 1px solid rgba(244,196,48,0.55);
@@ -4739,12 +4751,15 @@ body.night-mode .pledge-head:hover { background: rgba(244,196,48,.08); }
 .admin-lock-veil {
   position: fixed; inset: 0; z-index: 100010; display: none;
   align-items: center; justify-content: center; padding: 20px;
-  background: rgba(43,33,23,.55); backdrop-filter: blur(4px);
+  background: rgba(43,33,23,0.72); /* blur removed: iOS fixed-overlay scroll bug */
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain; touch-action: pan-y;
 }
 .admin-lock-veil.show { display: flex; }
 .admin-lock-card {
   width: min(340px, 92vw); background: var(--pearl); border-radius: 22px;
   padding: 22px; box-shadow: 0 24px 70px rgba(0,0,0,.4); text-align: center;
+  margin: auto; flex: none;
 }
 body.night-mode .admin-lock-card { background: #16202f; }
 .admin-lock-card h3 { font-family: 'Baloo 2', sans-serif; margin: 0 0 6px; font-size: 20px; color: var(--deep-brown); }
@@ -4818,4 +4833,160 @@ body.night-mode .lofi-volume-box { background: rgba(244,196,48,.08); }
   0%, 100% { transform: scale(1); }
   25% { transform: scale(1.03); }
   50% { transform: scale(1.01); }
+}
+
+/* ==========================================================================
+   ROUND 4 — sunset night mode visuals, sergeant upgrade + v2, new bee
+   models, shooting stars / planet collision, mobile 100x pass
+   ========================================================================== */
+
+/* ---------- NEW BEE MODELS (hats + colours) ---------- */
+.hive-bee-el.model-athlete .bee-core::before,
+.hive-bee-el.model-musician .bee-core::before,
+.hive-bee-el.model-scientist .bee-core::before,
+.hive-bee-el.model-explorer .bee-core::before,
+.hive-bee-el.model-astronaut .bee-core::before {
+  position: absolute; right: -1px; top: -2px; font-size: 12px; z-index: 6;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,.3));
+  transform: rotate(-8deg); animation: beeHatSettle 3.2s ease-in-out infinite;
+}
+.hive-bee-el.model-athlete .bee-core::before { content: '🏅'; }
+.hive-bee-el.model-musician .bee-core::before { content: '🎵'; }
+.hive-bee-el.model-scientist .bee-core::before { content: '🔬'; }
+.hive-bee-el.model-explorer .bee-core::before { content: '🧭'; }
+.hive-bee-el.model-astronaut .bee-core::before { content: '🚀'; }
+.hive-bee-el.model-athlete .bee-body-art { background: repeating-linear-gradient(90deg,#ffb3b3 0 5px,#27221c 5px 8px,#ffd85c 8px 12px); }
+.hive-bee-el.model-musician .bee-body-art { background: repeating-linear-gradient(90deg,#c9a7ff 0 5px,#27221c 5px 8px,#ffd85c 8px 12px); }
+.hive-bee-el.model-scientist .bee-body-art { background: repeating-linear-gradient(90deg,#a5e0ff 0 5px,#27221c 5px 8px,#ffd85c 8px 12px); }
+.hive-bee-el.model-explorer .bee-body-art { background: repeating-linear-gradient(90deg,#d7c9a3 0 5px,#27221c 5px 8px,#ffd85c 8px 12px); }
+.hive-bee-el.model-astronaut .bee-body-art { background: repeating-linear-gradient(90deg,#cfd6e6 0 5px,#3a4258 5px 8px,#ffd85c 8px 12px); }
+.hive-bee-el.model-astronaut { filter: drop-shadow(0 0 6px rgba(150,190,255,.55)); }
+
+/* ---------- SERGEANT VISUAL UPGRADE (classic) ---------- */
+.sergeant-persistent {
+  filter: drop-shadow(0 4px 10px rgba(139,111,82,0.35));
+  transition: filter .6s ease, transform .25s ease;
+}
+.sergeant-persistent:hover { filter: drop-shadow(0 0 16px rgba(244,196,48,.55)) drop-shadow(0 4px 10px rgba(139,111,82,.3)); transform: translateY(-50%) scale(1.06); }
+.sergeant-persistent .sergeant-bob { filter: drop-shadow(0 2px 3px rgba(60,40,10,.25)); }
+.sergeant-rank-badge {
+  position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+  background: #6b5a3e; color: #fffaf2; font-size: 9px; font-weight: 900;
+  padding: 2px 7px; border-radius: 8px; letter-spacing: .5px;
+  font-family: 'Baloo 2', 'Fredoka', sans-serif; white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0,0,0,.25); border: 1px solid rgba(255,255,255,.25);
+  z-index: 3;
+}
+.sergeant-rank-badge[data-rank="1"] { background: #7a6a50; }
+.sergeant-rank-badge[data-rank="2"] { background: #a8874f; }
+.sergeant-rank-badge[data-rank="3"] { background: linear-gradient(135deg,#d9b45c,#b8862f); border-color:#ffe9b0; }
+.sergeant-rank-badge[data-rank="4"] { background: linear-gradient(135deg,#c0c9d6,#8d99ab); border-color:#fff; }
+.sergeant-persistent .sergeant-fist { opacity:.85; }
+
+/* ---------- SERGEANT V2 (Squad Leader, test feature) ---------- */
+body.sergeant-v2 .sergeant-persistent { filter: drop-shadow(0 0 14px rgba(92,107,58,.5)) drop-shadow(0 4px 10px rgba(139,111,82,.3)); }
+body.sergeant-v2 .sergeant-persistent .sergeant-bob { animation: sergeantBob 2.2s ease-in-out infinite; }
+body.sergeant-v2 .sergeant-persistent .sergeant-rank-badge { background: #5c6b3a; border-color: rgba(255,255,255,.3); }
+body.sergeant-v2 .sergeant-persistent.anger-1 .sergeant-bob { animation-duration: 1.2s; }
+body.sergeant-v2 .sergeant-persistent.anger-2 .sergeant-bob { animation-duration: .8s; }
+body.sergeant-v2 .sergeant-persistent.anger-3 .sergeant-bob { animation-duration: .55s; }
+body.sergeant-v2 .sergeant-persistent.anger-4 .sergeant-bob { animation-duration: .42s; }
+
+/* ---------- NIGHT SKY: richer stars, moon, shooting stars, planets ---------- */
+.night-sky-layer::before {
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.95) 0 1px, transparent 1.6px),
+    radial-gradient(circle, rgba(255,255,255,.7) 0 1px, transparent 1.6px),
+    radial-gradient(circle, rgba(255,230,170,.75) 0 1px, transparent 1.7px);
+  background-size: 120px 120px, 190px 190px, 260px 260px;
+  background-position: 12px 18px, 90px 60px, 40px 120px;
+  animation: nightStarsDrift 34s linear infinite, nightStarTwinkle 3.4s ease-in-out infinite;
+  opacity: .85;
+}
+@keyframes nightStarTwinkle { 0%,100% { opacity:.55; } 50% { opacity:1; } }
+.night-sky-layer::after {
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(circle at 78% 12%, rgba(255,244,214,.5) 0 2px, rgba(255,244,214,.14) 3px 26px, transparent 30px);
+  animation: nightMoonGlow 8s ease-in-out infinite;
+}
+@keyframes nightMoonGlow { 0%,100% { opacity:.8; } 50% { opacity:1; } }
+
+.shooting-star {
+  position: fixed; z-index: 1; pointer-events: none;
+  width: 130px; height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.95));
+  opacity: 0;
+}
+.shooting-star::after {
+  content:''; position:absolute; right:-8px; top:-4px;
+  width:10px; height:10px; border-radius:50%;
+  background: radial-gradient(circle, #fff, rgba(255,255,255,0) 70%);
+}
+.shooting-star.run { animation: shootStar var(--ss-dur, 1.1s) cubic-bezier(.2,.4,.6,1) forwards; }
+@keyframes shootStar {
+  0% { transform: translate(0,0) rotate(-28deg); opacity: 0; }
+  8% { opacity: 1; }
+  100% { transform: translate(var(--ss-dx, 60vw), var(--ss-dy, 24vh)) rotate(-28deg); opacity: 0; }
+}
+
+.planet-event { position: fixed; z-index: 1; pointer-events: none; }
+.planet-event .planet {
+  position: absolute; width: 26px; height: 26px; border-radius: 50%;
+  box-shadow: inset -6px -4px 8px rgba(0,0,0,.45), 0 0 14px rgba(244,196,48,.5);
+}
+.planet-event .planet.pa { background: radial-gradient(circle at 35% 30%, #ffd9a0, #c97a12 70%); animation: planetDriftA 2.6s ease-in forwards; }
+.planet-event .planet.pb { background: radial-gradient(circle at 35% 30%, #bcd7ff, #4a6fa5 70%); animation: planetDriftB 2.6s ease-in forwards; }
+@keyframes planetDriftA { from { transform: translate(0,0); } to { transform: translate(48vw, 6vh); } }
+@keyframes planetDriftB { from { transform: translate(0,0); } to { transform: translate(-48vw, -6vh); } }
+.planet-event .flash {
+  position: absolute; width: 60px; height: 60px; border-radius: 50%; left: 50%; top: 50%;
+  transform: translate(-50%,-50%); opacity: 0;
+  background: radial-gradient(circle, rgba(255,255,255,.95), rgba(244,196,48,.6) 45%, transparent 75%);
+}
+.planet-event .flash.run { animation: planetFlash .9s ease-out forwards; }
+@keyframes planetFlash { 0% { opacity:0; transform: translate(-50%,-50%) scale(.3); } 30% { opacity:1; } 100% { opacity:0; transform: translate(-50%,-50%) scale(2.4); } }
+
+/* ---------- MOBILE 100x PASS ---------- */
+@media (max-width: 780px) {
+  /* All floating tool panels become bottom sheets that fit the screen.
+     The ID list matches the global centered-popover rule so this wins. */
+  .misc-panel, #cardsPanel, #habitsPanel, #drawPanel, #waterPanel, #musicPanel,
+  #capsulePanel, #punsPanel, #secretsPanel, #challengePanel, #heatmapPanel,
+  #rivalPanel, #gardenPanel, #freezePanel, #notesPanel, #todoPanel,
+  #feedbackPanel, #tipsPanel, #examPanel, #vocabPanel, #awardsPanel, #gradePanel, #settingsPanel {
+    position: fixed !important; left: 10px !important; right: 10px !important;
+    top: auto !important; bottom: calc(70px + env(safe-area-inset-bottom)) !important;
+    width: auto !important; max-width: none !important;
+    max-height: 52vh !important; transform: none !important;
+    z-index: 40; border-radius: 20px;
+  }
+  /* Bigger tap targets on the mobile bar + dock */
+  body.is-mobile .mb-item, body.is-mobile .mb-item button,
+  .misc-btn, .dock-item, .settings-action-btn, .breathing-action-btn, .settings-danger-btn {
+    min-height: 44px;
+  }
+  /* No iOS zoom on inputs */
+  input, select, textarea { font-size: 16px !important; }
+  /* Panels scroll internally instead of pushing the page */
+  .misc-panel, .admin-panel, .upgrade-panel, .hive-menu-panel { -webkit-overflow-scrolling: touch; }
+  .misc-panel h4 { font-size: 15px; }
+  /* Slightly roomier list rows */
+  .settings-row { min-height: 44px; }
+  .upgrade-feature-btn { min-height: 46px; }
+  /* Sergeant a touch smaller on phones so it never crowds the screen */
+  .sergeant-persistent { width: 58px; height: 58px; left: 8px; }
+  /* Welcome + onboarding already fluid; ensure buttons are chunky */
+  .welcome-enter-btn { min-height: 52px; }
+  .onboard-nav-btn { min-height: 46px; }
+}
+
+/* ---------- Onboarding: compact on small/short screens ---------- */
+@media (max-width: 780px) {
+  .onboard-card { padding: 22px 18px; }
+  .onboard-card h2 { font-size: 20px; }
+  .onboard-sub { font-size: 12px; margin-bottom: 12px; }
+  .onboard-slider-wrap { margin: 10px 0 12px; }
+  .onboard-step-hint { font-size: 11.5px; }
+  .onboard-bee { font-size: 34px; margin-bottom: 4px; }
+  .onboard-nav { margin-top: 12px; }
 }

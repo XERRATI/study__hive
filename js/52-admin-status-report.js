@@ -51,6 +51,12 @@
       if(touchY===null||!touchTarget)return;
       if(!e.touches||e.touches.length!==1)return;
 
+      /* IOS NATIVE SCROLL FIX: the veil itself now scrolls natively
+         (overflow-y:auto + touch-action:pan-y). Hand-scrolling it with
+         scrollTop + preventDefault fought iOS momentum scrolling and made
+         onboarding feel stuck on iPhone. Let the browser do it. */
+      if(touchTarget === veil) return;
+
       var y=e.touches[0].clientY;
       var delta=touchY-y;          // finger up => positive => scroll down
       touchY=y;

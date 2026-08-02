@@ -95,11 +95,17 @@
   function progressMinutes(){ var sd=getJSON('study-data-v2',{totalMinutes:0}); return Number(sd.totalMinutes||0); }
   function applyBeeModels(){
     var mins=progressMinutes();
+    var MODELS=['model-seedling','model-scholar','model-athlete','model-chemist','model-musician','model-scientist','model-explorer','model-golden','model-astronaut','model-royal'];
     qa('.hive-bee-el.bee-art-upgraded').forEach(function(b,i){
-      ['model-seedling','model-scholar','model-chemist','model-golden','model-royal'].forEach(function(c){b.classList.remove(c);});
+      MODELS.forEach(function(c){b.classList.remove(c);});
       if(mins>=3000 && i%19===0) b.classList.add('model-royal');
+      else if(mins>=2000 && i%15===0) b.classList.add('model-astronaut');
       else if(mins>=1500 && i%9===0) b.classList.add('model-golden');
+      else if(mins>=1300 && i%11===0) b.classList.add('model-explorer');
+      else if(mins>=1100 && i%13===0) b.classList.add('model-scientist');
+      else if(mins>=900 && i%7===0) b.classList.add('model-musician');
       else if(mins>=720 && i%7===0) b.classList.add('model-chemist');
+      else if(mins>=500 && i%6===0) b.classList.add('model-athlete');
       else if(mins>=240 && i%5===0) b.classList.add('model-scholar');
       else if(mins>=60 && i%3===0) b.classList.add('model-seedling');
     });
