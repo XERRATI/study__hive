@@ -18,7 +18,7 @@
   /* Admin Mode */
   function openAdmin(){
     if(!$('adminPanel')){
-      document.body.insertAdjacentHTML('beforeend','<div class="admin-panel" id="adminPanel"><h2 style="font-family:Baloo 2;margin:0 0 6px;">🛠️ Study Hive Admin Mode</h2><p style="font-size:13px;line-height:1.4;margin-top:0;">Safe private testing controls. Enter the private code when prompted.</p><div class="admin-grid"><button id="adminQueen">Trigger Queen 10m</button><button id="adminSergeant">Test Sergeant</button><button id="adminAdd25">Add 25 test minutes</button><button id="adminGarden">Open Garden World</button><button id="adminTourShort">Queen short choice</button><button id="adminTourLong">Queen long guide</button><button id="adminWeather">Fake weather change</button><button id="adminMusic">Test sound ping</button><button id="adminBeeBoth">Bee style: both</button><button id="adminBeeNew">Bee style: new</button><button id="adminMobileOff">Force desktop repair</button><button id="adminDiagnostics">Diagnostics</button><button id="adminProgress">📈 Progression</button><button id="adminRunTests">🧪 Run all tests</button><button class="secondary" id="adminClearLog">🧹 Clear error log</button><button class="secondary" id="adminCopyState">Copy app state</button><button class="secondary" id="adminClose">Close</button></div><div class="admin-output" id="adminOut">Ready.</div></div>');
+      document.body.insertAdjacentHTML('beforeend','<div class="admin-panel" id="adminPanel"><h2 style="font-family:Baloo 2;margin:0 0 6px;">🛠️ Study Hive Admin Mode</h2><p style="font-size:13px;line-height:1.4;margin-top:0;">Safe private testing controls. Enter the private code when prompted.</p><div class="admin-grid"><button id="adminQueen">Trigger Queen 10m</button><button id="adminSergeant">Test Sergeant</button><button id="adminAdd25">Add 25 test minutes</button><button id="adminGarden">Open Garden World</button><button id="adminTourShort">Queen short choice</button><button id="adminTourLong">Queen long guide</button><button id="adminWeather">Fake weather change</button><button id="adminMusic">Test sound ping</button><button id="adminBeeBoth">Bee style: both</button><button id="adminBeeNew">Bee style: new</button><button id="adminMobileOff">Force desktop repair</button><button id="adminDiagnostics">Diagnostics</button><button id="adminProgress">📈 Progression</button><button id="adminRunTests">🧪 Run all tests</button><button id="adminHeart">💖 Test quote heart</button><button id="adminXP">🍯 Add 100 XP</button><button id="adminAch">🏆 Unlock all achievements</button><button id="adminSession">🎯 Simulate session done</button><button id="adminToast">📣 Test toast</button><button id="adminNight">🌙 Night preview</button><button id="adminZen">🧘 Zen toggle</button><button id="adminGrind">🧱 Grind toggle</button><button id="adminSleep">🛌 Sleep toggle</button><button id="adminBeeOld">Bee style: old</button><button id="adminBeeOff">🚫 Bees off</button><button id="adminMotion">♿ Reduce motion</button><button id="adminContrast">♿ High contrast</button><button id="adminLargeText">♿ Large text</button><button id="adminStorage">📦 Storage size</button><button class="secondary" id="adminFirstLaunch">🆕 Simulate first launch</button><button class="secondary" id="adminReset">🗑️ Factory reset</button><button class="secondary" id="adminClearLog">🧹 Clear error log</button><button class="secondary" id="adminCopyState">Copy app state</button><button class="secondary" id="adminClose">Close</button></div><div class="admin-output" id="adminOut">Ready.</div></div>');
       $('adminClose').onclick=function(){ $('adminPanel').classList.remove('show'); };
       $('adminQueen').onclick=function(){ set('studyhive-queen-until-v1', String(Date.now()+10*60*1000)); var q=$('queenVisit'); if(q) q.classList.add('show'); toast('Queen triggered for 10 minutes'); };
       $('adminSergeant').onclick=function(){ if(typeof showSergeantNag==='function') showSergeantNag('Admin test complete. Sergeant systems operational, recruit.', false); };
@@ -109,6 +109,80 @@
         try{ localStorage.removeItem('studyhive-error-log-v1'); }catch(e){}
         toast('🧹 Error log cleared');
         $('adminOut').textContent='Error log cleared.';
+      };
+
+      /* ---------------- ADMIN: Quote heart test ---------------- */
+      $('adminHeart').onclick=function(){
+        try{
+          if(typeof window.toggleQuoteFav==='function'){ window.toggleQuoteFav(); }
+          else { var b=$('quoteFavBtn'); if(b) b.click(); else $('adminOut').textContent='Quote panel not found.'; }
+        }catch(e){ $('adminOut').textContent='Heart test error: '+e.message; }
+      };
+      /* ---------------- ADMIN: Add 100 XP (level-up test) ---------------- */
+      $('adminXP').onclick=function(){
+        var d={}; try{ d=JSON.parse(localStorage.getItem('hive-xp-v1')||'{}'); }catch(e){}
+        d.xp=(typeof d.xp==='number'?d.xp:0)+100;
+        try{ localStorage.setItem('hive-xp-v1', JSON.stringify(d)); }catch(e){}
+        $('adminOut').textContent='Added 100 XP (total '+d.xp+'). Refresh to see the level change.';
+      };
+      /* ---------------- ADMIN: Unlock all achievements ---------------- */
+      $('adminAch').onclick=function(){
+        var ids=['first_blood','century_club','half_hive','night_owl','early_bird','sergeants_favorite','iron_streak','hive_complete','marathon_bee','quarter_century','mood_ring','task_master','clean_slate','quote_collector','grade_planner','worker_bee','guard_duty','queens_court','weekend_warrior','buzz_beginner','hydro_hero','zen_bee','pomodoro_pro','wordsmith','planner_pro','note_taker','backup_buddy','habit_hero'];
+        var d={}; try{ d=JSON.parse(localStorage.getItem('hive-xp-v1')||'{}'); }catch(e){}
+        d.unlocked=ids; d.xp=Math.max(typeof d.xp==='number'?d.xp:0, 999);
+        try{ localStorage.setItem('hive-xp-v1', JSON.stringify(d)); }catch(e){}
+        $('adminOut').textContent='Unlocked all '+ids.length+' achievements (+999 XP). Refresh to see them in Awards.';
+      };
+      /* ---------------- ADMIN: Simulate a finished session ---------------- */
+      $('adminSession').onclick=function(){
+        var sd=getJSON('study-data-v2',{subjects:{},totalMinutes:0,dailyLog:{},sessionsTotal:0});
+        sd.subjects=sd.subjects||{}; sd.subjects['Admin Test']=(sd.subjects['Admin Test']||0)+25;
+        sd.totalMinutes=(sd.totalMinutes||0)+25; sd.sessionsTotal=(sd.sessionsTotal||0)+1;
+        var d=new Date(), key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+        sd.dailyLog=sd.dailyLog||{}; sd.dailyLog[key]=(sd.dailyLog[key]||0)+25;
+        setJSON('study-data-v2',sd);
+        if(typeof window.showBuddyBee==='function'){ try{ window.showBuddyBee(); }catch(e){} }
+        toast('🎯 Simulated a finished 25-min session');
+        $('adminOut').textContent='Added a 25-minute session (Admin Test). Refresh if panels do not update instantly.';
+      };
+      /* ---------------- ADMIN: Toast test ---------------- */
+      $('adminToast').onclick=function(){ toast('📣 Test toast — the hive is talking to you!'); };
+      /* ---------------- ADMIN: Theme / mode toggles ---------------- */
+      $('adminNight').onclick=function(){ var b=$('previewNightBtn'); if(b){ b.click(); toast('🌙 Night preview toggled'); } else { document.body.classList.toggle('night-mode'); toast('🌙 Night toggled (preview only)'); } };
+      $('adminZen').onclick=function(){ var b=$('zenModeBtn'); if(b){ b.click(); toast('🧘 Zen toggled'); } else { document.body.classList.toggle('zen-mode'); toast('🧘 Zen toggled'); } };
+      $('adminGrind').onclick=function(){ var b=$('grindModeBtn'); if(b){ b.click(); toast('🧱 Grind toggled'); } else { document.body.classList.toggle('grind-mode'); toast('🧱 Grind toggled'); } };
+      $('adminSleep').onclick=function(){ document.body.classList.toggle('sleep-mode'); toast('🛌 Sleep mode toggled (this session only)'); };
+      /* ---------------- ADMIN: Bee styles (complete the set) ---------------- */
+      $('adminBeeOld').onclick=function(){ set('studyhive-bee-style-v1','old'); document.body.classList.remove('bee-style-new','bee-style-both','bee-style-off'); document.body.classList.add('bee-style-old'); toast('Bee style: old'); };
+      $('adminBeeOff').onclick=function(){ set('studyhive-bee-style-v1','off'); document.body.classList.remove('bee-style-new','bee-style-both','bee-style-old'); document.body.classList.add('bee-style-off'); toast('Bees hidden'); };
+      /* ---------------- ADMIN: Accessibility toggles ---------------- */
+      $('adminMotion').onclick=function(){ var on=localStorage.getItem('studyhive-reduce-motion-v1')!=='1'; localStorage.setItem('studyhive-reduce-motion-v1', on?'1':'0'); document.body.classList.toggle('reduce-motion-mode', on); toast('♿ Reduce motion '+(on?'ON':'off')); };
+      $('adminContrast').onclick=function(){ var on=localStorage.getItem('studyhive-high-contrast-v1')!=='1'; localStorage.setItem('studyhive-high-contrast-v1', on?'1':'0'); document.body.classList.toggle('high-contrast-mode', on); toast('♿ High contrast '+(on?'ON':'off')); };
+      $('adminLargeText').onclick=function(){ var on=localStorage.getItem('studyhive-large-text-v1')!=='1'; localStorage.setItem('studyhive-large-text-v1', on?'1':'0'); document.body.classList.toggle('large-text-mode', on); toast('♿ Large text '+(on?'ON':'off')); };
+      /* ---------------- ADMIN: Storage size report ---------------- */
+      $('adminStorage').onclick=function(){
+        var keys=[], total=0;
+        for(var i=0;i<localStorage.length;i++){ var k=localStorage.key(i); if(k && /hive|study|goal|clicker|daily|challenge|sergeant|pollen|secret|god|queen|dock|bee|note|water|vocab|exam|todo|habit|flash|grade|mood/i.test(k)){ keys.push(k); total+=(localStorage.getItem(k)||'').length; } }
+        $('adminOut').textContent='📦 '+keys.length+' app keys · ~'+Math.round(total/1024)+' KB used\n\n'+keys.slice(0,40).join('\n');
+      };
+      /* ---------------- ADMIN: Simulate first launch (two-click confirm) ---------------- */
+      var adminLaunchArmed=false;
+      $('adminFirstLaunch').onclick=function(){
+        if(!adminLaunchArmed){ adminLaunchArmed=true; $('adminFirstLaunch').textContent='⚠️ Sure? Click again to reset onboarding'; setTimeout(function(){ adminLaunchArmed=false; $('adminFirstLaunch').textContent='🆕 Simulate first launch'; },4000); return; }
+        try{ localStorage.removeItem('studyhive-onboarded-v1'); localStorage.removeItem('studyhive-tour-seen-v1'); }catch(e){}
+        toast('🆕 First launch simulated');
+        $('adminOut').textContent='Onboarding reset. Reloading…';
+        setTimeout(function(){ location.reload(); },800);
+      };
+      /* ---------------- ADMIN: Factory reset (two-click confirm) ---------------- */
+      var adminResetArmed=false;
+      $('adminReset').onclick=function(){
+        if(!adminResetArmed){ adminResetArmed=true; $('adminReset').textContent='⚠️ Sure? Click again to wipe ALL app data'; setTimeout(function(){ adminResetArmed=false; $('adminReset').textContent='🗑️ Factory reset'; },4000); return; }
+        var re=/hive|study|goal|milestone|clicker|daily|challenge|night|sergeant|pollen|secret|god|upg|queen|dock|bee|note|water|vocab|exam|todo|habit|flash|grade|mood/i;
+        var n=0; for(var i=localStorage.length-1;i>=0;i--){ var k=localStorage.key(i); if(k && re.test(k)){ localStorage.removeItem(k); n++; } }
+        toast('🗑️ Factory reset — '+n+' keys cleared');
+        $('adminOut').textContent='Cleared '+n+' keys. Reloading…';
+        setTimeout(function(){ location.reload(); },800);
       };
     }
     $('adminPanel').classList.add('show');

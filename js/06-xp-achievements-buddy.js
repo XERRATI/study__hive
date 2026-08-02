@@ -394,8 +394,31 @@
   function isFav(q){ return favQuotes.some(function(f){ return f.text === q.text; }); }
   function renderFavPopover(){
     var pop = $('quoteFavPopover');
-    if (!favQuotes.length) { pop.innerHTML = '<div class="quote-fav-item">No favorites yet.</div>'; return; }
-    pop.innerHTML = favQuotes.map(function(f){ return '<div class="quote-fav-item">"' + escapeHtml(f.text) + '" — ' + escapeHtml(f.author) + '</div>'; }).join('');
+    if (!favQuotes.length) { pop.innerHTML = '<div class="quote-fav-item">No favorites yet. Tap 🤍 on a quote to save it here.</div>'; return; }
+    pop.innerHTML = favQuotes.map(function(f, i){
+      return '<div class="quote-fav-item">"' + escapeHtml(f.text) + '" — ' + escapeHtml(f.author) +
+        ' <button class="quote-fav-remove" data-i="' + i + '" title="Remove from favorites" aria-label="Remove quote">✕</button></div>';
+    }).join('');
+    Array.prototype.forEach.call(pop.querySelectorAll('.quote-fav-remove'), function(btn){
+      btn.addEventListener('click', function(){
+        var idx = parseInt(btn.getAttribute('data-i'), 10);
+        if (!isNaN(idx) && favQuotes[idx]) {
+          favQuotes.splice(idx, 1);
+          saveFav();
+          $('quoteFavCount').textContent = favQuotes.length;
+          renderFavPopover();
+          updateFavBtn();
+          showMilestoneToast('💔 Removed from favorites');
+        }
+      });
+    });
+  }
+  function updateFavBtn(){
+    var q = quotes[quoteIdx]; var btn = $('quoteFavBtn'); if (!btn || !q) return;
+    var fav = isFav(q);
+    btn.textContent = fav ? '❤️' : '🤍';
+    btn.setAttribute('aria-pressed', fav ? 'true' : 'false');
+    btn.title = fav ? 'Remove from favorites' : 'Save to favorites';
   }
   function renderQuote(){
     var q = quotes[quoteIdx];
@@ -404,22 +427,29 @@
     setTimeout(function(){
       textEl.textContent = '"' + q.text + '"';
       nameEl.textContent = '— ' + q.author;
-      favBtn.textContent = isFav(q) ? '❤️' : '🤍';
+      updateFavBtn();
       textEl.classList.add('show'); authorEl.classList.add('show');
     }, 350);
   }
   function nextQuote(){ quoteIdx = (quoteIdx + 1) % quotes.length; renderQuote(); }
   renderQuote();
   setInterval(nextQuote, 30000);
-  $('quoteFavBtn').addEventListener('click', function(){
-    var q = quotes[quoteIdx];
-    if (isFav(q)) { favQuotes = favQuotes.filter(function(f){ return f.text !== q.text; }); }
-    else { favQuotes.push(q); if (favQuotes.length >= 5) unlockAchievement('quote_collector'); }
+  window.toggleQuoteFav = function(){
+    var q = quotes[quoteIdx]; if (!q) return;
+    if (isFav(q)) {
+      favQuotes = favQuotes.filter(function(f){ return f.text !== q.text; });
+      showMilestoneToast('💔 Removed from favorites');
+    } else {
+      favQuotes.push(q);
+      if (favQuotes.length >= 5) unlockAchievement('quote_collector');
+      showMilestoneToast('❤️ Saved to favorites (' + favQuotes.length + ')');
+    }
     saveFav();
-    $('quoteFavBtn').textContent = isFav(q) ? '❤️' : '🤍';
+    updateFavBtn();
     $('quoteFavCount').textContent = favQuotes.length;
     renderFavPopover();
-  });
+  };
+  $('quoteFavBtn').addEventListener('click', window.toggleQuoteFav);
   $('quoteFavCount').textContent = favQuotes.length;
   renderFavPopover();
   $('quoteFavListBtn').addEventListener('click', function(){ $('quoteFavPopover').classList.toggle('show'); });

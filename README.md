@@ -90,6 +90,22 @@ This was a real bug hiding in the code, not just a "too-fast" press:
     `js/17-queen-secrets-events.js`).
 - **💬 Coach talks more** — the Sergeant now has longer, warmer lines (used
   1 in 3 times) and Buddy Bee has 10 new full-sentence encouragements.
+- **🛠️ Admin mode grew** — `Ctrl+Shift+A` → code `QUEEN-ADMIN-2026` or
+  `propolis`. New buttons: Test quote heart, Add 100 XP, Unlock all
+  achievements, Simulate session done, Test toast, Night/Zen/Grind/Sleep
+  toggles, Bee style old/off, ♿ Reduce motion / High contrast / Large text,
+  Storage size report, 🆕 Simulate first launch and 🗑️ Factory reset
+  (both two-click confirmed).
+- **❤️ Quote hearting upgraded** — tapping 🤍 now shows a toast, keeps the
+  ❤️ state on the button (with aria-pressed for accessibility), and favorites
+  can be removed from the list with an ✕ button.
+- **🐞 Error report cleaned up** — the Settings error report now hides stale
+  entries from the old `Study_Hive` build (the corrupted
+  `49-ten-extra-secrets.js`), shows how old each error is, and has its own
+  🧹 Clear log button.
+- **🔔 Global toast fix** — `showMilestoneToast` was private to one file, so
+  most toast messages app-wide silently never appeared. It's now global;
+  toasts work everywhere.
 
 ---
 

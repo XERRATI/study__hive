@@ -18,6 +18,10 @@
     clearTimeout(showMilestoneToast._t);
     showMilestoneToast._t = setTimeout(function(){ t.classList.remove('show'); }, holdMs || 4200);
   }
+  /* GLOBAL TOAST FIX: showMilestoneToast used to stay private to this file,
+     so every guarded call elsewhere in the app (typeof showMilestoneToast)
+     was silently dead. Exposing it makes toasts work everywhere. */
+  window.showMilestoneToast = showMilestoneToast;
 
   function wireSimpleToggle(btnId, panelId){
     var b = $(btnId), p = $(panelId);
