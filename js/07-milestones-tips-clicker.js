@@ -756,6 +756,9 @@
     document.body.classList.toggle('zen-mode', open);
     if (open) { focusPanel.classList.add('show'); }
   }
+  /* ZEN FIX: toggleZenMode was private to this closure, so the Z-key
+     shortcut in the XP layer threw "toggleZenMode is not defined". */
+  window.toggleZenMode = toggleZenMode;
   var zenModeBtn = $('zenModeBtn');
   if (zenModeBtn) zenModeBtn.addEventListener('click', function(){ toggleZenMode(true); });
   var zenExitBtn = $('zenExitBtn');

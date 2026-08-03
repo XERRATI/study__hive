@@ -159,6 +159,16 @@ This was a real bug hiding in the code, not just a "too-fast" press:
   the hive throws a dance party: they bounce, leap and wiggle (each on its
   own beat), emoji confetti rains down, and a celebration card shows how
   many minutes you locked in.
+- **🐝 New Queen design** — the Queen guide now shows your front-facing
+  Queen bee: big golden head, soft face patch, blush cheeks, tiny smile,
+  antennae with golden tips — and her **crown sitting on her head**.
+- **🫡 New Sergeant design with 3-frame animation** — the classic Sergeant
+  is now your front-facing design: golden head, drill helmet with badge,
+  face patch — and he **animates through 3 poses** (neutral → talking →
+  yelling) on a loop. The angrier he gets, the faster he talks.
+- **🔧 Zen key fixed** — the Z-key shortcut threw "toggleZenMode is not
+  defined" (the function was private to another file). It's exposed now;
+  Z toggles Zen focus, Esc exits.
 - **🐝 Wasp redesigned** — friendlier-but-menacing cartoon wasp: round
   head, big eyes with angry brows, yellow-banded abdomen, curved stinger.
 - **🫡 Sergeant v2 redesigned — "The Colonel"** — the test Sergeant is now

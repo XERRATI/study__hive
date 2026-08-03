@@ -5306,53 +5306,93 @@ body.night-mode .lockin-btn { background: linear-gradient(135deg, #3b4a63, #2c38
 .lockin-overlay {
   position: fixed; inset: 0; z-index: 950; display: none;
   align-items: center; justify-content: center; padding: 20px;
+  /* WARM HIVE THEME (was cold navy "terminal"): deep amber night sky with
+     a honey glow — matches the app's night-mode palette instead of a
+     computer screen. */
   background:
-    radial-gradient(circle at 50% 20%, rgba(244,196,48,.14), transparent 55%),
-    linear-gradient(160deg, #141b26 0%, #0e1420 60%, #0a0e16 100%);
+    radial-gradient(circle at 50% 18%, rgba(244,196,48,.22), transparent 55%),
+    radial-gradient(circle at 12% 85%, rgba(201,122,18,.18), transparent 45%),
+    radial-gradient(circle at 88% 80%, rgba(226,155,28,.14), transparent 40%),
+    linear-gradient(160deg, #2a1c0d 0%, #3a2814 55%, #241608 100%);
   overflow-y: auto; -webkit-overflow-scrolling: touch;
+}
+.lockin-overlay::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; opacity: .16;
+  background-image:
+    radial-gradient(circle, #f4c430 0 1.5px, transparent 2px),
+    radial-gradient(circle, rgba(255,255,255,.6) 0 1px, transparent 1.5px);
+  background-size: 74px 74px, 110px 110px;
+  background-position: 10px 14px, 55px 40px;
 }
 .lockin-overlay.show { display: flex; }
 .lockin-card {
-  width: min(420px, 94vw); text-align: center; color: #e8c89a;
-  border-radius: 30px; padding: 26px 22px 22px;
-  background: rgba(255,250,242,.05);
-  border: 1px solid rgba(244,196,48,.22);
-  box-shadow: 0 30px 80px rgba(0,0,0,.5);
+  width: min(420px, 94vw); text-align: center;
+  color: #4a3316;
+  border-radius: 30px; padding: 28px 24px 24px;
+  background: linear-gradient(170deg, #fffaf2 0%, #fdf3dc 70%, #f7e7c3 100%);
+  border: 2px solid rgba(226,155,28,.55);
+  box-shadow: 0 26px 70px rgba(58,32,6,.55), inset 0 0 0 1px rgba(255,255,255,.6);
   margin: auto;
+  position: relative;
+}
+.lockin-card::after {
+  content: '🐝'; position: absolute; top: -18px; right: 18px; font-size: 26px;
+  filter: drop-shadow(0 3px 5px rgba(58,32,6,.35));
+  transform: rotate(14deg);
 }
 .lockin-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-.lockin-lock { font-size: 12px; font-weight: 900; letter-spacing: 2px; color: #f4c430; }
+.lockin-lock {
+  font-size: 12px; font-weight: 900; letter-spacing: 2px; color: #c97a12;
+  background: rgba(244,196,48,.22); padding: 6px 12px; border-radius: 999px;
+}
 .lockin-exit {
   border: none; border-radius: 12px; padding: 8px 14px; cursor: pointer;
   font-family: 'Fredoka', sans-serif; font-weight: 800; font-size: 12px;
-  background: rgba(255,255,255,.08); color: #cdd6e4; touch-action: manipulation;
+  background: rgba(139,111,82,.14); color: #6b4a1e; touch-action: manipulation;
 }
 .lockin-exit:active { transform: scale(.94); }
 .lockin-time {
   font-family: 'Baloo 2', sans-serif; font-weight: 900;
-  font-size: clamp(4.2rem, 20vw, 7rem); line-height: 1; color: #fffaf2;
-  text-shadow: 0 0 34px rgba(244,196,48,.35); margin: 6px 0 2px;
+  font-size: clamp(4.2rem, 20vw, 7rem); line-height: 1;
+  color: #4a3316;
+  text-shadow: 0 2px 0 rgba(255,255,255,.7), 0 6px 26px rgba(226,155,28,.5);
+  margin: 6px 0 2px;
 }
-.lockin-label { font-size: 13px; color: #b7c2d4; margin-bottom: 16px; letter-spacing: .5px; }
-.lockin-progress { height: 10px; border-radius: 8px; background: rgba(255,255,255,.08); overflow: hidden; margin-bottom: 16px; }
-.lockin-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #f4c430, #e29b1c); border-radius: 8px; transition: width .4s ease; }
+.lockin-label { font-size: 13px; color: #8a6f52; margin-bottom: 16px; letter-spacing: .5px; font-weight: 700; }
+.lockin-progress {
+  height: 12px; border-radius: 8px;
+  background: linear-gradient(90deg, rgba(226,155,28,.18), rgba(226,155,28,.28));
+  box-shadow: inset 0 1px 3px rgba(139,111,82,.25);
+  overflow: hidden; margin-bottom: 16px;
+}
+.lockin-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, #f4c430, #e29b1c, #f4c430);
+  border-radius: 8px; transition: width .4s ease;
+  box-shadow: 0 0 12px rgba(244,196,48,.8);
+}
 .lockin-extend-row { display: flex; gap: 10px; }
 .lockin-extend-row button {
   flex: 1; min-height: 48px; border: none; border-radius: 16px; cursor: pointer;
   font-family: 'Fredoka', sans-serif; font-weight: 900; font-size: 14px;
-  background: rgba(244,196,48,.16); color: #f4c430; touch-action: manipulation;
+  background: linear-gradient(135deg, #fffaf2, #f3dfb4);
+  color: #8a5b12; border: 1.5px solid rgba(226,155,28,.45);
+  box-shadow: 0 4px 12px rgba(139,111,82,.18);
+  touch-action: manipulation;
 }
-.lockin-extend-row button:active { transform: scale(.94); background: rgba(244,196,48,.28); }
+.lockin-extend-row button:active { transform: scale(.94); background: linear-gradient(135deg, #f4c430, #e29b1c); color: #fffaf2; }
 .lockin-done { margin-top: 18px; }
 .lockin-done-emoji { font-size: 44px; animation: lockinDonePop .5s cubic-bezier(.2,.9,.3,1.4); }
 @keyframes lockinDonePop { from { transform: scale(.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-.lockin-done-text { font-size: 16px; font-weight: 800; color: #fffaf2; margin: 8px 0 14px; }
+.lockin-done-text { font-size: 16px; font-weight: 800; color: #4a3316; margin: 8px 0 14px; }
 .lockin-done button {
   min-height: 50px; width: 100%; border: none; border-radius: 16px; cursor: pointer;
   font-family: 'Fredoka', sans-serif; font-weight: 900; font-size: 14px;
-  background: linear-gradient(135deg, #f4c430, #e29b1c); color: var(--pearl);
+  background: linear-gradient(135deg, #f4c430, #e29b1c, #c97a12); color: var(--pearl);
+  box-shadow: 0 8px 20px rgba(201,122,18,.45);
   touch-action: manipulation;
 }
+.lockin-done button:active { transform: scale(.96); }
 
 /* ---------- Bee dance celebration ---------- */
 .bee-dance-party .hive-bee-el {
@@ -5396,3 +5436,21 @@ body.lockin-mode .hive-progress-wrap, body.lockin-mode .xp-bar-track, body.locki
 body.lockin-mode .goal-wrap, body.lockin-mode .mood-tracker, body.lockin-mode .weather-widget,
 body.lockin-mode .pomodoro-widget, body.lockin-mode .buddy-bee-wrap,
 body.lockin-mode .dock-toggle-btn { opacity: 0 !important; pointer-events: none !important; }
+
+/* ---------- NEW SERGEANT: 3-frame animation (neutral -> talking -> yelling) ---------- */
+.sg-frame { opacity: 0; animation: sgFrameCycle 2.1s infinite; }
+.sg-frame.f1 { animation-delay: 0s; }
+.sg-frame.f2 { animation-delay: .7s; }
+.sg-frame.f3 { animation-delay: 1.4s; }
+@keyframes sgFrameCycle {
+  0%, 31% { opacity: 1; }
+  33.4%, 100% { opacity: 0; }
+}
+/* angrier sergeant = faster talking cycle */
+.sergeant-persistent.anger-1 .sg-frame { animation-duration: 1.5s; }
+.sergeant-persistent.anger-2 .sg-frame { animation-duration: 1.1s; }
+.sergeant-persistent.anger-3 .sg-frame { animation-duration: .8s; }
+.sergeant-persistent.anger-4 .sg-frame { animation-duration: .55s; }
+/* reduce motion: hold the neutral frame */
+body.reduce-motion-mode .sg-frame.f2, body.reduce-motion-mode .sg-frame.f3 { display: none; }
+body.reduce-motion-mode .sg-frame.f1 { opacity: 1; animation: none; }
