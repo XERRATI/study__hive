@@ -51,47 +51,8 @@
   setInterval(updateBeeCount,4000); setTimeout(updateBeeCount,800);
 
   /* Queen Story Guide: long explanation as a real guided tour, not a static map. */
-  /* QUEEN AVATAR: a little queen bee with her crown ON her head, shown at
-     the top of every guide step. */
-  var QUEEN_AVATAR = [
-    /* NEW QUEEN (front-facing, from the creator's design): big golden head,
-       soft face patch, dark eyes, blush cheeks, tiny smile, a proper crown
-       sitting ON her head, antennae with golden tips, striped body, wings. */
-    '<svg viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">',
-    '  <defs><linearGradient id="qaBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffdf6b"/><stop offset="1" stop-color="#e2a91c"/></linearGradient></defs>',
-    /* wings */
-    '  <ellipse cx="10" cy="16" rx="8.5" ry="6" fill="rgba(255,255,255,.82)" stroke="#d3b995" stroke-width="1"></ellipse>',
-    '  <ellipse cx="36" cy="16" rx="8.5" ry="6" fill="rgba(255,255,255,.82)" stroke="#d3b995" stroke-width="1"></ellipse>',
-    /* striped body */
-    '  <ellipse cx="23" cy="34" rx="11.5" ry="8.5" fill="url(#qaBody)" stroke="#8a6a20" stroke-width="1"></ellipse>',
-    '  <rect x="16.6" y="28" width="3.2" height="13" rx="1.6" fill="#372b18" opacity=".9"></rect>',
-    '  <rect x="23" y="27.5" width="3.2" height="14" rx="1.6" fill="#372b18" opacity=".9"></rect>',
-    '  <rect x="29.4" y="28" width="3.2" height="13" rx="1.6" fill="#372b18" opacity=".9"></rect>',
-    /* head */
-    '  <circle cx="23" cy="17" r="11.5" fill="#e2a91c" stroke="#8a6a20" stroke-width="1"></circle>',
-    /* face patch */
-    '  <ellipse cx="23" cy="19.5" rx="8" ry="7" fill="#ffe9a8"></ellipse>',
-    /* eyes */
-    '  <circle cx="19" cy="17.5" r="2.1" fill="#2b241d"></circle>',
-    '  <circle cx="27" cy="17.5" r="2.1" fill="#2b241d"></circle>',
-    '  <circle cx="19.8" cy="16.6" r=".75" fill="#fff"></circle>',
-    '  <circle cx="27.8" cy="16.6" r=".75" fill="#fff"></circle>',
-    /* smile + cheeks */
-    '  <path d="M20.2 22.4 Q23 25 25.8 22.4" stroke="#2b241d" stroke-width="1.1" fill="none" stroke-linecap="round"></path>',
-    '  <circle cx="17.2" cy="21" r="1.3" fill="#f4b8a0" opacity=".85"></circle>',
-    '  <circle cx="28.8" cy="21" r="1.3" fill="#f4b8a0" opacity=".85"></circle>',
-    /* crown ON the head */
-    '  <path d="M14.8 9.8 L17.2 5.2 L20.6 8.4 L23.2 4.4 L25.8 8.4 L29.2 5.2 L31.6 9.8 Z" fill="#f4c430" stroke="#c97a12" stroke-width=".9"></path>',
-    '  <path d="M14.8 9.8 L31.6 9.8 L31.6 11.4 L14.8 11.4 Z" fill="#f4c430" stroke="#c97a12" stroke-width=".7"></path>',
-    '  <circle cx="18.6" cy="7" r="1" fill="#e2362a"></circle>',
-    '  <circle cx="27.8" cy="7" r="1" fill="#e2362a"></circle>',
-    /* antennae with golden tips */
-    '  <path d="M18.4 6.4 Q14.6 1 13 1.4" stroke="#2b241d" stroke-width="1.1" fill="none" stroke-linecap="round"></path>',
-    '  <path d="M27.6 6.4 Q31.4 1 33 1.4" stroke="#2b241d" stroke-width="1.1" fill="none" stroke-linecap="round"></path>',
-    '  <circle cx="13" cy="1.4" r="1.4" fill="#f4c430"></circle>',
-    '  <circle cx="33" cy="1.4" r="1.4" fill="#f4c430"></circle>',
-    '</svg>'
-  ].join('\n');
+  /* QUEEN AVATAR: the creator's own Queen image. */
+  var QUEEN_AVATAR = '<img class="queen-avatar-img" src="images/queen.png" alt="Queen Bee" draggable="false">';
   var STORY_STEPS=[
     ['👑','Welcome, worker bee','I am the Queen Bee. This is the royal tour of your whole hive — 33 stops, each with a Queen\'s tip. Use Next when ready, or press the arrow keys.','#welcomeEnterBtn','Queen\'s tip: you can skip the tour anytime with Skip, or tap anywhere outside this card.'],
     ['⏳','Main countdown card','This is your home base. It shows the current time, your goal title, your pledge, and the countdown to the thing you are working toward.','.card','Tip: tap the quote near the top to cycle to another quote. Tap the heart to save your favourites.'],

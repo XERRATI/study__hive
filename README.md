@@ -159,6 +159,13 @@ This was a real bug hiding in the code, not just a "too-fast" press:
   the hive throws a dance party: they bounce, leap and wiggle (each on its
   own beat), emoji confetti rains down, and a celebration card shows how
   many minutes you locked in.
+- **👑 Queen = your actual image** — the app now uses your Queen PNG
+  (`images/queen.png`) in the Queen guide avatar and the rare Queen fly-by
+  banner. (An old patch that force-replaced the Queen with emoji every 1.5s
+  was found and disabled — that's why she wasn't showing up.)
+- **🫡 Sergeant = your actual images** — the Sergeant is now your three PNG
+  animation frames (`images/sergeant-1/2/3.png`) crossfading in a loop
+  (neutral → talking → yelling); the angrier he gets, the faster he talks.
 - **🐝 New Queen design** — the Queen guide now shows your front-facing
   Queen bee: big golden head, soft face patch, blush cheeks, tiny smile,
   antennae with golden tips — and her **crown sitting on her head**.
