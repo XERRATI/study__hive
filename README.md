@@ -159,6 +159,13 @@ This was a real bug hiding in the code, not just a "too-fast" press:
   the hive throws a dance party: they bounce, leap and wiggle (each on its
   own beat), emoji confetti rains down, and a celebration card shows how
   many minutes you locked in.
+- **🐝 Full hive on mobile (premium)** — the mobile shell now keeps ALL
+  the PC ambience: the real countdown card embedded in Home, flying new &
+  old bees, the tap-able hive button (bottom-right, honey glow), the hive
+  progress pill (bottom-left), the red goal % pill (bottom-center), the
+  mood tracker, the weather pill, the XP level pill in the header, the
+  Sergeant + his rage aura on the left, the buddy bee and the wasp —
+  all repositioned so nothing overlaps the tab bar or content.
 - **📱 Professional mobile UI (new shell)** — the moment mobile layout is
   on (auto on phones, or the toggle in Settings), the app becomes a
   native-feeling app: bottom tab bar (Home · Tools · Focus · Stats ·

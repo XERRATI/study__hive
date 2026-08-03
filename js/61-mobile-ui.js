@@ -111,6 +111,15 @@
       '</nav>';
     document.body.appendChild(shell);
 
+    /* XP level badge moves into the header as a premium pill */
+    var lb = document.getElementById('levelBadge');
+    var hdrRight = $('mobAdminBtn') ? $('mobAdminBtn').parentElement : null;
+    if (lb && hdrRight) {
+      lb.id = 'levelBadge';
+      lb.classList.add('mob-level-pill');
+      hdrRight.insertBefore(lb, $('mobAdminBtn'));
+    }
+
     /* EMBED THE REAL PC CARD into the home page so mobile looks like the
        desktop app (clock, countdown, quote) but inside the mobile shell. */
     var homePage = $('mobPageHome');
