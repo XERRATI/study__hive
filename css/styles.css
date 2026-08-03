@@ -5458,26 +5458,29 @@ body.lockin-mode .dock-toggle-btn { opacity: 0 !important; pointer-events: none 
 body.reduce-motion-mode .sg-frame.f2, body.reduce-motion-mode .sg-frame.f3 { display: none; }
 body.reduce-motion-mode .sg-frame.f1 { opacity: 1; animation: none; }
 
-/* ---------- SERGEANT: creator's own images, 3-frame crossfade ---------- */
+/* ---------- SERGEANT: creator's images, CONTEXT-BASED (no cycling) ----------
+   f1 = IDLE   (default calm pose)
+   f2 = TALKING (shown only while the Sergeant is speaking)
+   f3 = ANGRY  (shown when his rage is high)
+   The picture switches with his mood via js/60-sergeant-context.js. */
+.sergeant-persistent { width: 92px; height: 92px; }
 .sergeant-persistent .sg-img {
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: contain; pointer-events: none; user-select: none;
-  opacity: 0; animation: sgFrameCycle 2.1s infinite;
+  opacity: 0; transition: opacity .28s ease;
 }
-.sergeant-persistent .sg-img.f1 { animation-delay: 0s; }
-.sergeant-persistent .sg-img.f2 { animation-delay: .7s; }
-.sergeant-persistent .sg-img.f3 { animation-delay: 1.4s; }
-@keyframes sgFrameCycle {
-  0%, 31% { opacity: 1; }
-  33.4%, 100% { opacity: 0; }
+.sergeant-persistent.sgt-idle .sg-img.f1 { opacity: 1; }
+.sergeant-persistent.sgt-talking .sg-img.f2 { opacity: 1; }
+.sergeant-persistent.sgt-angry .sg-img.f3 { opacity: 1; }
+/* angry sergeant shakes instead of cycling pictures */
+.sergeant-persistent.sgt-angry .sergeant-bob { animation: sergeantShakeSmall .45s ease-in-out infinite; }
+body.reduce-motion-mode .sergeant-persistent .sg-img { transition: none; }
+body.reduce-motion-mode .sergeant-persistent .sg-img.f1 { opacity: 1; }
+body.reduce-motion-mode .sergeant-persistent.sgt-talking .sg-img.f2,
+body.reduce-motion-mode .sergeant-persistent.sgt-angry .sg-img.f3 { opacity: 0; }
+@media (max-width: 780px) {
+  .sergeant-persistent { width: 78px; height: 78px; left: 8px; }
 }
-.sergeant-persistent.anger-1 .sg-img { animation-duration: 1.5s; }
-.sergeant-persistent.anger-2 .sg-img { animation-duration: 1.1s; }
-.sergeant-persistent.anger-3 .sg-img { animation-duration: .8s; }
-.sergeant-persistent.anger-4 .sg-img { animation-duration: .55s; }
-body.reduce-motion-mode .sergeant-persistent .sg-img.f2,
-body.reduce-motion-mode .sergeant-persistent .sg-img.f3 { display: none; }
-body.reduce-motion-mode .sergeant-persistent .sg-img.f1 { opacity: 1; animation: none; }
 
 /* ---------- QUEEN: creator's own image ---------- */
 .queen-story-avatar .queen-avatar-img {
