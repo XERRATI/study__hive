@@ -593,6 +593,8 @@
   /* ============================ STATS / SYNC ============================ */
   function syncAll() {
     if (!shell) return;
+    /* white-out guard: PC high-contrast must never sit on the shell */
+    document.body.classList.remove('high-contrast-mode');
     var sd = studyData(), xp = xpData().xp || 0;
     var dk = todayKey();
     var todayMin = (sd.dailyLog && sd.dailyLog[dk]) || 0;
@@ -686,6 +688,7 @@
   function buildSettings() {
     var list = $('mobSettingsList'); if (!list) return;
     list.innerHTML =
+      '<div class="mob-set-item"><span>📱</span><em>Mobile layout</em><span class="mob-toggle on" id="mobLayoutToggle"></span></div>' +
       '<div class="mob-set-item"><span>🕐</span><em>Show clock on timer</em><span class="mob-toggle' + (clockOn ? ' on' : '') + '" id="mobClockToggle"></span></div>' +
       '<div class="mob-set-item"><span>⬛</span><em>High contrast</em><span class="mob-toggle' + (hcOn ? ' on' : '') + '" id="mobHcToggle"></span></div>' +
       '<button class="mob-set-item" data-goto="guide"><span>👑</span><em>Queen guide</em><i>2 modes ›</i></button>' +
@@ -702,8 +705,16 @@
     $('mobHcToggle').addEventListener('click', function () {
       hcOn = !hcOn; this.classList.toggle('on', hcOn);
       document.body.classList.toggle('mob-hc', hcOn);
-      document.body.classList.toggle('high-contrast-mode', hcOn);
+      /* only the shell-scoped class — never the PC high-contrast-mode */
+      document.body.classList.remove('high-contrast-mode');
       set('studyhive-high-contrast-v1', hcOn ? '1' : '0');
+    });
+    $('mobLayoutToggle').addEventListener('click', function () {
+      /* turn the mobile layout OFF from inside the shell */
+      set('studyhive-force-mobile-v1', '0');
+      document.body.classList.remove('force-mobile', 'is-mobile', 'mobile-pro-ui');
+      if (shell) shell.style.display = 'none';
+      location.reload();
     });
     $('mobOpenSettingsPanel').addEventListener('click', function () { clickReal('settingsBtn'); });
     $('mobOpenBackup').addEventListener('click', function () { clickReal('settingsBtn'); setTimeout(function () { var p = $('backupCenterPanel'); if (p && p.classList) p.classList.add('show'); }, 400); });

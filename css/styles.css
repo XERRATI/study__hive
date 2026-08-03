@@ -5461,6 +5461,12 @@ body.night-mode .bg-volume-pct { color: #94a3b8; }
    ========================================================================== */
 
 body.mobile-pro-ui {
+  /* MISSING-VAR FIX: the mobile shell uses its own palette names that were
+     never defined in the app's :root — so every gradient/color using them
+     failed and the whole shell rendered white/flat. Define them here. */
+  --deep: #4a3316;
+  --honey: #f4c430; --honey2: #e29b1c; --honey3: #c97a12;
+  --honey-soft: #fdf3dc; --honey-mid: #f7e7c3; --honey-deep: #b8862f;
   background: linear-gradient(160deg, var(--cream) 0%, var(--tan) 55%, var(--taupe) 100%);
   padding: 0 !important;
   overflow-x: hidden;

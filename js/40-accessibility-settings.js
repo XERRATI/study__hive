@@ -38,7 +38,15 @@
   /* Accessibility / launch settings. */
   function applyA11y(){
     document.body.classList.toggle('reduce-motion-mode', get('studyhive-reduce-motion-v1')==='1' || (window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches));
-    document.body.classList.toggle('high-contrast-mode', get('studyhive-high-contrast-v1')==='1');
+    /* WHITE-OUT FIX: the PC high-contrast-mode CSS nukes every gradient and
+       turns the whole app white — including the mobile shell. While the
+       mobile shell is active, high contrast is handled by the shell's own
+       mob-hc class instead (same setting key, shell-scoped styling). */
+    if (!document.body.classList.contains('mobile-pro-ui')) {
+      document.body.classList.toggle('high-contrast-mode', get('studyhive-high-contrast-v1')==='1');
+    } else {
+      document.body.classList.remove('high-contrast-mode');
+    }
     document.body.classList.toggle('large-text-mode', get('studyhive-large-text-v1')==='1');
   }
   function addA11ySettings(){
