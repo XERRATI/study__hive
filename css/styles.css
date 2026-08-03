@@ -653,7 +653,7 @@
 
   .sergeant-persistent {
     position: fixed; top: 50%; left: 12px; z-index: 15;
-    width: 68px; height: 68px; transform: translateY(-50%);
+    width: 56px; height: 56px; transform: translateY(-50%);
     filter: drop-shadow(0 4px 10px rgba(139,111,82,0.35));
     transition: filter 0.6s ease;
   }
@@ -4950,7 +4950,7 @@ body.night-mode .lofi-volume-box { background: rgba(244,196,48,.08); }
   .settings-row { min-height: 44px; }
   .upgrade-feature-btn { min-height: 46px; }
   /* Sergeant a touch smaller on phones so it never crowds the screen */
-  .sergeant-persistent { width: 58px; height: 58px; left: 8px; }
+  .sergeant-persistent { width: 50px; height: 50px; left: 8px; }
   /* Welcome + onboarding already fluid; ensure buttons are chunky */
   .welcome-enter-btn { min-height: 52px; }
   .onboard-nav-btn { min-height: 46px; }
