@@ -5463,7 +5463,7 @@ body.reduce-motion-mode .sg-frame.f1 { opacity: 1; animation: none; }
    f2 = TALKING (shown only while the Sergeant is speaking)
    f3 = ANGRY  (shown when his rage is high)
    The picture switches with his mood via js/60-sergeant-context.js. */
-.sergeant-persistent { width: 116px; height: 116px; }
+.sergeant-persistent { width: 132px; height: 132px; }
 .sergeant-persistent .sg-img {
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: contain; pointer-events: none; user-select: none;
@@ -5479,7 +5479,7 @@ body.reduce-motion-mode .sergeant-persistent .sg-img.f1 { opacity: 1; }
 body.reduce-motion-mode .sergeant-persistent.sgt-talking .sg-img.f2,
 body.reduce-motion-mode .sergeant-persistent.sgt-angry .sg-img.f3 { opacity: 0; }
 @media (max-width: 780px) {
-  .sergeant-persistent { width: 100px; height: 100px; left: 8px; }
+  .sergeant-persistent { width: 112px; height: 112px; left: 8px; }
 }
 
 /* ---------- QUEEN: creator's own image ---------- */

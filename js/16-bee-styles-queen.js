@@ -52,7 +52,7 @@
 
   /* Queen Story Guide: long explanation as a real guided tour, not a static map. */
   /* QUEEN AVATAR: the creator's own Queen image. */
-  var QUEEN_AVATAR = '<img class="queen-avatar-img" src="images/queen.png?v=4" alt="Queen Bee" draggable="false">';
+  var QUEEN_AVATAR = '<img class="queen-avatar-img" src="images/queen.png?v=5" alt="Queen Bee" draggable="false">';
   var STORY_STEPS=[
     ['👑','Welcome, worker bee','I am the Queen Bee. This is the royal tour of your whole hive — 33 stops, each with a Queen\'s tip. Use Next when ready, or press the arrow keys.','#welcomeEnterBtn','Queen\'s tip: you can skip the tour anytime with Skip, or tap anywhere outside this card.'],
     ['⏳','Main countdown card','This is your home base. It shows the current time, your goal title, your pledge, and the countdown to the thing you are working toward.','.card','Tip: tap the quote near the top to cycle to another quote. Tap the heart to save your favourites.'],
