@@ -148,6 +148,14 @@ This was a real bug hiding in the code, not just a "too-fast" press:
 - **🐝 5 new bee models** — 🏅 Athlete, 🎵 Musician, 🔬 Scientist, 🧭
   Explorer, 🚀 Astronaut join 🌱🎓⚗️✨👑 as your minutes grow.
 - **💬 25 new quotes** — fresh Study Hive lines in the daily rotator.
+- **🐝 Wasp redesigned** — friendlier-but-menacing cartoon wasp: round
+  head, big eyes with angry brows, yellow-banded abdomen, curved stinger.
+- **🫡 Sergeant v2 redesigned — "The Colonel"** — the test Sergeant is now
+  a distinguished veteran bee with a tilted navy beret + gold badge, a
+  monocle, a proud mustache and a campaign medal. Toggle it in Settings →
+  "Sergeant style (test)", or via the Admin 🫡 button.
+- **👑 Queen guide got her crown** — the royal tour now opens with a little
+  Queen Bee avatar whose crown sits right on her head.
 - **🐝 The Wasp (new pressure system)** — if you go **more than 9 hours**
   without logging study time, a wasp enters the hive and stings your bees one
   by one (every ~55s) until the hive is nearly empty. Log *any* session —

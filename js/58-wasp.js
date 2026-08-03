@@ -63,18 +63,29 @@
 
   /* ---------- The wasp ---------- */
   var WASP_SVG = [
-    '<svg viewBox="0 0 46 34" xmlns="http://www.w3.org/2000/svg">',
-    '  <ellipse cx="20" cy="12" rx="9" ry="6" fill="rgba(200,225,255,.85)" stroke="#9db8d4" stroke-width="1"></ellipse>',
-    '  <ellipse cx="30" cy="12" rx="9" ry="6" fill="rgba(200,225,255,.85)" stroke="#9db8d4" stroke-width="1"></ellipse>',
-    '  <ellipse cx="23" cy="20" rx="14" ry="10" fill="#1c1710"></ellipse>',
-    '  <rect x="14" y="15" width="4" height="11" rx="2" fill="#f4c430"></rect>',
-    '  <rect x="21" y="14" width="4" height="12" rx="2" fill="#f4c430"></rect>',
-    '  <rect x="28" y="15" width="4" height="11" rx="2" fill="#f4c430"></rect>',
-    '  <path d="M37 21 L46 26 L37 25 Z" fill="#1c1710"></path>',
-    '  <circle cx="35" cy="18" r="5" fill="#1c1710"></circle>',
-    '  <circle cx="35" cy="18" r="2" fill="#fff"></circle>',
-    '  <circle cx="35" cy="18" r="1" fill="#111"></circle>',
-    '  <path d="M12 13 L17 8 L19 13 Z" fill="#1c1710"></path>',
+    /* WASP REDESIGN: friendly-but-menacing cartoon wasp — round head with
+       big eyes and angry brows, yellow-banded abdomen, curved stinger. */
+    '<svg viewBox="0 0 58 42" xmlns="http://www.w3.org/2000/svg">',
+    '  <ellipse cx="17" cy="10" rx="11" ry="7" fill="rgba(208,233,255,.85)" stroke="#a9c4dd" stroke-width="1"></ellipse>',
+    '  <ellipse cx="28" cy="8" rx="11" ry="7" fill="rgba(208,233,255,.75)" stroke="#a9c4dd" stroke-width="1"></ellipse>',
+    '  <ellipse cx="34" cy="25" rx="14" ry="10" fill="#241c12"></ellipse>',
+    '  <rect x="25" y="17.5" width="4.5" height="17" rx="2.2" fill="#f4c430"></rect>',
+    '  <rect x="32" y="16.5" width="4.5" height="19" rx="2.2" fill="#f4c430"></rect>',
+    '  <rect x="39" y="17.5" width="4.5" height="17" rx="2.2" fill="#f4c430"></rect>',
+    '  <path d="M49 25 L57 29 L49 30 Z" fill="#241c12"></path>',
+    '  <ellipse cx="20" cy="26" rx="7" ry="9" fill="#241c12"></ellipse>',
+    '  <rect x="14.5" y="19" width="11" height="4.2" rx="2" fill="#f4c430"></rect>',
+    '  <circle cx="13" cy="19.5" r="7" fill="#241c12"></circle>',
+    '  <circle cx="10.6" cy="18" r="2.4" fill="#fff"></circle>',
+    '  <circle cx="10.6" cy="18" r="1.1" fill="#111"></circle>',
+    '  <circle cx="15.6" cy="18" r="2.4" fill="#fff"></circle>',
+    '  <circle cx="15.6" cy="18" r="1.1" fill="#111"></circle>',
+    '  <path d="M7.5 14.6 L11.5 16.2" stroke="#f4c430" stroke-width="1.7" stroke-linecap="round"></path>',
+    '  <path d="M18.6 14.6 L14.6 16.2" stroke="#f4c430" stroke-width="1.7" stroke-linecap="round"></path>',
+    '  <path d="M11 13.5 Q8 7.5 6 6.5" stroke="#241c12" stroke-width="1.6" fill="none" stroke-linecap="round"></path>',
+    '  <path d="M15.5 12.5 Q18.5 6.5 20.5 5.5" stroke="#241c12" stroke-width="1.6" fill="none" stroke-linecap="round"></path>',
+    '  <circle cx="6" cy="6.5" r="1.4" fill="#f4c430"></circle>',
+    '  <circle cx="20.5" cy="5.5" r="1.4" fill="#f4c430"></circle>',
     '</svg>'
   ].join('\n');
 

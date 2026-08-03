@@ -1,7 +1,7 @@
 /* =====================================================================
    Study Hive — 57-sergeant-v2.js
    TEST FEATURE: a second Sergeant — the "Squad Leader" — switchable in
-   Settings. Different look (peaked cap, aviator glasses, whistle) and a
+   Settings. Different look (navy beret, monocle, mustache, medal) and a
    few extra lines. Classic Sergeant stays the default; this is opt-in.
    Loaded from index.html in document order — do not reorder.
    ===================================================================== */
@@ -19,29 +19,35 @@
   /* The v2 Squad Leader bee: peaked cap, aviator glasses, whistle, shoulder
      boards. Same outer classes so anger states/rank badge still work. */
   var V2_SVG = [
+    /* SERGEANT V2 REDESIGN — "The Colonel": a distinguished veteran bee
+       with a tilted navy beret + gold badge, a monocle, a proud mustache
+       and a campaign medal. Completely different from the classic drill
+       sergeant (and from the old peaked-cap test version). */
     '<div class="sergeant-rank-badge" id="sergeantRankBadge">PVT</div>',
     '<div class="sergeant-steam s1"></div>',
     '<div class="sergeant-steam s2"></div>',
     '<div class="sergeant-fist left"></div>',
     '<div class="sergeant-fist right"></div>',
     '<svg class="sergeant-bob" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">',
-    '  <defs><linearGradient id="sgtV2Body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffdf6b"/><stop offset="1" stop-color="#e29b1c"/></linearGradient></defs>',
-    '  <ellipse cx="14" cy="18" rx="9" ry="6" fill="rgba(255,255,255,0.75)" stroke="#d3b995" stroke-width="1"></ellipse>',
-    '  <ellipse cx="32" cy="18" rx="9" ry="6" fill="rgba(255,255,255,0.75)" stroke="#d3b995" stroke-width="1"></ellipse>',
-    '  <ellipse cx="23" cy="26" rx="12" ry="9" fill="url(#sgtV2Body)" stroke="#6b5636" stroke-width="1"></ellipse>',
-    '  <rect x="15" y="19" width="3" height="15" fill="#2b2b2b" opacity=".85"></rect>',
-    '  <rect x="22" y="19" width="3" height="15" fill="#2b2b2b" opacity=".85"></rect>',
-    '  <rect x="29" y="19" width="3" height="15" fill="#2b2b2b" opacity=".85"></rect>',
-    '  <circle cx="33" cy="26" r="6" fill="#2b241d" stroke="#1c1710" stroke-width="1"></circle>',
-    '  <circle cx="33" cy="26" r="2.4" fill="#fff"></circle>',
-    '  <circle cx="33" cy="26" r="1.1" fill="#111"></circle>',
-    '  <path d="M13 13 L33 11 L34 16 L12 16 Z" fill="#5c6b3a" stroke="#39421f" stroke-width="1"></path>',
-    '  <path d="M13 13 L33 11 L34 12 L14 14 Z" fill="#39421f"></path>',
-    '  <rect x="30" y="9" width="8" height="4" rx="2" fill="#39421f" stroke="#2a3216" stroke-width=".8"></rect>',
-    '  <circle cx="34" cy="10.6" r="1.1" fill="#f4c430"></circle>',
-    '  <rect x="8" y="27" width="6" height="9" rx="3" fill="#5c6b3a" stroke="#39421f" stroke-width=".8"></rect>',
-    '  <rect x="9.4" y="29.5" width="3.2" height="2" rx="1" fill="#f4c430"></rect>',
-    '  <circle cx="13" cy="22" r="1.6" fill="#c1392b"></circle>',
+    '  <defs><linearGradient id="colBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe08a"/><stop offset="1" stop-color="#d99a14"/></linearGradient></defs>',
+    '  <ellipse cx="14" cy="17" rx="9" ry="6" fill="rgba(255,255,255,.78)" stroke="#d3b995" stroke-width="1"></ellipse>',
+    '  <ellipse cx="32" cy="17" rx="9" ry="6" fill="rgba(255,255,255,.78)" stroke="#d3b995" stroke-width="1"></ellipse>',
+    '  <ellipse cx="23" cy="26" rx="12" ry="9" fill="url(#colBody)" stroke="#6b5636" stroke-width="1"></ellipse>',
+    '  <rect x="16" y="19" width="3.4" height="15" fill="#3a2f22" opacity=".9" rx="1.6"></rect>',
+    '  <rect x="23.3" y="18.5" width="3.4" height="16" fill="#3a2f22" opacity=".9" rx="1.6"></rect>',
+    '  <rect x="30.6" y="19" width="3.4" height="15" fill="#3a2f22" opacity=".9" rx="1.6"></rect>',
+    '  <circle cx="19" cy="31" r="2.1" fill="#f4c430" stroke="#8a6a20" stroke-width=".8"></circle>',
+    '  <path d="M19 28.8 L20.2 30.2 L17.8 30.2 Z" fill="#8a6a20"></path>',
+    '  <circle cx="33.5" cy="24.5" r="6.6" fill="#2b241d"></circle>',
+    '  <circle cx="35.6" cy="23.5" r="2.7" fill="none" stroke="#cbbf93" stroke-width="1.1"></circle>',
+    '  <path d="M38.3 23.5 Q41.5 23.5 42 26" stroke="#cbbf93" stroke-width=".9" fill="none"></path>',
+    '  <circle cx="31" cy="23.5" r="1.9" fill="#fff"></circle>',
+    '  <circle cx="31" cy="23.5" r=".9" fill="#111"></circle>',
+    '  <path d="M29.2 28 Q33.5 31.4 37.8 28 Q36.6 30.8 33.5 30.8 Q30.4 30.8 29.2 28 Z" fill="#b9a37c"></path>',
+    '  <path d="M25.6 19.8 Q26.8 13.8 33.5 13.4 Q40.2 13.8 41.4 19.8 Z" fill="#3b4a63" stroke="#2c3850" stroke-width="1"></path>',
+    '  <path d="M25.6 19.8 Q33.5 17.6 41.4 19.8 L41.4 20.6 Q33.5 18.6 25.6 20.6 Z" fill="#2c3850"></path>',
+    '  <circle cx="33.5" cy="16.8" r="1.8" fill="#f4c430"></circle>',
+    '  <circle cx="33.5" cy="16.8" r=".8" fill="#8a6a20"></circle>',
     '</svg>'
   ].join('\n');
 
@@ -75,7 +81,7 @@
     div.innerHTML = '<div class="settings-divider"></div>' +
       '<div class="settings-section-title">🫡 Sergeant style (test)</div>' +
       '<div class="settings-row"><span class="settings-row-label">Squad Leader Sergeant</span><span class="settings-toggle" id="sergeantV2Toggle"></span></div>' +
-      '<div class="settings-small-note">Test the new-look Sergeant: peaked cap, aviator glasses and a whistle. Classic stays the default.</div>';
+      '<div class="settings-small-note">Test the new-look Sergeant: navy beret, monocle and campaign medal. Classic stays the default.</div>';
     panel.appendChild(div);
     var t = $('sergeantV2Toggle');
     function sync() { t.classList.toggle('on', isV2()); }

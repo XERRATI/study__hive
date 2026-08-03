@@ -51,6 +51,29 @@
   setInterval(updateBeeCount,4000); setTimeout(updateBeeCount,800);
 
   /* Queen Story Guide: long explanation as a real guided tour, not a static map. */
+  /* QUEEN AVATAR: a little queen bee with her crown ON her head, shown at
+     the top of every guide step. */
+  var QUEEN_AVATAR = [
+    '<svg viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">',
+    '  <defs><linearGradient id="qaBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe38b"/><stop offset="1" stop-color="#e2a91c"/></linearGradient></defs>',
+    '  <ellipse cx="14" cy="18" rx="9" ry="6" fill="rgba(255,255,255,.8)" stroke="#d3b995" stroke-width="1"></ellipse>',
+    '  <ellipse cx="32" cy="18" rx="9" ry="6" fill="rgba(255,255,255,.8)" stroke="#d3b995" stroke-width="1"></ellipse>',
+    '  <ellipse cx="23" cy="27" rx="12" ry="9" fill="url(#qaBody)" stroke="#8a6a20" stroke-width="1"></ellipse>',
+    '  <rect x="16" y="20" width="3.2" height="15" fill="#372b18" opacity=".9" rx="1.6"></rect>',
+    '  <rect x="23.3" y="19.5" width="3.2" height="16" fill="#372b18" opacity=".9" rx="1.6"></rect>',
+    '  <rect x="30.6" y="20" width="3.2" height="15" fill="#372b18" opacity=".9" rx="1.6"></rect>',
+    '  <circle cx="33.5" cy="25" r="6.4" fill="#2b241d"></circle>',
+    '  <circle cx="35.2" cy="23.6" r="1.9" fill="#fff"></circle>',
+    '  <circle cx="35.2" cy="23.6" r=".9" fill="#111"></circle>',
+    '  <circle cx="31.2" cy="23.6" r="1.9" fill="#fff"></circle>',
+    '  <circle cx="31.2" cy="23.6" r=".9" fill="#111"></circle>',
+    /* crown ON the head */
+    '  <path d="M27.6 16.4 L29.4 12.2 L32.2 14.8 L34.6 11.4 L37 14.8 L39.8 12.2 L41.6 16.4 Z" fill="#f4c430" stroke="#c97a12" stroke-width="1"></path>',
+    '  <path d="M27.6 16.4 L41.6 16.4 L41.6 17.6 L27.6 17.6 Z" fill="#f4c430" stroke="#c97a12" stroke-width=".8"></path>',
+    '  <circle cx="30.2" cy="13.4" r="1.1" fill="#e2362a"></circle>',
+    '  <circle cx="37.8" cy="13.4" r="1.1" fill="#e2362a"></circle>',
+    '</svg>'
+  ].join('\n');
   var STORY_STEPS=[
     ['👑','Welcome, worker bee','I am the Queen Bee. This is the royal tour of your whole hive — 33 stops, each with a Queen\'s tip. Use Next when ready, or press the arrow keys.','#welcomeEnterBtn','Queen\'s tip: you can skip the tour anytime with Skip, or tap anywhere outside this card.'],
     ['⏳','Main countdown card','This is your home base. It shows the current time, your goal title, your pledge, and the countdown to the thing you are working toward.','.card','Tip: tap the quote near the top to cycle to another quote. Tap the heart to save your favourites.'],
@@ -90,7 +113,7 @@
   var idx=0;
   function ensureOverlay(){
     if($('queenStoryOverlay')) return;
-    document.body.insertAdjacentHTML('beforeend','<div class="queen-story-overlay" id="queenStoryOverlay"><div class="queen-story-spotlight" id="queenStorySpot"></div><div class="queen-story-card" id="queenStoryCard"><div class="queen-story-icon" id="queenStoryIcon">👑</div><div class="queen-story-progress" id="queenStoryProgress"></div><div class="queen-story-track"><div class="queen-story-fill" id="queenStoryFill"></div></div><h3 id="queenStoryTitle"></h3><p id="queenStoryBody"></p><div class="queen-story-tip" id="queenStoryTip" style="display:none;"></div><div class="queen-story-actions"><button class="ghost" id="queenStoryTry" style="display:none;">✨ Try it now</button><button class="secondary" id="queenStoryBack">Back</button><button id="queenStoryNext">Next</button><button class="secondary" id="queenStorySkip">Skip</button></div></div></div>');
+    document.body.insertAdjacentHTML('beforeend','<div class="queen-story-overlay" id="queenStoryOverlay"><div class="queen-story-spotlight" id="queenStorySpot"></div><div class="queen-story-card" id="queenStoryCard"><div class="queen-story-avatar" id="queenStoryAvatar" aria-hidden="true">'+QUEEN_AVATAR+'</div><div class="queen-story-icon" id="queenStoryIcon">👑</div><div class="queen-story-progress" id="queenStoryProgress"></div><div class="queen-story-track"><div class="queen-story-fill" id="queenStoryFill"></div></div><h3 id="queenStoryTitle"></h3><p id="queenStoryBody"></p><div class="queen-story-tip" id="queenStoryTip" style="display:none;"></div><div class="queen-story-actions"><button class="ghost" id="queenStoryTry" style="display:none;">✨ Try it now</button><button class="secondary" id="queenStoryBack">Back</button><button id="queenStoryNext">Next</button><button class="secondary" id="queenStorySkip">Skip</button></div></div></div>');
     $('queenStoryBack').onclick=function(){ if(idx>0){idx--; renderStory();} };
     $('queenStoryNext').onclick=function(){ if(idx<STORY_STEPS.length-1){idx++; renderStory();} else closeStory(); };
     $('queenStorySkip').onclick=closeStory;
