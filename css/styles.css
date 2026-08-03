@@ -5487,7 +5487,20 @@ body.mobile-pro-ui .buddy-bee-wrap,
 body.mobile-pro-ui .footer-note,
 body.mobile-pro-ui .legal-links,
 body.mobile-pro-ui .quote-rotator,
-body.mobile-pro-ui .card {
+body.mobile-pro-ui .card,
+/* GLITCH FIX: stray desktop widgets that were floating over the shell */
+body.mobile-pro-ui .rage-meter,
+body.mobile-pro-ui .hive-population-badge,
+body.mobile-pro-ui .sergeant-nag-bubble,
+body.mobile-pro-ui .xp-bar-track,
+body.mobile-pro-ui .streak-unit,
+body.mobile-pro-ui .focus-meter-track,
+body.mobile-pro-ui .weather-tint,
+body.mobile-pro-ui .achievement-toast,
+body.mobile-pro-ui .app-error-toast,
+body.mobile-pro-ui .queen-sparkle,
+body.mobile-pro-ui .sergeant-fist,
+body.mobile-pro-ui .sergeant-steam {
   display: none !important;
 }
 /* keep the hive button, bees, sergeant, wasp, night sky */
