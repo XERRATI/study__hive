@@ -192,7 +192,7 @@
         localStorage.setItem('studyhive-sergeant-v2-v1', on?'0':'1');
         document.body.classList.toggle('sergeant-v2', !on);
         try{ var apply=document.querySelector('.settings-toggle#sergeantV2Toggle'); if(apply) apply.classList.toggle('on', !on); }catch(e){}
-        toast('🫡 Squad Leader Sergeant '+(on?'OFF':'ON'));
+        toast('🫡 Sergeant calm pose '+(on?'OFF':'ON'));
         setTimeout(function(){ location.reload(); }, 800);
       };
       /* ---------------- ADMIN: Bee styles (complete the set) ---------------- */
