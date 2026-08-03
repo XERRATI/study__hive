@@ -837,6 +837,51 @@
   window.isSessionActive = function() {
     return !!sessionInterval && sessionRemaining > 0;
   };
+  /* PAUSE / RESUME (used by the mobile timer page). Pausing stops the
+     countdown without crediting anything; resuming continues from where
+     it stopped. */
+  var pausedRemaining = 0;
+  window.pauseSession = function() {
+    if (!sessionInterval || sessionRemaining <= 0) return false;
+    clearInterval(sessionInterval);
+    sessionInterval = null;
+    pausedRemaining = sessionRemaining;
+    window.sessionInterval = null;
+    return true;
+  };
+  window.resumeSession = function() {
+    if (sessionInterval || pausedRemaining <= 0) return false;
+    sessionRemaining = pausedRemaining;
+    pausedRemaining = 0;
+    sessionTotal = Math.max(sessionTotal, sessionRemaining);
+    window.sessionRemaining = sessionRemaining;
+    window.sessionTotal = sessionTotal;
+    focusSession.classList.add('active');
+    updateSessionDisplay();
+    sessionInterval = setInterval(function() {
+      sessionRemaining--;
+      window.sessionRemaining = sessionRemaining;
+      cumulativeSeconds++;
+      updateSessionDisplay();
+      updateMeter();
+      if (window.updateTabTitle) window.updateTabTitle();
+      if (sessionRemaining <= 0) {
+        clearInterval(sessionInterval);
+        sessionInterval = null;
+        window.sessionInterval = null;
+        window.sessionRemaining = 0;
+        pausedRemaining = 0;
+        focusSession.classList.remove('active');
+        presetBtns.forEach(function(b) { b.classList.remove('active'); });
+        var subject = subjectSelect.value;
+        recordStudyCompleted(subject, Math.round(sessionTotal / 60));
+        if (window.maybeNotify) window.maybeNotify('Focus session complete — nice work! 🎯');
+        if (window.updateTabTitle) window.updateTabTitle();
+      }
+    }, 1000);
+    return true;
+  };
+  window.isPaused = function() { return pausedRemaining > 0; };
 
   // Hive Motivation
   var motivationBubble = document.getElementById('motivationBubble');

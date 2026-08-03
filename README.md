@@ -159,6 +159,14 @@ This was a real bug hiding in the code, not just a "too-fast" press:
   the hive throws a dance party: they bounce, leap and wiggle (each on its
   own beat), emoji confetti rains down, and a celebration card shows how
   many minutes you locked in.
+- **📱 Professional mobile UI (new shell)** — the moment mobile layout is
+  on (auto on phones, or the toggle in Settings), the app becomes a
+  native-feeling app: bottom tab bar (Home · Tools · Focus · Stats ·
+  Settings), a hero countdown dashboard with live stats (today, streak,
+  XP, bees), a tappable quote card, quick actions, a 20-tool grid, a
+  full focus-timer page with presets + pause/resume/extend + lock-in,
+  a progress page (level, XP bar, sessions, achievements), and a settings
+  page. Desktop is completely untouched.
 - **🐝 Reverted to the original bee characters** — the PNG picture
   experiment is gone. The Sergeant is back to the classic hand-drawn SVG
   drill-sergeant bee (bob animation, anger states, cap, medals), and the
