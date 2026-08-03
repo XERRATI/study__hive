@@ -159,6 +159,12 @@ This was a real bug hiding in the code, not just a "too-fast" press:
   the hive throws a dance party: they bounce, leap and wiggle (each on its
   own beat), emoji confetti rains down, and a celebration card shows how
   many minutes you locked in.
+- **📱 Mobile reset to the stable layout + polish** — the experimental
+  mobile shell was removed completely. Mobile is back to the proven,
+  glitch-free layout (desktop card, flying bees, hive, sergeant, feature
+  launcher with the Tools sheet). Improvements on top: the launcher now
+  hides during the welcome screen and onboarding, and tool panels open
+  above the launcher.
 - **🐝 Full hive on mobile (premium)** — the mobile shell now keeps ALL
   the PC ambience: the real countdown card embedded in Home, flying new &
   old bees, the tap-able hive button (bottom-right, honey glow), the hive
