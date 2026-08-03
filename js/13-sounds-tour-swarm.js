@@ -54,7 +54,7 @@
   rebuildMusicMenu(); setTimeout(rebuildMusicMenu,1000);
   // disabled old background auto-start; V4 music engine handles audio reliably
   var bgBtn=$('bgMusicToggle'); if(bgBtn){ bgBtn.onclick=function(e){ e.stopPropagation(); audio.enabled=!audio.enabled; storageSet('studyhive-bg-music-v1', audio.enabled?'1':'0'); if(audio.enabled) startBg(); else stopBg(); updateMusicUI(); clickSound('panel'); }; }
-  var vol=$('bgMusicVolume'); if(vol){ vol.value=storageGet('studyhive-bg-volume-v1')||'34'; vol.oninput=function(e){ e.stopPropagation(); storageSet('studyhive-bg-volume-v1', this.value); if(audio.bg&&audio.bg.gain) audio.bg.gain.value=(parseInt(this.value,10)/100)*0.26; }; }
+  var vol=$('bgMusicVolume'); if(vol){ vol.value=storageGet('studyhive-bg-volume-v1')||'30'; vol.oninput=function(e){ e.stopPropagation(); storageSet('studyhive-bg-volume-v1', this.value); if(audio.bg&&audio.bg.gain) audio.bg.gain.value=(parseInt(this.value,10)/100)*0.26; var pct=document.getElementById('bgVolumePct'); if(pct) pct.textContent=this.value+'%'; var lv=document.getElementById('lofiVolumeValue'); if(lv) lv.textContent=this.value+'%'; var sl=document.getElementById('lofiVolumeSlider'); if(sl) sl.value=this.value; }; }
 
   /* Sound for buttons, panels, and sergeant talking (not speech). */
   document.addEventListener('click', function(e){ var b=e.target.closest&&e.target.closest('button,.settings-toggle,.lofi-track-btn,.mood-btn,.water-glass'); if(b) clickSound(b.id&&b.id.indexOf('sergeant')>=0?'sergeant':(b.closest&&b.closest('.misc-panel')?'panel':'click')); }, true);

@@ -2686,7 +2686,7 @@
   /* Rare queen fly-by */
   .queen-visit { position:fixed; inset:0; z-index:210; pointer-events:none; display:none; overflow:hidden; }
   .queen-visit.show { display:block; }
-  .queen-visitor { position:absolute; left:-90px; top:20vh; width:170px; height:170px; font-size:64px; filter:drop-shadow(0 0 12px rgba(244,196,48,.9)) drop-shadow(0 8px 18px rgba(0,0,0,.26)); animation:queenFlyAcross 38s ease-in-out infinite; }
+  .queen-visitor { position:absolute; left:-90px; top:20vh; font-size:64px; filter:drop-shadow(0 0 12px rgba(244,196,48,.9)) drop-shadow(0 8px 18px rgba(0,0,0,.26)); animation:queenFlyAcross 38s ease-in-out infinite; }
   .queen-banner { position:absolute; left:50%; top:72px; transform:translateX(-50%); background:linear-gradient(145deg,#ffe58a,#e29b1c); color:#4a310d; border-radius:20px; padding:12px 20px; font-family:'Baloo 2',sans-serif; font-weight:900; box-shadow:0 18px 44px rgba(226,155,28,.42); opacity:.96; text-align:center; }
   @keyframes queenFlyAcross { 0%{ transform:translate(-120px,10vh) rotate(-8deg) scale(.8)} 20%{ transform:translate(28vw,-8vh) rotate(7deg) scale(1.05)} 45%{ transform:translate(70vw,18vh) rotate(-4deg) scale(.96)} 70%{ transform:translate(35vw,48vh) rotate(8deg) scale(1.08)} 100%{ transform:translate(115vw,5vh) rotate(-8deg) scale(.8)} }
   .queen-sparkle { position:fixed; z-index:211; pointer-events:none; color:#ffd75e; animation:queenSpark 1.2s ease-out forwards; }
@@ -4866,34 +4866,7 @@ body.night-mode .lofi-volume-box { background: rgba(244,196,48,.08); }
 .hive-bee-el.model-astronaut { filter: drop-shadow(0 0 6px rgba(150,190,255,.55)); }
 
 /* ---------- SERGEANT VISUAL UPGRADE (classic) ---------- */
-.sergeant-persistent {
-  filter: drop-shadow(0 4px 10px rgba(139,111,82,0.35));
-  transition: filter .6s ease, transform .25s ease;
-}
-.sergeant-persistent:hover { filter: drop-shadow(0 0 16px rgba(244,196,48,.55)) drop-shadow(0 4px 10px rgba(139,111,82,.3)); transform: translateY(-50%) scale(1.06); }
-.sergeant-persistent .sergeant-bob { filter: drop-shadow(0 2px 3px rgba(60,40,10,.25)); }
-.sergeant-rank-badge {
-  position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
-  background: #6b5a3e; color: #fffaf2; font-size: 9px; font-weight: 900;
-  padding: 2px 7px; border-radius: 8px; letter-spacing: .5px;
-  font-family: 'Baloo 2', 'Fredoka', sans-serif; white-space: nowrap;
-  box-shadow: 0 2px 6px rgba(0,0,0,.25); border: 1px solid rgba(255,255,255,.25);
-  z-index: 3;
-}
-.sergeant-rank-badge[data-rank="1"] { background: #7a6a50; }
-.sergeant-rank-badge[data-rank="2"] { background: #a8874f; }
-.sergeant-rank-badge[data-rank="3"] { background: linear-gradient(135deg,#d9b45c,#b8862f); border-color:#ffe9b0; }
-.sergeant-rank-badge[data-rank="4"] { background: linear-gradient(135deg,#c0c9d6,#8d99ab); border-color:#fff; }
-.sergeant-persistent .sergeant-fist { opacity:.85; }
 
-/* ---------- SERGEANT V2 (Squad Leader, test feature) ---------- */
-body.sergeant-v2 .sergeant-persistent { filter: drop-shadow(0 0 14px rgba(92,107,58,.5)) drop-shadow(0 4px 10px rgba(139,111,82,.3)); }
-body.sergeant-v2 .sergeant-persistent .sergeant-bob { animation: sergeantBob 2.2s ease-in-out infinite; }
-body.sergeant-v2 .sergeant-persistent .sergeant-rank-badge { background: #5c6b3a; border-color: rgba(255,255,255,.3); }
-body.sergeant-v2 .sergeant-persistent.anger-1 .sergeant-bob { animation-duration: 1.2s; }
-body.sergeant-v2 .sergeant-persistent.anger-2 .sergeant-bob { animation-duration: .8s; }
-body.sergeant-v2 .sergeant-persistent.anger-3 .sergeant-bob { animation-duration: .55s; }
-body.sergeant-v2 .sergeant-persistent.anger-4 .sergeant-bob { animation-duration: .42s; }
 
 /* ---------- NIGHT SKY: richer stars, moon, shooting stars, planets ---------- */
 .night-sky-layer::before {
@@ -5266,12 +5239,7 @@ body.reduce-motion-mode .hive-bee-el .bee-wing-art {
 .hive-bee-el.type-queen .bee-crown-art { top: 9px; left: 28px; font-size: 13px; }
 
 /* ---------- Queen guide avatar (crowned queen bee) ---------- */
-.queen-story-avatar { width: 96px; height: 96px; margin: 0 auto 2px; }
-.queen-story-avatar svg {
-  width: 100%; height: 100%;
-  animation: queenFloat 2.4s ease-in-out infinite;
-  filter: drop-shadow(0 4px 10px rgba(244,196,48,.55));
-}
+.queen-story-avatar { display: none; }
 .queen-story-card .queen-story-icon { font-size: 24px; animation: none; }
 
 /* ---------- Wasp: size matches the new artwork ---------- */
@@ -5458,30 +5426,6 @@ body.lockin-mode .dock-toggle-btn { opacity: 0 !important; pointer-events: none 
 body.reduce-motion-mode .sg-frame.f2, body.reduce-motion-mode .sg-frame.f3 { display: none; }
 body.reduce-motion-mode .sg-frame.f1 { opacity: 1; animation: none; }
 
-/* ---------- SERGEANT: creator's images, CONTEXT-BASED (no cycling) ----------
-   f1 = IDLE   (default calm pose)
-   f2 = TALKING (shown only while the Sergeant is speaking)
-   f3 = ANGRY  (shown when his rage is high)
-   The picture switches with his mood via js/60-sergeant-context.js. */
-.sergeant-persistent { width: 132px; height: 132px; }
-.sergeant-persistent .sg-img {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: contain; pointer-events: none; user-select: none;
-  opacity: 0; transition: opacity .28s ease;
-}
-.sergeant-persistent.sgt-idle .sg-img.f1 { opacity: 1; }
-.sergeant-persistent.sgt-talking .sg-img.f2 { opacity: 1; }
-.sergeant-persistent.sgt-angry .sg-img.f3 { opacity: 1; }
-/* angry sergeant shakes instead of cycling pictures */
-.sergeant-persistent.sgt-angry .sergeant-bob { animation: sergeantShakeSmall .45s ease-in-out infinite; }
-body.reduce-motion-mode .sergeant-persistent .sg-img { transition: none; }
-body.reduce-motion-mode .sergeant-persistent .sg-img.f1 { opacity: 1; }
-body.reduce-motion-mode .sergeant-persistent.sgt-talking .sg-img.f2,
-body.reduce-motion-mode .sergeant-persistent.sgt-angry .sg-img.f3 { opacity: 0; }
-@media (max-width: 780px) {
-  .sergeant-persistent { width: 112px; height: 112px; left: 8px; }
-}
-
 /* ---------- QUEEN: creator's own image ---------- */
 .queen-story-avatar .queen-avatar-img {
   width: 100%; height: 100%; object-fit: contain;
@@ -5494,3 +5438,13 @@ body.reduce-motion-mode .sergeant-persistent.sgt-angry .sg-img.f3 { opacity: 0; 
   filter: drop-shadow(0 4px 10px rgba(244,196,48,.6));
   animation: queenFloat 2.4s ease-in-out infinite;
 }
+
+/* ---------- Music volume slider (labeled, low-but-audible default) ---------- */
+.bg-volume-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin: 6px 0 2px; font-size: 12px; font-weight: 850; color: var(--deep-brown);
+}
+body.night-mode .bg-volume-row { color: #e8c89a; }
+.bg-volume-pct { color: var(--brown); font-weight: 800; min-width: 34px; text-align: right; }
+body.night-mode .bg-volume-pct { color: #94a3b8; }
+.bg-volume { width: 100%; accent-color: var(--honey2); height: 26px; }

@@ -44,7 +44,7 @@
   /* Obvious master music volume in Hive Controls. */
   function ensureMusicSlider(){
     var panel=$('hiveMenuPanel'); if(!panel || $('masterMusicVolume')) return;
-    var current = localStorage.getItem('studyhive-master-volume-v1') || localStorage.getItem('studyhive-custom-bg-volume-v1') || localStorage.getItem('studyhive-bg-volume-v1') || '32';
+    var current = localStorage.getItem('studyhive-master-volume-v1') || localStorage.getItem('studyhive-custom-bg-volume-v1') || localStorage.getItem('studyhive-bg-volume-v1') || '30';
     var html='<div class="music-volume-box"><label><span>🎚️ Music volume</span><span class="music-volume-value" id="masterMusicVolumeValue">'+current+'%</span></label><input id="masterMusicVolume" type="range" min="0" max="100" value="'+current+'"></div>';
     var bg=document.querySelector('.bg-music-mini');
     if(bg) bg.insertAdjacentHTML('afterend', html); else panel.insertAdjacentHTML('afterbegin', html);
@@ -55,6 +55,9 @@
       localStorage.setItem('studyhive-bg-volume-v1', v);
       var val=$('masterMusicVolumeValue'); if(val) val.textContent=v+'%';
       var old=$('bgMusicVolume'); if(old) old.value=v;
+      var pct=$('bgVolumePct'); if(pct) pct.textContent=v+'%';
+      var lv=$('lofiVolumeValue'); if(lv) lv.textContent=v+'%';
+      var sl=$('lofiVolumeSlider'); if(sl) sl.value=v;
       var audio=$('customUploadedBackgroundMusic'); if(audio) audio.volume=parseInt(v,10)/100;
       try { if(window.StudyHiveCustomMusic && window.StudyHiveCustomMusic.audio) window.StudyHiveCustomMusic.audio().volume=parseInt(v,10)/100; } catch(e){}
     });

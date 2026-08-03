@@ -159,6 +159,11 @@ This was a real bug hiding in the code, not just a "too-fast" press:
   the hive throws a dance party: they bounce, leap and wiggle (each on its
   own beat), emoji confetti rains down, and a celebration card shows how
   many minutes you locked in.
+- **🐝 Reverted to the original bee characters** — the PNG picture
+  experiment is gone. The Sergeant is back to the classic hand-drawn SVG
+  drill-sergeant bee (bob animation, anger states, cap, medals), and the
+  Queen guide + rare Queen fly-by use the original bee emoji. No image
+  files needed.
 - **👑 Queen = your actual image** — the app now uses your Queen PNG
   (`images/queen.png`) in the Queen guide avatar and the rare Queen fly-by
   banner. (An old patch that force-replaced the Queen with emoji every 1.5s

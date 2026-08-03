@@ -540,8 +540,8 @@
   /* LOUDNESS CONTROL: all lofi tracks scale through this. Default 35% —
      soft but clearly audible. Slider lives in the Lofi Player panel. */
   function lofiVol(){
-    var v = parseInt(localStorage.getItem('studyhive-bg-volume-v1') || '35', 10);
-    if (isNaN(v)) v = 35;
+    var v = parseInt(localStorage.getItem('studyhive-bg-volume-v1') || '30', 10);
+    if (isNaN(v)) v = 30;
     return Math.max(0, Math.min(2.5, v / 40));
   }
   window.lofiVol = lofiVol;
@@ -715,7 +715,7 @@
     function ensureLofiVolume(){
       var panel=document.getElementById('musicPanel');
       if(!panel || document.getElementById('lofiVolumeSlider')) return;
-      var v=parseInt(localStorage.getItem('studyhive-bg-volume-v1')||'35',10); if(isNaN(v)) v=35;
+      var v=parseInt(localStorage.getItem('studyhive-bg-volume-v1')||'30',10); if(isNaN(v)) v=30;
       var box=document.createElement('div'); box.className='lofi-volume-box';
       box.innerHTML='<label>🎚️ Volume</label><input id="lofiVolumeSlider" type="range" min="0" max="100" value="'+v+'"><span class="lofi-volume-value" id="lofiVolumeValue">'+v+'%</span>';
       var h4=panel.querySelector('h4'); if(h4) h4.insertAdjacentElement('afterend', box); else panel.insertAdjacentElement('afterbegin', box);
