@@ -148,6 +148,17 @@ This was a real bug hiding in the code, not just a "too-fast" press:
 - **🐝 5 new bee models** — 🏅 Athlete, 🎵 Musician, 🔬 Scientist, 🧭
   Explorer, 🚀 Astronaut join 🌱🎓⚗️✨👑 as your minutes grow.
 - **💬 25 new quotes** — fresh Study Hive lines in the daily rotator.
+- **⏳ Extend your timer** — the Focus panel now has **+5 min / +10 min**
+  buttons so you can extend a session without losing your progress. They
+  also live inside Lock-in mode.
+- **🔒 Lock-in mode (timer only)** — a full-screen, distraction-free focus
+  timer for people who want to lock in. Everything else dims away; just you
+  and the clock. Enter it from the Focus panel ("🔒 Lock in — Timer only"),
+  extend with +5/+10, and exit with a double-tap.
+- **🐝 The bees dance for you** — when a Lock-in timer finishes, every bee in
+  the hive throws a dance party: they bounce, leap and wiggle (each on its
+  own beat), emoji confetti rains down, and a celebration card shows how
+  many minutes you locked in.
 - **🐝 Wasp redesigned** — friendlier-but-menacing cartoon wasp: round
   head, big eyes with angry brows, yellow-banded abdomen, curved stinger.
 - **🫡 Sergeant v2 redesigned — "The Colonel"** — the test Sergeant is now

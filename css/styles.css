@@ -5273,3 +5273,126 @@ body.reduce-motion-mode .hive-bee-el .bee-wing-art {
 
 /* ---------- Wasp: size matches the new artwork ---------- */
 .wasp { width: 56px; height: 41px; }
+
+/* ==========================================================================
+   ROUND 7 — Extend timer, Lock-in mode, bee dance celebration
+   ========================================================================== */
+
+/* ---------- Extend buttons in Focus panel ---------- */
+.lockin-extend-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+.lockin-extend-row button {
+  flex: 1; min-height: 42px; border: none; border-radius: 14px; cursor: pointer;
+  font-family: 'Fredoka', sans-serif; font-weight: 900; font-size: 13px;
+  background: linear-gradient(135deg, #f4c430, #e29b1c); color: var(--pearl);
+  touch-action: manipulation;
+}
+.lockin-extend-row button:active { transform: scale(.94); }
+.lockin-extend-row .lockin-extend-hint { width: 100%; font-size: 11px; color: var(--brown); text-align: center; }
+
+/* ---------- Lock-in button ---------- */
+.lockin-btn {
+  width: 100%; min-height: 48px; margin-top: 10px; border: none; border-radius: 16px;
+  cursor: pointer; font-family: 'Fredoka', sans-serif; font-weight: 900; font-size: 14px;
+  color: #fffaf2;
+  background: linear-gradient(135deg, #2f3b4f, #1d2634);
+  box-shadow: 0 6px 18px rgba(29,38,52,.35);
+  touch-action: manipulation;
+}
+.lockin-btn:hover { filter: brightness(1.12); }
+.lockin-btn:active { transform: scale(.96); }
+body.night-mode .lockin-btn { background: linear-gradient(135deg, #3b4a63, #2c3850); }
+
+/* ---------- Lock-in full-screen overlay ---------- */
+.lockin-overlay {
+  position: fixed; inset: 0; z-index: 950; display: none;
+  align-items: center; justify-content: center; padding: 20px;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(244,196,48,.14), transparent 55%),
+    linear-gradient(160deg, #141b26 0%, #0e1420 60%, #0a0e16 100%);
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+}
+.lockin-overlay.show { display: flex; }
+.lockin-card {
+  width: min(420px, 94vw); text-align: center; color: #e8c89a;
+  border-radius: 30px; padding: 26px 22px 22px;
+  background: rgba(255,250,242,.05);
+  border: 1px solid rgba(244,196,48,.22);
+  box-shadow: 0 30px 80px rgba(0,0,0,.5);
+  margin: auto;
+}
+.lockin-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.lockin-lock { font-size: 12px; font-weight: 900; letter-spacing: 2px; color: #f4c430; }
+.lockin-exit {
+  border: none; border-radius: 12px; padding: 8px 14px; cursor: pointer;
+  font-family: 'Fredoka', sans-serif; font-weight: 800; font-size: 12px;
+  background: rgba(255,255,255,.08); color: #cdd6e4; touch-action: manipulation;
+}
+.lockin-exit:active { transform: scale(.94); }
+.lockin-time {
+  font-family: 'Baloo 2', sans-serif; font-weight: 900;
+  font-size: clamp(4.2rem, 20vw, 7rem); line-height: 1; color: #fffaf2;
+  text-shadow: 0 0 34px rgba(244,196,48,.35); margin: 6px 0 2px;
+}
+.lockin-label { font-size: 13px; color: #b7c2d4; margin-bottom: 16px; letter-spacing: .5px; }
+.lockin-progress { height: 10px; border-radius: 8px; background: rgba(255,255,255,.08); overflow: hidden; margin-bottom: 16px; }
+.lockin-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #f4c430, #e29b1c); border-radius: 8px; transition: width .4s ease; }
+.lockin-extend-row { display: flex; gap: 10px; }
+.lockin-extend-row button {
+  flex: 1; min-height: 48px; border: none; border-radius: 16px; cursor: pointer;
+  font-family: 'Fredoka', sans-serif; font-weight: 900; font-size: 14px;
+  background: rgba(244,196,48,.16); color: #f4c430; touch-action: manipulation;
+}
+.lockin-extend-row button:active { transform: scale(.94); background: rgba(244,196,48,.28); }
+.lockin-done { margin-top: 18px; }
+.lockin-done-emoji { font-size: 44px; animation: lockinDonePop .5s cubic-bezier(.2,.9,.3,1.4); }
+@keyframes lockinDonePop { from { transform: scale(.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.lockin-done-text { font-size: 16px; font-weight: 800; color: #fffaf2; margin: 8px 0 14px; }
+.lockin-done button {
+  min-height: 50px; width: 100%; border: none; border-radius: 16px; cursor: pointer;
+  font-family: 'Fredoka', sans-serif; font-weight: 900; font-size: 14px;
+  background: linear-gradient(135deg, #f4c430, #e29b1c); color: var(--pearl);
+  touch-action: manipulation;
+}
+
+/* ---------- Bee dance celebration ---------- */
+.bee-dance-party .hive-bee-el {
+  animation: beeDance .55s ease-in-out infinite alternate !important;
+  animation-delay: calc(var(--bee-dance-i, 0) * .09s) !important;
+  z-index: 70;
+}
+.bee-dance-party .bee-wrap {
+  animation: beeDanceRoam 1.5s ease-in-out infinite !important;
+  z-index: 70;
+}
+@keyframes beeDance {
+  from { transform: translateY(0) rotate(-10deg) scale(1); }
+  to { transform: translateY(-16px) rotate(12deg) scale(1.12); }
+}
+@keyframes beeDanceRoam {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  25%  { transform: translate(22px, -20px) rotate(18deg); }
+  50%  { transform: translate(-14px, -34px) rotate(-14deg); }
+  75%  { transform: translate(-26px, -14px) rotate(-22deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+.bee-dance-party .hive-bee-el:nth-child(2n) { --bee-dance-i: 1; }
+.bee-dance-party .hive-bee-el:nth-child(3n) { --bee-dance-i: 2; }
+.bee-dance-party .hive-bee-el:nth-child(4n) { --bee-dance-i: 3; }
+.lockin-confetti {
+  position: fixed; z-index: 960; pointer-events: none;
+  animation: lockinConfetti 1.5s ease-out forwards;
+}
+@keyframes lockinConfetti {
+  0% { transform: translate(0, 0) rotate(0) scale(.6); opacity: 1; }
+  100% { transform: translate(var(--cf-x, 40px), var(--cf-y, 80px)) rotate(160deg) scale(1.2); opacity: 0; }
+}
+/* During lock-in, dim everything else so it's truly timer-only */
+body.lockin-mode .card, body.lockin-mode .mobile-feature-launcher,
+body.lockin-mode .tools-dock-bar, body.lockin-mode .hive-wrap,
+body.lockin-mode .sergeant-persistent, body.lockin-mode .misc-panel,
+body.lockin-mode .misc-btn, body.lockin-mode .focus-btn, body.lockin-mode .grade-btn,
+body.lockin-mode .breathing-btn, body.lockin-mode .sos-btn, body.lockin-mode .hive-menu-btn,
+body.lockin-mode .hive-progress-wrap, body.lockin-mode .xp-bar-track, body.lockin-mode .level-badge,
+body.lockin-mode .goal-wrap, body.lockin-mode .mood-tracker, body.lockin-mode .weather-widget,
+body.lockin-mode .pomodoro-widget, body.lockin-mode .buddy-bee-wrap,
+body.lockin-mode .dock-toggle-btn { opacity: 0 !important; pointer-events: none !important; }

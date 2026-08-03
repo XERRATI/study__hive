@@ -821,6 +821,23 @@
     if (window.updateTabTitle) window.updateTabTitle();
   });
 
+  /* EXTEND TIMER + SESSION HOOKS (used by the +5/+10 buttons and Lock-in mode):
+     the interval reads the local sessionRemaining/sessionTotal, so we expose
+     controlled accessors from inside this closure. */
+  window.extendSession = function(mins) {
+    if (!sessionInterval || sessionRemaining <= 0) return false;
+    var m = Math.max(1, Math.round(mins));
+    sessionRemaining += m * 60;
+    sessionTotal += m * 60;
+    window.sessionRemaining = sessionRemaining;
+    window.sessionTotal = sessionTotal;
+    updateSessionDisplay();
+    return true;
+  };
+  window.isSessionActive = function() {
+    return !!sessionInterval && sessionRemaining > 0;
+  };
+
   // Hive Motivation
   var motivationBubble = document.getElementById('motivationBubble');
   var motivationTimeout = null;
