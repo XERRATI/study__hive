@@ -75,7 +75,7 @@
         out.push('🧪 FULL APP TEST RUN — '+(new Date().toLocaleTimeString()));
         out.push('────────────────────────');
         var scripts=Array.prototype.slice.call(document.scripts).filter(function(s){return s.src&&s.src.indexOf('/js/')>-1;});
-        out.push(ok('Scripts loaded', scripts.length===56, scripts.length+' of 56'));
+        out.push(ok('Scripts loaded', scripts.length===57, scripts.length+' of 57'));
         var cssLoaded=Array.prototype.slice.call(document.styleSheets).some(function(sh){return sh.href&&sh.href.indexOf('styles.css')>-1;});
         out.push(ok('Stylesheet loaded', cssLoaded));
         var ls='blocked'; try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); ls='ok'; }catch(e){}

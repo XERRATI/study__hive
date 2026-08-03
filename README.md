@@ -159,6 +159,17 @@ This was a real bug hiding in the code, not just a "too-fast" press:
   the hive throws a dance party: they bounce, leap and wiggle (each on its
   own beat), emoji confetti rains down, and a celebration card shows how
   many minutes you locked in.
+- **📱 THE MOBILE APP (final design) is now live in the app** — the moment
+  mobile layout is on, the whole app becomes the new mobile experience:
+  welcome-back screen, smart greeting, giant focus timer with Start→Stop
+  in place, countdown card, quote, honey stats, generative focus music
+  player with volume, animated hive zone, the honeycomb screen (real
+  subjects as cells with real minutes + working bees), an improved Garden
+  World screen, Calm & Breathe screens, Stats, Coach, Settings with clock
+  + high-contrast toggles, a 7-item bottom bar, the ☰ drawer with
+  Screens/Quick/All tools (all wired to the real panels), and the new
+  Queen guide with both a Spotlight tour and a Word tour. Lock-in is the
+  real one (portrait-only, bees dance on finish). Desktop untouched.
 - **📱 Mobile reset to the stable layout + polish** — the experimental
   mobile shell was removed completely. Mobile is back to the proven,
   glitch-free layout (desktop card, flying bees, hive, sergeant, feature
