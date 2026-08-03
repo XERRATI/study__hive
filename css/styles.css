@@ -2686,7 +2686,7 @@
   /* Rare queen fly-by */
   .queen-visit { position:fixed; inset:0; z-index:210; pointer-events:none; display:none; overflow:hidden; }
   .queen-visit.show { display:block; }
-  .queen-visitor { position:absolute; left:-90px; top:20vh; width:120px; height:120px; font-size:64px; filter:drop-shadow(0 0 12px rgba(244,196,48,.9)) drop-shadow(0 8px 18px rgba(0,0,0,.26)); animation:queenFlyAcross 38s ease-in-out infinite; }
+  .queen-visitor { position:absolute; left:-90px; top:20vh; width:170px; height:170px; font-size:64px; filter:drop-shadow(0 0 12px rgba(244,196,48,.9)) drop-shadow(0 8px 18px rgba(0,0,0,.26)); animation:queenFlyAcross 38s ease-in-out infinite; }
   .queen-banner { position:absolute; left:50%; top:72px; transform:translateX(-50%); background:linear-gradient(145deg,#ffe58a,#e29b1c); color:#4a310d; border-radius:20px; padding:12px 20px; font-family:'Baloo 2',sans-serif; font-weight:900; box-shadow:0 18px 44px rgba(226,155,28,.42); opacity:.96; text-align:center; }
   @keyframes queenFlyAcross { 0%{ transform:translate(-120px,10vh) rotate(-8deg) scale(.8)} 20%{ transform:translate(28vw,-8vh) rotate(7deg) scale(1.05)} 45%{ transform:translate(70vw,18vh) rotate(-4deg) scale(.96)} 70%{ transform:translate(35vw,48vh) rotate(8deg) scale(1.08)} 100%{ transform:translate(115vw,5vh) rotate(-8deg) scale(.8)} }
   .queen-sparkle { position:fixed; z-index:211; pointer-events:none; color:#ffd75e; animation:queenSpark 1.2s ease-out forwards; }
@@ -5266,7 +5266,7 @@ body.reduce-motion-mode .hive-bee-el .bee-wing-art {
 .hive-bee-el.type-queen .bee-crown-art { top: 9px; left: 28px; font-size: 13px; }
 
 /* ---------- Queen guide avatar (crowned queen bee) ---------- */
-.queen-story-avatar { width: 62px; height: 62px; margin: 0 auto 2px; }
+.queen-story-avatar { width: 96px; height: 96px; margin: 0 auto 2px; }
 .queen-story-avatar svg {
   width: 100%; height: 100%;
   animation: queenFloat 2.4s ease-in-out infinite;
@@ -5463,7 +5463,7 @@ body.reduce-motion-mode .sg-frame.f1 { opacity: 1; animation: none; }
    f2 = TALKING (shown only while the Sergeant is speaking)
    f3 = ANGRY  (shown when his rage is high)
    The picture switches with his mood via js/60-sergeant-context.js. */
-.sergeant-persistent { width: 92px; height: 92px; }
+.sergeant-persistent { width: 116px; height: 116px; }
 .sergeant-persistent .sg-img {
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: contain; pointer-events: none; user-select: none;
@@ -5479,7 +5479,7 @@ body.reduce-motion-mode .sergeant-persistent .sg-img.f1 { opacity: 1; }
 body.reduce-motion-mode .sergeant-persistent.sgt-talking .sg-img.f2,
 body.reduce-motion-mode .sergeant-persistent.sgt-angry .sg-img.f3 { opacity: 0; }
 @media (max-width: 780px) {
-  .sergeant-persistent { width: 78px; height: 78px; left: 8px; }
+  .sergeant-persistent { width: 100px; height: 100px; left: 8px; }
 }
 
 /* ---------- QUEEN: creator's own image ---------- */
