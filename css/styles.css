@@ -5457,11 +5457,11 @@ body.night-mode .bg-volume-pct { color: #94a3b8; }
    ========================================================================== */
 
 body.mobile-pro-ui {
-  background: #f6efe3;
+  /* keep the PC cream->tan gradient */
+  background: linear-gradient(160deg, var(--cream) 0%, var(--tan) 55%, var(--taupe) 100%);
   padding: 0 !important;
   overflow-x: hidden;
 }
-body.mobile-pro-ui .card,
 body.mobile-pro-ui .tools-dock-bar,
 body.mobile-pro-ui .mobile-bar,
 body.mobile-pro-ui .mobile-feature-launcher,
@@ -5482,12 +5482,22 @@ body.mobile-pro-ui .buddy-bee-wrap,
 body.mobile-pro-ui .sergeant-persistent,
 body.mobile-pro-ui .sergeant-shadow,
 body.mobile-pro-ui .rage-meter,
-body.mobile-pro-ui .quote-rotator,
 body.mobile-pro-ui .footer-note,
 body.mobile-pro-ui .legal-links,
 body.mobile-pro-ui .level-badge {
   display: none !important;
 }
+/* the real desktop card is embedded into the mobile home page */
+body.mobile-pro-ui .mob-embedded-card {
+  display: block !important;
+  width: 100%;
+  margin: 0 auto 14px;
+  border-radius: 30px;
+  box-shadow: 0 16px 40px rgba(139,111,82,.18);
+}
+body.mobile-pro-ui .mob-embedded-card .quote-rotator { display: block !important; }
+/* center the shell content like the PC card */
+.mob-page.active { max-width: 640px; margin: 0 auto; }
 /* keep the hive button + bees + wasp + night sky alive */
 body.mobile-pro-ui .hive-wrap { display: block !important; width: 58px; height: 58px; bottom: 92px; right: 12px; }
 
@@ -5501,14 +5511,16 @@ body.mobile-pro-ui .welcome-screen { z-index: 950; }
 .mob-shell {
   position: fixed; inset: 0; z-index: 100;
   display: flex; flex-direction: column;
-  background: #f6efe3;
+  background: transparent; /* PC gradient shows through */
 }
 .mob-shell.hidden { display: none; }
 
 .mob-header {
   display: flex; align-items: center; justify-content: space-between;
   padding: calc(14px + env(safe-area-inset-top)) 18px 12px;
-  background: linear-gradient(180deg, #fdf6e9, #f6efe3);
+  background: rgba(255,250,242,.88);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(139,111,82,.12);
 }
 .mob-logo { font-family: 'Baloo 2', sans-serif; font-weight: 900; font-size: 18px; color: #4a3316; }
 .mob-date { font-size: 11px; color: #8a6f52; font-weight: 700; margin-top: 2px; }
@@ -5528,8 +5540,8 @@ body.mobile-pro-ui .welcome-screen { z-index: 950; }
 .mob-tabbar {
   position: fixed; left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom));
   z-index: 150; display: flex; justify-content: space-around; align-items: center;
-  background: rgba(255,252,246,.96); border-radius: 24px; padding: 8px 6px;
-  box-shadow: 0 10px 34px rgba(92,68,47,.22), 0 0 0 1px rgba(139,111,82,.08);
+  background: rgba(255,250,242,.94); border-radius: 24px; padding: 8px 6px;
+  box-shadow: 0 10px 34px rgba(92,68,47,.22), 0 0 0 1px rgba(139,111,82,.1);
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
 }
 .mob-tab {
@@ -5548,18 +5560,19 @@ body.mobile-pro-ui .welcome-screen { z-index: 950; }
 
 /* ---------- home: hero ---------- */
 .mob-hero {
-  background: linear-gradient(150deg, #4a3316 0%, #6b4a1e 55%, #8a5b12 100%);
-  border-radius: 26px; padding: 22px 20px 18px; color: #fffaf2;
-  box-shadow: 0 14px 34px rgba(92,68,47,.28); position: relative; overflow: hidden;
+  background: linear-gradient(150deg, var(--pearl) 0%, #fdf3dc 60%, #f7e7c3 100%);
+  border: 1.5px solid rgba(226,155,28,.4);
+  border-radius: 26px; padding: 22px 20px 18px; color: var(--deep-brown);
+  box-shadow: 0 14px 34px rgba(92,68,47,.16); position: relative; overflow: hidden;
 }
 .mob-hero::after {
   content: ''; position: absolute; right: -30px; top: -30px; width: 120px; height: 120px;
   background: radial-gradient(circle, rgba(244,196,48,.35), transparent 70%); border-radius: 50%;
 }
-.mob-hero-greet { font-size: 12px; font-weight: 800; opacity: .85; letter-spacing: .4px; }
+.mob-hero-greet { font-size: 12px; font-weight: 800; opacity: .85; letter-spacing: .4px; color: var(--brown); }
 .mob-hero-goal { font-family: 'Baloo 2', sans-serif; font-size: 20px; font-weight: 900; margin: 2px 0 6px; }
 .mob-hero-days { display: flex; align-items: baseline; gap: 8px; margin: 6px 0 10px; }
-.mob-hero-days span { font-family: 'Baloo 2', sans-serif; font-size: 56px; font-weight: 900; line-height: 1; text-shadow: 0 3px 12px rgba(0,0,0,.3); }
+.mob-hero-days span { font-family: 'Baloo 2', sans-serif; font-size: 56px; font-weight: 900; line-height: 1; color: var(--deep-brown); text-shadow: 0 2px 0 rgba(255,255,255,.7), 0 6px 20px rgba(226,155,28,.35); }
 .mob-hero-days em { font-style: normal; font-size: 13px; opacity: .85; font-weight: 700; }
 .mob-hero-progress { height: 8px; border-radius: 6px; background: rgba(255,255,255,.18); overflow: hidden; }
 .mob-hero-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #f4c430, #ffd75e); border-radius: 6px; transition: width 1s ease; }
@@ -5568,7 +5581,7 @@ body.mobile-pro-ui .welcome-screen { z-index: 950; }
 /* ---------- stats row ---------- */
 .mob-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 12px 0; }
 .mob-stat {
-  background: #fff; border: none; border-radius: 18px; padding: 12px 4px 10px;
+  background: var(--pearl); border: 1px solid rgba(139,111,82,.08); border-radius: 18px; padding: 12px 4px 10px;
   display: flex; flex-direction: column; align-items: center; gap: 2px;
   box-shadow: 0 4px 14px rgba(139,111,82,.1); cursor: pointer;
 }
@@ -5577,7 +5590,11 @@ body.mobile-pro-ui .welcome-screen { z-index: 950; }
 .mob-stat span { font-size: 9.5px; font-weight: 800; color: #8a6f52; text-transform: uppercase; letter-spacing: .4px; }
 
 /* ---------- cards ---------- */
-.mob-card { background: #fff; border-radius: 20px; padding: 16px; margin-bottom: 12px; box-shadow: 0 4px 16px rgba(139,111,82,.08); }
+.mob-card { background: var(--pearl); border: 1px solid rgba(139,111,82,.08); border-radius: 22px; padding: 16px; margin-bottom: 12px; box-shadow: 0 6px 18px rgba(139,111,82,.1); }
+body.night-mode .mob-card { background: #2a1f14; border-color: rgba(255,226,170,.1); }
+body.night-mode .mob-card .mob-quote-text, body.night-mode .mob-stat b, body.night-mode .mob-statrow b, body.night-mode .mob-level-line { color: #e8c89a; }
+body.night-mode .mob-tabbar { background: rgba(28,26,20,.94); }
+body.night-mode .mob-header { background: rgba(38,30,20,.9); }
 .mob-quote-text { font-size: 14px; font-style: italic; color: #4a3316; line-height: 1.5; font-weight: 600; }
 .mob-quote-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
 .mob-quote-foot span { font-size: 11.5px; color: #a8874f; font-weight: 800; }
@@ -5587,7 +5604,7 @@ body.mobile-pro-ui .welcome-screen { z-index: 950; }
 .mob-quick-label { font-size: 12px; font-weight: 900; color: #8a6f52; text-transform: uppercase; letter-spacing: .6px; margin: 4px 0 8px; }
 .mob-quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 8px; }
 .mob-quick {
-  border: none; background: #fff; border-radius: 18px; padding: 14px 4px 10px;
+  border: none; background: var(--pearl); border: 1px solid rgba(139,111,82,.08); border-radius: 18px; padding: 14px 4px 10px;
   display: flex; flex-direction: column; align-items: center; gap: 5px;
   font-family: 'Fredoka', sans-serif; font-weight: 800; font-size: 11.5px; color: #4a3316;
   box-shadow: 0 4px 14px rgba(139,111,82,.1); cursor: pointer;
@@ -5599,7 +5616,7 @@ body.mobile-pro-ui .welcome-screen { z-index: 950; }
 /* ---------- tools grid ---------- */
 .mob-tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .mob-tool {
-  border: none; background: #fff; border-radius: 18px; padding: 16px 4px 12px;
+  border: none; background: var(--pearl); border: 1px solid rgba(139,111,82,.08); border-radius: 18px; padding: 16px 4px 12px;
   display: flex; flex-direction: column; align-items: center; gap: 6px;
   font-family: 'Fredoka', sans-serif; box-shadow: 0 4px 14px rgba(139,111,82,.1); cursor: pointer;
 }
@@ -5608,7 +5625,10 @@ body.mobile-pro-ui .welcome-screen { z-index: 950; }
 .mob-tool:active { transform: scale(.93); background: #fdf3dc; }
 
 /* ---------- timer page ---------- */
-.mob-timer-card { background: #fff; border-radius: 26px; padding: 24px 18px; text-align: center; box-shadow: 0 8px 24px rgba(139,111,82,.12); }
+.mob-timer-card { background: var(--pearl); border: 1px solid rgba(139,111,82,.08); border-radius: 26px; padding: 24px 18px; text-align: center; box-shadow: 0 8px 24px rgba(139,111,82,.12); }
+body.night-mode .mob-timer-card { background: #2a1f14; }
+body.night-mode .mob-timer-time, body.night-mode .mob-chip { color: #e8c89a; }
+body.night-mode .mob-chip { border-color: rgba(244,196,48,.3); background: #3d2e1e; }
 .mob-timer-time { font-family: 'Baloo 2', sans-serif; font-weight: 900; font-size: 64px; line-height: 1; color: #4a3316; text-shadow: 0 2px 0 rgba(255,255,255,.8), 0 6px 20px rgba(226,155,28,.35); }
 .mob-timer-label { font-size: 12.5px; font-weight: 800; color: #a8874f; margin: 8px 0 12px; }
 .mob-timer-progress { height: 10px; border-radius: 8px; background: rgba(226,155,28,.15); overflow: hidden; margin-bottom: 16px; }

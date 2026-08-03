@@ -38,10 +38,7 @@
       '  <section class="mob-page" id="mobPageHome">' +
       '    <div class="mob-hero">' +
       '      <div class="mob-hero-greet" id="mobGreet">Good day, Bee</div>' +
-      '      <div class="mob-hero-goal" id="mobGoalTitle">🎓 The Grind</div>' +
-      '      <div class="mob-hero-days"><span id="mobDays">00</span><em>days to go</em></div>' +
-      '      <div class="mob-hero-progress"><div class="mob-hero-fill" id="mobHeroFill"></div></div>' +
-      '      <div class="mob-hero-sub"><span id="mobHeroPct">0%</span> <span id="mobHeroTime">0h 0m</span></div>' +
+      '      <div class="mob-hero-sub"><span id="mobHeroTime">Keep going — the hive is watching 🐝</span></div>' +
       '    </div>' +
       '    <div class="mob-stats-row">' +
       '      <button class="mob-stat" id="mobStatToday"><b id="mobTodayMin">0</b><span>Today min</span></button>' +
@@ -113,6 +110,15 @@
       '  <button class="mob-tab" data-tab="settings"><span>⚙️</span><em>Settings</em></button>' +
       '</nav>';
     document.body.appendChild(shell);
+
+    /* EMBED THE REAL PC CARD into the home page so mobile looks like the
+       desktop app (clock, countdown, quote) but inside the mobile shell. */
+    var homePage = $('mobPageHome');
+    var pcCard = document.querySelector('.card');
+    if (homePage && pcCard) {
+      pcCard.classList.add('mob-embedded-card');
+      homePage.insertBefore(pcCard, homePage.firstChild);
+    }
 
     /* tab switching */
     qa('.mob-tab').forEach(function (t) {
