@@ -84,6 +84,7 @@
     ['❄️','Streak Freeze','Freeze tokens protect your streak when life interrupts. Earn them through longer streak milestones.','#freezeBtn','Tip: you can hold up to 3 freezes.'],
     ['💧','Water','Tap glasses so focus never comes at the cost of hydration.','#waterBtn','Tip: your brain is mostly water. This is science.'],
     ['⚙️','Settings','Controls subjects, themes, backups, mobile layout, bee style, sounds, tour reset, weather behaviour, accessibility and admin.','#settingsBtn','Tip: ♿ Reduce motion and High contrast live here — and the 🛠️ Admin button at the bottom too.'],
+    ['🐝','The Wasp (please read)','If you go more than 9 hours without logging any study, a wasp enters the hive and stings your bees, one by one, until the hive is nearly empty. The moment you study again — even five honest minutes — the wasp flees and your bees return. Rest is welcome; 9 hours of silence is not.','#hiveSwarm','Queen\'s tip: the wasp never touches your real progress. It only reminds you the hive needs you.'],
     ['🎉','End of royal tour','That is the whole hive — 33 stops. Start with one focused session, log a review, and let the hive grow from real effort. I will be watching.','#focusBtn','Queen\'s blessing: consistency outlasts talent. Now go build your honeycomb.']
   ];
   var idx=0;

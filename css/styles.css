@@ -5202,3 +5202,62 @@ body.night-mode .mobile-feature-launcher { background: linear-gradient(180deg, #
 }
 #mobileFocusNow:active { transform: translateY(-2px) scale(.95); }
 body.night-mode #mobileFocusNow { background: linear-gradient(135deg, #f4c430, #d99a14) !important; }
+
+/* ==========================================================================
+   ROUND 6 — Wasp system, reduce-motion bee fix, queen crown, bee gallery
+   ========================================================================== */
+
+/* ---------- THE WASP ---------- */
+.wasp {
+  position: fixed; z-index: 60; width: 46px; height: 34px;
+  pointer-events: none; filter: drop-shadow(0 3px 6px rgba(20,15,8,.45));
+  animation: waspRoam 20s ease-in-out infinite;
+}
+.wasp svg { width: 100%; height: 100%; animation: waspBob .5s ease-in-out infinite alternate; }
+@keyframes waspBob { from { transform: translateY(-1px) rotate(-3deg); } to { transform: translateY(2px) rotate(3deg); } }
+@keyframes waspRoam {
+  0%   { top: 6%;  left: 6%;  transform: scaleX(1) rotate(0deg); }
+  14%  { top: 18%; left: 40%; transform: scaleX(1) rotate(8deg); }
+  28%  { top: 4%;  left: 70%; transform: scaleX(-1) rotate(-6deg); }
+  42%  { top: 34%; left: 88%; transform: scaleX(-1) rotate(4deg); }
+  56%  { top: 70%; left: 72%; transform: scaleX(1) rotate(-6deg); }
+  70%  { top: 82%; left: 34%; transform: scaleX(1) rotate(6deg); }
+  84%  { top: 60%; left: 10%; transform: scaleX(-1) rotate(-4deg); }
+  100% { top: 6%;  left: 6%;  transform: scaleX(1) rotate(0deg); }
+}
+.wasp-sting-burst {
+  position: fixed; z-index: 65; font-size: 30px; pointer-events: none;
+  transform: translate(-50%, -50%); animation: waspBurst .85s ease-out forwards;
+}
+@keyframes waspBurst { 0% { opacity: 1; transform: translate(-50%,-50%) scale(.4); } 100% { opacity: 0; transform: translate(-50%,-50%) scale(1.9); } }
+.hive-bee-el.bee-stung, .bee-wrap.bee-stung {
+  animation: beeStung .5s ease-out forwards !important;
+  filter: grayscale(.8) brightness(.7) !important;
+}
+@keyframes beeStung { 0% { transform: scale(1) rotate(0); opacity: 1; } 40% { transform: scale(1.25) rotate(12deg); } 100% { transform: scale(.1) rotate(-20deg); opacity: 0; } }
+
+/* ---------- REDUCE-MOTION BEE FIX (mobile stuck-at-wall) ----------
+   The blanket reduce-motion rule sets animation-duration:.001s on EVERYTHING,
+   which instantly completes the roam keyframes and freezes bees at the last
+   position — stuck against the left/right wall on phones with Reduce Motion
+   on. Bees keep a slow, calm drift instead. */
+body.reduce-motion-mode .bee-wrap,
+body.reduce-motion-mode .hive-bee-el,
+body.reduce-motion-mode .wasp {
+  animation-duration: 30s !important;
+  animation-iteration-count: infinite !important;
+}
+body.reduce-motion-mode .bee-wrap .bee-bob,
+body.reduce-motion-mode .hive-bee-el .bee-core,
+body.reduce-motion-mode .wasp svg {
+  animation-duration: 1.4s !important;
+  animation-iteration-count: infinite !important;
+}
+body.reduce-motion-mode .bee-wrap .wing,
+body.reduce-motion-mode .hive-bee-el .bee-wing-art {
+  animation-duration: .7s !important;
+  animation-iteration-count: infinite !important;
+}
+
+/* ---------- QUEEN CROWN ON HER HEAD ---------- */
+.hive-bee-el.type-queen .bee-crown-art { top: 9px; left: 28px; font-size: 13px; }

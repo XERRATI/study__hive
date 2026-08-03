@@ -18,7 +18,7 @@
   /* Admin Mode */
   function openAdmin(){
     if(!$('adminPanel')){
-      document.body.insertAdjacentHTML('beforeend','<div class="admin-panel" id="adminPanel"><h2 style="font-family:Baloo 2;margin:0 0 6px;">🛠️ Study Hive Admin Mode</h2><p style="font-size:13px;line-height:1.4;margin-top:0;">Safe private testing controls. Enter the private code when prompted.</p><div class="admin-grid"><button id="adminQueen">Trigger Queen 10m</button><button id="adminSergeant">Test Sergeant</button><button id="adminAdd25">Add 25 test minutes</button><button id="adminGarden">Open Garden World</button><button id="adminTourShort">Queen short choice</button><button id="adminTourLong">Queen long guide</button><button id="adminWeather">Fake weather change</button><button id="adminMusic">Test sound ping</button><button id="adminBeeBoth">Bee style: both</button><button id="adminBeeNew">Bee style: new</button><button id="adminMobileOff">Force desktop repair</button><button id="adminDiagnostics">Diagnostics</button><button id="adminProgress">📈 Progression</button><button id="adminRunTests">🧪 Run all tests</button><button id="adminHeart">💖 Test quote heart</button><button id="adminXP">🍯 Add 100 XP</button><button id="adminAch">🏆 Unlock all achievements</button><button id="adminSession">🎯 Simulate session done</button><button id="adminToast">📣 Test toast</button><button id="adminNight">🌙 Night preview</button><button id="adminZen">🧘 Zen toggle</button><button id="adminGrind">🧱 Grind toggle</button><button id="adminSleep">🛌 Sleep toggle</button><button id="adminShoot">☄️ Shooting star</button><button id="adminPlanet">🪐 Planet event</button><button id="adminBeeOld">Bee style: old</button><button id="adminBeeOff">🚫 Bees off</button><button id="adminMotion">♿ Reduce motion</button><button id="adminContrast">♿ High contrast</button><button id="adminLargeText">♿ Large text</button><button id="adminStorage">📦 Storage size</button><button class="secondary" id="adminFirstLaunch">🆕 Simulate first launch</button><button class="secondary" id="adminReset">🗑️ Factory reset</button><button class="secondary" id="adminClearLog">🧹 Clear error log</button><button class="secondary" id="adminCopyState">Copy app state</button><button class="secondary" id="adminClose">Close</button></div><div class="admin-output" id="adminOut">Ready.</div></div>');
+      document.body.insertAdjacentHTML('beforeend','<div class="admin-panel" id="adminPanel"><h2 style="font-family:Baloo 2;margin:0 0 6px;">🛠️ Study Hive Admin Mode</h2><p style="font-size:13px;line-height:1.4;margin-top:0;">Safe private testing controls. Enter the private code when prompted.</p><div class="admin-grid"><button id="adminQueen">Trigger Queen 10m</button><button id="adminSergeant">Test Sergeant</button><button id="adminAdd25">Add 25 test minutes</button><button id="adminGarden">Open Garden World</button><button id="adminTourShort">Queen short choice</button><button id="adminTourLong">Queen long guide</button><button id="adminWeather">Fake weather change</button><button id="adminMusic">Test sound ping</button><button id="adminBeeBoth">Bee style: both</button><button id="adminBeeNew">Bee style: new</button><button id="adminMobileOff">Force desktop repair</button><button id="adminDiagnostics">Diagnostics</button><button id="adminProgress">📈 Progression</button><button id="adminRunTests">🧪 Run all tests</button><button id="adminHeart">💖 Test quote heart</button><button id="adminXP">🍯 Add 100 XP</button><button id="adminAch">🏆 Unlock all achievements</button><button id="adminSession">🎯 Simulate session done</button><button id="adminToast">📣 Test toast</button><button id="adminNight">🌙 Night preview</button><button id="adminZen">🧘 Zen toggle</button><button id="adminGrind">🧱 Grind toggle</button><button id="adminSleep">🛌 Sleep toggle</button><button id="adminShoot">☄️ Shooting star</button><button id="adminPlanet">🪐 Planet event</button><button id="adminWasp">🐝 Summon wasp</button><button id="adminWaspOff">🕊️ Dismiss wasp</button><button id="adminBeeGallery">🐝 Bee gallery</button><button id="adminSgtV2">🫡 Sergeant v2 toggle</button><button id="adminBeeOld">Bee style: old</button><button id="adminBeeOff">🚫 Bees off</button><button id="adminMotion">♿ Reduce motion</button><button id="adminContrast">♿ High contrast</button><button id="adminLargeText">♿ Large text</button><button id="adminStorage">📦 Storage size</button><button class="secondary" id="adminFirstLaunch">🆕 Simulate first launch</button><button class="secondary" id="adminReset">🗑️ Factory reset</button><button class="secondary" id="adminClearLog">🧹 Clear error log</button><button class="secondary" id="adminCopyState">Copy app state</button><button class="secondary" id="adminClose">Close</button></div><div class="admin-output" id="adminOut">Ready.</div></div>');
       $('adminClose').onclick=function(){ $('adminPanel').classList.remove('show'); };
       $('adminQueen').onclick=function(){ set('studyhive-queen-until-v1', String(Date.now()+10*60*1000)); var q=$('queenVisit'); if(q) q.classList.add('show'); toast('Queen triggered for 10 minutes'); };
       $('adminSergeant').onclick=function(){ if(typeof showSergeantNag==='function') showSergeantNag('Admin test complete. Sergeant systems operational, recruit.', false); };
@@ -75,7 +75,7 @@
         out.push('🧪 FULL APP TEST RUN — '+(new Date().toLocaleTimeString()));
         out.push('────────────────────────');
         var scripts=Array.prototype.slice.call(document.scripts).filter(function(s){return s.src&&s.src.indexOf('/js/')>-1;});
-        out.push(ok('Scripts loaded', scripts.length===55, scripts.length+' of 55'));
+        out.push(ok('Scripts loaded', scripts.length===56, scripts.length+' of 56'));
         var cssLoaded=Array.prototype.slice.call(document.styleSheets).some(function(sh){return sh.href&&sh.href.indexOf('styles.css')>-1;});
         out.push(ok('Stylesheet loaded', cssLoaded));
         var ls='blocked'; try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); ls='ok'; }catch(e){}
@@ -154,6 +154,47 @@
       $('adminSleep').onclick=function(){ document.body.classList.toggle('sleep-mode'); toast('🛌 Sleep mode toggled (this session only)'); };
       $('adminShoot').onclick=function(){ document.body.classList.add('night-mode'); if(window.__nightSkyShoot){ window.__nightSkyShoot(); toast('☄️ Shooting star launched'); } else { toast('Night sky not loaded'); } };
       $('adminPlanet').onclick=function(){ document.body.classList.add('night-mode'); if(window.__nightSkyPlanet){ window.__nightSkyPlanet(); toast('🪐 Planet event launched'); } else { toast('Night sky not loaded'); } };
+
+      /* ---------------- ADMIN: Wasp controls ---------------- */
+      $('adminWasp').onclick=function(){
+        if(window.__waspSummon){ window.__waspSummon(); toast('🐝 Wasp summoned — it will sting every ~55s'); }
+        else { toast('Wasp module not loaded'); }
+      };
+      $('adminWaspOff').onclick=function(){
+        if(window.__waspDismiss){ window.__waspDismiss(); toast('🕊️ Wasp dismissed — study clock reset'); }
+        else { toast('Wasp module not loaded'); }
+      };
+
+      /* ---------------- ADMIN: Bee gallery ---------------- */
+      $('adminBeeGallery').onclick=function(){
+        var sd=getJSON('study-data-v2',{totalMinutes:0});
+        var mins=Math.round(Number(sd.totalMinutes||0));
+        var MODELS=[
+          ['🌱','Seedling',60],['🎓','Scholar',240],['🏅','Athlete',500],['⚗️','Chemist',720],
+          ['🎵','Musician',900],['🔬','Scientist',1100],['🧭','Explorer',1300],['✨','Golden',1500],
+          ['🚀','Astronaut',2000],['👑','Royal',3000]
+        ];
+        var lines=['🐝 BEE GALLERY — models unlock by TOTAL study minutes','────────────────────────','Current total: '+mins+' min',''];
+        MODELS.forEach(function(m){
+          var on=mins>=m[2];
+          lines.push((on?'✅ ':'🔒 ')+m[0]+' '+m[1]+' — '+m[2]+' min'+(on?' (unlocked)':' ('+(m[2]-mins)+' min to go)'));
+        });
+        lines.push('');
+        lines.push('Types: Worker (default) · Drone · Guard · Queen (rare visit)');
+        lines.push('Alive now: '+document.querySelectorAll('.hive-bee-el').length+' new · '+document.querySelectorAll('.bee-wrap').length+' old');
+        lines.push('Wasp: '+(window.waspActive&&window.waspActive()?'PRESENT ⚠️':'not here'));
+        $('adminOut').textContent=lines.join('\n');
+      };
+
+      /* ---------------- ADMIN: Sergeant v2 toggle ---------------- */
+      $('adminSgtV2').onclick=function(){
+        var on=localStorage.getItem('studyhive-sergeant-v2-v1')==='1';
+        localStorage.setItem('studyhive-sergeant-v2-v1', on?'0':'1');
+        document.body.classList.toggle('sergeant-v2', !on);
+        try{ var apply=document.querySelector('.settings-toggle#sergeantV2Toggle'); if(apply) apply.classList.toggle('on', !on); }catch(e){}
+        toast('🫡 Squad Leader Sergeant '+(on?'OFF':'ON'));
+        setTimeout(function(){ location.reload(); }, 800);
+      };
       /* ---------------- ADMIN: Bee styles (complete the set) ---------------- */
       $('adminBeeOld').onclick=function(){ set('studyhive-bee-style-v1','old'); document.body.classList.remove('bee-style-new','bee-style-both','bee-style-off'); document.body.classList.add('bee-style-old'); toast('Bee style: old'); };
       $('adminBeeOff').onclick=function(){ set('studyhive-bee-style-v1','off'); document.body.classList.remove('bee-style-new','bee-style-both','bee-style-old'); document.body.classList.add('bee-style-off'); toast('Bees hidden'); };

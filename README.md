@@ -148,6 +148,25 @@ This was a real bug hiding in the code, not just a "too-fast" press:
 - **🐝 5 new bee models** — 🏅 Athlete, 🎵 Musician, 🔬 Scientist, 🧭
   Explorer, 🚀 Astronaut join 🌱🎓⚗️✨👑 as your minutes grow.
 - **💬 25 new quotes** — fresh Study Hive lines in the daily rotator.
+- **🐝 The Wasp (new pressure system)** — if you go **more than 9 hours**
+  without logging study time, a wasp enters the hive and stings your bees one
+  by one (every ~55s) until the hive is nearly empty. Log *any* session —
+  even 5 minutes — and it flees and your bees regrow. Warned about in the
+  Queen guide; Admin has 🐝 Summon / 🕊️ Dismiss buttons to test it.
+- **🫡 New Sergeant — how to view it** — the **Squad Leader** (peaked cap,
+  aviator glasses, whistle) is a test feature: open **Settings → scroll to
+  "Sergeant style (test)"** and toggle **Squad Leader Sergeant**. Classic
+  stays the default; Admin also has a quick 🫡 toggle button.
+- **👑 Queen crown on her head** — the Queen bee's crown now sits right on
+  her head (was floating above it).
+- **🐝 Bee gallery (admin)** — Admin Mode → **🐝 Bee gallery** shows all 10
+  bee models (🌱 60m, 🎓 240m, 🏅 500m, ⚗️ 720m, 🎵 900m, 🔬 1100m, 🧭
+  1300m, ✨ 1500m, 🚀 2000m, 👑 3000m) with your current minutes, which are
+  unlocked, how far to the next one, and whether the wasp is present.
+- **📱 Mobile bees no longer stuck at the wall** — found it: the app
+  auto-detects your phone's **Reduce Motion** setting, and the reduce-motion
+  CSS killed every animation instantly, freezing bees at the screen edge.
+  Bees now keep a slow, calm drift instead of freezing.
 - **👑 Queen explainer rebuilt** — the royal tour is now 33 richer stops with
   a "Queen's tip" on every one, an animated progress bar, floating avatar,
   pulsing spotlight, ←/→ keyboard navigation, tap-outside-to-close, and an
