@@ -59,6 +59,19 @@
     $('xpBarFill').style.width = pct + '%';
     $('levelBadge').innerHTML = level.icon + ' ' + level.name + ' <span class="xp-count" id="xpCount">' + xpState.xp + ' XP</span>';
   }
+  function showLevelInfo(){
+    var idx = currentLevelIndex(), level = LEVELS[idx], next = LEVELS[idx+1];
+    var pct = next ? Math.min(100, Math.round(((xpState.xp - level.min) / (next.min - level.min)) * 100)) : 100;
+    var msg = level.icon + ' ' + level.name + ' · ' + xpState.xp + ' XP';
+    if (next) msg += ' · ' + pct + '% to ' + next.name + ' (' + (next.min - xpState.xp) + ' XP to go)';
+    else msg += ' · MAX LEVEL';
+    showMilestoneToast(msg, 4200);
+  }
+  (function(){
+    var lb = $('levelBadge');
+    if (lb && !lb.dataset.xpInfo) { lb.dataset.xpInfo = '1'; lb.addEventListener('click', showLevelInfo); }
+    setTimeout(function(){ var lb2 = $('levelBadge'); if (lb2 && !lb2.dataset.xpInfo) { lb2.dataset.xpInfo = '1'; lb2.addEventListener('click', showLevelInfo); } }, 3000);
+  })();
   function flashXpBadge(gained){
     var lb = $('levelBadge');
     if (!lb) return;
@@ -462,6 +475,12 @@
   function nextQuote(){ quoteIdx = (quoteIdx + 1) % quotes.length; renderQuote(); }
   renderQuote();
   setInterval(nextQuote, 30000);
+  /* INTERACTIVE: tap the quote itself for another one. */
+  (function(){
+    var qt = $('quoteText');
+    if (qt && !qt.dataset.qq) { qt.dataset.qq = '1'; qt.title = 'Tap for another quote'; qt.addEventListener('click', nextQuote); }
+    setTimeout(function(){ var q2 = $('quoteText'); if (q2 && !q2.dataset.qq) { q2.dataset.qq='1'; q2.title='Tap for another quote'; q2.addEventListener('click', nextQuote); } }, 3000);
+  })();
   window.toggleQuoteFav = function(){
     var q = quotes[quoteIdx]; if (!q) return;
     if (isFav(q)) {
@@ -830,6 +849,17 @@
       if (cached2) { try { var c2 = JSON.parse(cached2); fetchWeather(c2.lat, c2.lon, c2.cityName); } catch(e){} }
     }, 20*60*1000);
   }
+  (function(){
+    var ww = $('weatherWidget');
+    if (ww && !ww.dataset.weatherTap) {
+      ww.dataset.weatherTap = '1';
+      ww.addEventListener('click', function(){
+        var c = null; try { c = JSON.parse(storageGet('hive-weather-cache-v1') || 'null'); } catch(e){}
+        if (c && c.lat && c.lon) { fetchWeather(c.lat, c.lon, c.cityName); showMilestoneToast('🌦️ Refreshing weather…'); }
+        else { initWeather(); showMilestoneToast('🌦️ Fetching weather…'); }
+      });
+    }
+  })();
   $('weatherCityInput').addEventListener('keydown', function(e){
     if (e.key === 'Enter' && this.value.trim()){
       geocodeCity(this.value.trim());

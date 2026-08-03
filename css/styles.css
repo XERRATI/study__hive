@@ -4990,3 +4990,215 @@ body.sergeant-v2 .sergeant-persistent.anger-4 .sergeant-bob { animation-duration
   .onboard-bee { font-size: 34px; margin-bottom: 4px; }
   .onboard-nav { margin-top: 12px; }
 }
+
+/* ==========================================================================
+   ROUND 5 — mobile layout refinement, interactivity, Queen explainer v2
+   ========================================================================== */
+
+/* ---------- 1. MOBILE LAYOUT REFINEMENT ---------- */
+@media (max-width: 780px) {
+  /* Top bar: honey gradient + soft shadow, taller with brand feel */
+  #mobileTopBar {
+    background: linear-gradient(180deg, rgba(244,196,48,.92), rgba(226,155,28,.88));
+    box-shadow: 0 4px 18px rgba(139,86,20,.28);
+    border-bottom: 1px solid rgba(255,255,255,.35);
+    padding-top: calc(10px + env(safe-area-inset-top));
+    padding-bottom: 10px;
+    align-items: center;
+  }
+  body.night-mode #mobileTopBar { background: linear-gradient(180deg, #2b3a52, #1c2738); border-bottom-color: rgba(255,255,255,.08); }
+  /* Bottom dock: frosted, with a grip line on top */
+  #mobileDockBar {
+    background: rgba(255,250,242,.92);
+    box-shadow: 0 -4px 18px rgba(139,111,82,.18);
+    border-top: 1px solid rgba(139,111,82,.14);
+    padding-bottom: calc(10px + env(safe-area-inset-bottom));
+    padding-top: 10px;
+    align-items: center;
+  }
+  #mobileDockBar::before {
+    content: ''; position: absolute; top: 5px; left: 50%; transform: translateX(-50%);
+    width: 44px; height: 4px; border-radius: 4px; background: rgba(139,111,82,.35);
+  }
+  body.night-mode #mobileDockBar { background: rgba(22,32,47,.94); border-top-color: rgba(255,255,255,.08); }
+  body.night-mode #mobileDockBar::before { background: rgba(205,214,228,.3); }
+  /* Bar chips: pill buttons with icon-first feel */
+  body.is-mobile .mb-item, body.is-mobile .mb-item button {
+    border-radius: 999px !important; padding: 8px 12px !important;
+    font-size: 13px !important; font-weight: 800 !important;
+    background: rgba(255,255,255,.75) !important; color: var(--deep-brown) !important;
+    border: 1px solid rgba(139,111,82,.18) !important;
+    box-shadow: 0 2px 6px rgba(139,111,82,.12) !important;
+    min-height: 40px;
+  }
+  body.is-mobile .mb-item:active, body.is-mobile .mb-item button:active { transform: scale(.94) !important; }
+  body.night-mode body.is-mobile .mb-item, body.night-mode body.is-mobile .mb-item button { background: rgba(28,39,56,.9) !important; color: #cdd6e4 !important; border-color: rgba(255,255,255,.1) !important; }
+
+  /* Main card: tighter, softer, nicer type on phones */
+  body.is-mobile .card {
+    border-radius: 30px; padding: 30px 18px 26px;
+    box-shadow: 0 18px 44px rgba(139,111,82,.22);
+  }
+  body.is-mobile .current-time { font-size: clamp(3rem, 15vw, 4.6rem); }
+  body.is-mobile .days-block .num { font-size: clamp(3.4rem, 16vw, 5rem); }
+  body.is-mobile .card .title { font-size: clamp(1.4rem, 6.5vw, 1.9rem); }
+  body.is-mobile .countdown .num { font-size: clamp(1.3rem, 6vw, 1.8rem); }
+  body.is-mobile .unit-label { font-size: 10px; letter-spacing: 1px; }
+  body.is-mobile .quote-text { font-size: 13px; }
+  body.is-mobile .divider { margin: 14px auto; }
+
+  /* Bottom sheets: rounded top + handle bar */
+  .misc-panel, .admin-panel {
+    border-radius: 24px 24px 18px 18px !important;
+    box-shadow: 0 -8px 34px rgba(70,45,18,.24) !important;
+  }
+  .misc-panel::before {
+    content: ''; position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+    width: 42px; height: 4px; border-radius: 4px; background: rgba(139,111,82,.3);
+  }
+  body.night-mode .misc-panel::before { background: rgba(205,214,228,.25); }
+}
+
+/* ---------- 2. INTERACTIVITY ---------- */
+/* Every tappable thing gives instant press feedback */
+button, .settings-toggle, .misc-btn, .dock-item, .mb-item, .focus-preset-btn, .lofi-track-btn, .rival-rate-btn, .upgrade-feature-btn, .quote-fav-btn, .quote-fav-list-btn, .onboard-nav-btn, .welcome-enter-btn {
+  transition: transform .12s ease, box-shadow .2s ease, filter .2s ease, background .2s ease;
+  touch-action: manipulation;
+}
+button:active, .settings-toggle:active, .misc-btn:active, .dock-item:active, .mb-item:active, .focus-preset-btn:active, .lofi-track-btn:active, .rival-rate-btn:active, .upgrade-feature-btn:active, .quote-fav-btn:active, .quote-fav-list-btn:active {
+  transform: scale(.94);
+  filter: brightness(1.06);
+}
+/* Visible focus rings for keyboard users */
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
+  outline: 3px solid rgba(226,155,28,.65); outline-offset: 2px; border-radius: 8px;
+}
+/* Quote text: tap for another quote */
+.quote-text { cursor: pointer; }
+.quote-text:hover { color: var(--deep-brown); }
+/* XP badge: clickable level info */
+#levelBadge { cursor: pointer; }
+#levelBadge:hover { filter: brightness(1.08); }
+/* Weather widget: click to refresh */
+#weatherWidget { cursor: pointer; }
+#weatherWidget:hover { filter: brightness(1.05); }
+/* Hive tap: expanding ring pulse */
+.hive-wrap::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  border: 3px solid rgba(244,196,48,.7); opacity: 0; pointer-events: none;
+}
+.hive-wrap:active::after { animation: hiveTapRing .45s ease-out forwards; }
+@keyframes hiveTapRing {
+  0% { transform: scale(.7); opacity: .9; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* ---------- 3. QUEEN EXPLAINER v2 ---------- */
+.queen-story-overlay {
+  position: fixed; inset: 0; z-index: 900; display: none;
+  align-items: center; justify-content: center;
+  background: rgba(28,18,8,.55); backdrop-filter: blur(2px);
+}
+.queen-story-overlay.show { display: flex; }
+.queen-story-spotlight {
+  position: fixed; border-radius: 18px; display: none;
+  box-shadow: 0 0 0 4px rgba(244,196,48,.85), 0 0 0 9999px rgba(28,18,8,.62);
+  animation: queenSpotPulse 1.6s ease-in-out infinite; z-index: 901; pointer-events: none;
+}
+@keyframes queenSpotPulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(244,196,48,.85), 0 0 0 9999px rgba(28,18,8,.62); }
+  50% { box-shadow: 0 0 0 7px rgba(244,196,48,.95), 0 0 0 9999px rgba(28,18,8,.66); }
+}
+.queen-story-card {
+  position: fixed; z-index: 902; width: min(420px, 92vw);
+  background: var(--pearl); border-radius: 26px; padding: 22px 22px 16px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.5); text-align: center;
+  border: 1px solid rgba(244,196,48,.5);
+  animation: queenCardIn .32s cubic-bezier(.18,.9,.24,1.15);
+}
+@keyframes queenCardIn { from { opacity: 0; transform: translateY(14px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+body.night-mode .queen-story-card { background: #16202f; color: #cdd6e4; }
+.queen-story-icon {
+  font-size: 44px; line-height: 1; display: inline-block;
+  animation: queenFloat 2.2s ease-in-out infinite;
+  filter: drop-shadow(0 4px 8px rgba(244,196,48,.5));
+}
+@keyframes queenFloat { 0%,100% { transform: translateY(0) rotate(-5deg); } 50% { transform: translateY(-8px) rotate(5deg); } }
+.queen-story-progress {
+  font-size: 11px; color: var(--brown); font-weight: 800; letter-spacing: .5px;
+  margin: 8px 0 4px;
+}
+body.night-mode .queen-story-progress { color: #94a3b8; }
+.queen-story-track { height: 6px; border-radius: 6px; background: var(--tan); margin: 4px 0 12px; overflow: hidden; }
+.queen-story-fill { height: 100%; width: 0%; border-radius: 6px; background: linear-gradient(90deg, #f4c430, #e29b1c); transition: width .35s ease; }
+.queen-story-card h3 { font-family: 'Baloo 2', sans-serif; margin: 0 0 6px; font-size: 20px; color: var(--deep-brown); }
+body.night-mode .queen-story-card h3 { color: #e8c89a; }
+.queen-story-card p { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--brown); }
+body.night-mode .queen-story-card p { color: #b7c2d4; }
+.queen-story-tip {
+  margin: 10px 0 0; padding: 9px 12px; border-radius: 12px;
+  background: rgba(244,196,48,.16); border: 1px dashed rgba(226,155,28,.4);
+  font-size: 12px; line-height: 1.45; color: var(--deep-brown); text-align: left;
+}
+body.night-mode .queen-story-tip { background: rgba(244,196,48,.08); color: #e8c89a; }
+.queen-story-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; justify-content: center; }
+.queen-story-actions button {
+  border: none; border-radius: 14px; padding: 11px 16px; cursor: pointer;
+  font-family: 'Fredoka', sans-serif; font-weight: 900; font-size: 13px;
+  background: linear-gradient(135deg, var(--honey1), var(--honey3)); color: var(--pearl);
+  min-height: 44px;
+}
+.queen-story-actions button.secondary { background: var(--tan); color: var(--deep-brown); }
+.queen-story-actions button.ghost { background: transparent; color: var(--brown); }
+body.night-mode .queen-story-actions button.secondary { background: #1c2738; color: #cdd6e4; }
+body.night-mode .queen-story-actions button.ghost { color: #94a3b8; }
+@media (max-width: 780px) {
+  .queen-story-card { bottom: 0 !important; top: auto !important; left: 8px !important; right: 8px !important; transform: none !important; width: auto; border-radius: 24px 24px 14px 14px; max-height: 62vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .queen-story-spotlight { display: none !important; }
+}
+
+/* ---------- Mobile launcher + feature sheet: premium polish ---------- */
+.mobile-feature-launcher {
+  background: linear-gradient(180deg, rgba(255,250,242,.96), rgba(244,234,217,.98)) !important;
+  border-top: none !important;
+  box-shadow: 0 -6px 24px rgba(92,68,47,.16), 0 0 0 1px rgba(139,111,82,.1) !important;
+  padding-top: 12px !important;
+}
+body.night-mode .mobile-feature-launcher { background: linear-gradient(180deg, #1c2738, #16202f) !important; }
+.mobile-feature-launcher button {
+  border-radius: 18px !important; min-height: 54px !important;
+  font-size: 13px !important; line-height: 1.3;
+  box-shadow: 0 3px 8px rgba(92,68,47,.12) !important;
+}
+.mobile-feature-launcher button:active { transform: scale(.93) !important; }
+.mobile-feature-launcher button.primary {
+  background: linear-gradient(135deg, #f4c430, #e29b1c) !important;
+  box-shadow: 0 6px 16px rgba(226,155,28,.4) !important;
+  transform: translateY(-4px);
+}
+.mobile-feature-launcher button.primary:active { transform: translateY(-2px) scale(.95); }
+.mobile-feature-sheet {
+  border-radius: 26px 26px 18px 18px !important;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important;
+}
+.mobile-feature-sheet::before {
+  content: ''; position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+  width: 42px; height: 4px; border-radius: 4px; background: rgba(139,111,82,.3);
+}
+.mobile-feature-grid button {
+  min-height: 72px !important; border-radius: 18px !important;
+  transition: transform .12s ease, box-shadow .2s ease;
+}
+.mobile-feature-grid button:active { transform: scale(.94); box-shadow: 0 2px 8px rgba(92,68,47,.14); }
+.mobile-feature-grid button.featured { box-shadow: 0 6px 16px rgba(226,155,28,.35); }
+
+/* Make Focus the hero button on the mobile launcher (it's the heart of the app) */
+.mobile-feature-launcher button.primary { background: linear-gradient(135deg, rgba(244,196,48,.9), rgba(226,155,28,.85)) !important; }
+#mobileFocusNow {
+  background: linear-gradient(135deg, #f4c430, #e29b1c) !important;
+  color: #fffaf2 !important;
+  box-shadow: 0 6px 16px rgba(226,155,28,.42) !important;
+  transform: translateY(-4px);
+}
+#mobileFocusNow:active { transform: translateY(-2px) scale(.95); }
+body.night-mode #mobileFocusNow { background: linear-gradient(135deg, #f4c430, #d99a14) !important; }

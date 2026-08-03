@@ -9,10 +9,11 @@ GitHub can host for free. **This is the version you upload to GitHub.**
 
 ```
 study-hive/
-├── index.html            ← the page itself (markup only)
+├── index.html            ← ⭐ THE LANDING PAGE (first thing visitors see)
+├── app.html              ← the app itself (welcome screen + full hive)
 ├── css/
 │   └── styles.css        ← ALL the styling (51 style blocks joined)
-├── js/                   ← the app logic, split into 51 ordered files
+├── js/                   ← the app logic, split into 55 ordered files
 │   ├── 01-idle-timer-scheduler.js
 │   ├── 02-startup-fade.js
 │   ├── 05-countdown-hive-core.js    ← countdown clock + hive tap + quotes
@@ -22,15 +23,17 @@ study-hive/
 │   ├── SCRIPT-MAP.md     ← what each js file is (read this!)
 │   └── HOW-TO-UPDATE.md  ← ⭐ how to update your app on GitHub
 ├── manifest.webmanifest      ← lets the app be installed like an app
-├── study-hive-landing.html   ← your marketing/landing page
 ├── study-hive-privacy-policy.html  ← your real Privacy Policy
 ├── study-hive-terms-of-service.html ← your real Terms of Service
 ├── LICENSE.txt               ← your licence (proprietary)
 └── COPYRIGHT_NOTICE.txt      ← your copyright notice
 ```
 
+**Flow:** `index.html` (landing) → press **Launch the Hive** → `app.html`
+(welcome screen) → press **🍯 Enter the Hive** → the app.
+
 **Rule:** the files in `js/` load in exactly this order. Don't renumber or
-reorder them, and don't rename files without updating `index.html`.
+reorder them, and don't rename files without updating `app.html`.
 
 ---
 
@@ -145,6 +148,23 @@ This was a real bug hiding in the code, not just a "too-fast" press:
 - **🐝 5 new bee models** — 🏅 Athlete, 🎵 Musician, 🔬 Scientist, 🧭
   Explorer, 🚀 Astronaut join 🌱🎓⚗️✨👑 as your minutes grow.
 - **💬 25 new quotes** — fresh Study Hive lines in the daily rotator.
+- **👑 Queen explainer rebuilt** — the royal tour is now 33 richer stops with
+  a "Queen's tip" on every one, an animated progress bar, floating avatar,
+  pulsing spotlight, ←/→ keyboard navigation, tap-outside-to-close, and an
+  **✨ Try it now** button that opens the feature it's explaining. On phones
+  it becomes a scrollable bottom sheet. Content updated to cover everything
+  new (sunset night mode, shooting stars, bee models, Squad Leader
+  Sergeant, admin, etc.).
+- **📱 Mobile layout refined** — the mobile launcher got a honey-gradient bar
+  with **🎯 Focus as the raised hero button**, the feature sheet is a proper
+  bottom sheet with a handle, tool chips are pill-shaped with press
+  feedback, and the main card uses fluid typography that scales on every
+  phone size.
+- **✨ Everything more interactive** — every button/chip now gives instant
+  press feedback (scale + brightness) with visible focus rings for keyboard
+  users; **tap the quote to cycle it**, **tap the XP badge** to see your
+  level progress, **tap the weather** to refresh it, and tapping the hive
+  sends a golden pulse ring.
 - **📱 iPhone onboarding scroll FIXED** — on iOS, the setup overlay could
   not be scrolled when the card was taller than the screen (a fixed,
   blur-filtered, flex-centered overlay is a known iPhone Safari bug that
@@ -176,7 +196,7 @@ This was a real bug hiding in the code, not just a "too-fast" press:
 7. Click **Settings** (top tab) → **Pages** (left menu).
 8. Under **Branch**, pick `main`, folder `/ (root)`, click **Save**.
 9. Wait 1–2 minutes, then open: `https://YOUR-USERNAME.github.io/study-hive/`
-   (your username, lowercase).
+   (your username, lowercase) — the landing page loads first.
 
 That URL is your app's home page. Bookmark it — this is what you share.
 

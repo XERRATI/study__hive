@@ -2,7 +2,7 @@
   "name": "Study Hive — Countdown, Focus & Flashcards",
   "short_name": "Study Hive",
   "description": "Countdown, focus sessions, flashcards and a hive full of study bees.",
-  "start_url": "./index.html",
+  "start_url": "./app.html",
   "display": "standalone",
   "background_color": "#f4ead9",
   "theme_color": "#e29b1c",
