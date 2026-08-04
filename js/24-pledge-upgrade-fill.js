@@ -7,7 +7,7 @@
 
 (function(){
   function $(id){ return document.getElementById(id); }
-  function esc(s){ return String(s || '').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function esc(s){ if(window.shEsc) return window.shEsc(s);  return String(s || '').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; });  }
   var FIELDS = ['Name','Feeling','Action','Minutes','Reason','Subject','Distraction','Reset','Reminder'];
   function longBox(prefix){
     return '<div class="pledge-fill-box long-pledge" id="'+prefix+'LongBox" data-long-pledge="1">' +

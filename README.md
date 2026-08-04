@@ -66,6 +66,132 @@ This was a real bug hiding in the code, not just a "too-fast" press:
 
 ## ✨ What's new in this version
 
+- **🧠 Cram mode now finds YOU** — the daily plan card grows a direct
+  link when an exam is today/tomorrow: "🧠 Chemistry is TOMORROW — cram
+  mode is ready, open it →". One tap turns cram on and opens the review
+  (desktop + mobile; on mobile it sits at the top of the plan card so
+  the tab bar can't hide it).
+- **⏱️ Countdown hours fixed** — at long ranges (e.g. 1000+ hours to
+  go) the "Hours" unit showed the *total* hours (999) instead of the
+  remainder (16). Now: Days 41 · Hours 15 · **Total Hrs** 1000 · Mins ·
+  Secs — the fifth unit is relabelled to make it honest.
+- **🔬 10,000-hour QA pass** — the full everyday-use simulation at 10×
+  scale: 637,000+ minutes (~6 years, 2,300 days), 3,000 + 10,000
+  imported cards (13,000-card deck), 2,000-day streak, 100 exams, 50,000
+  XP. Everything held: countdown, report + share image, heatmap, admin
+  progression, all mobile tabs, cram + hint, geometry scan with **zero
+  covered buttons on desktop**. (One seed nuance: the heatmap window
+  starts from your stored goal-start date — the test now seeds it like a
+  real user.)
+- **🔍 1000-hour QA pass** — a full everyday-use simulation (60,000+
+  minutes, 230 days, 30 exams, 300+1000 flashcards, 200-day streak)
+  drove the real UI end-to-end. Four real bugs found and fixed:
+  - **Mobile Focus tab threw an error every tap** — `syncSubjects` was
+    declared inside an `if` block (block-scoped under `'use strict'`),
+    so `goTab('focus')` hit "syncSubjects is not defined". Hoisted.
+  - **Install banner covered the desktop dock and mobile tab bar** —
+    it spanned the full bottom width at z-650. Now desktop sits
+    bottom-left, mobile sits below the header, and it auto-dismisses
+    after 6 seconds (plus a guard around the install prompt).
+  - **Exam countdown badge covered the shortcuts button** — it was
+    hard-coded to `left: 910px`, overlapping the top-right button
+    cluster. Now right-anchored clear of the buttons with ellipsis.
+  - **"Mobile UI on" chip overlapped the shell header** — hidden inside
+    the shell (the shell has its own layout toggle).
+  - Verified as NOT bugs: hidden overlay layering, content scrolling
+    under the fixed tab bar (120px clearance built in), the share
+    button's clipboard fallbacks, and the 404 `background-music.mp3`
+    placeholder.
+- **🔒 Locked In achievement** — 5 zero-interruption focus sessions
+  unlock it (+25 XP). Clean focus is now rewarded, not just counted:
+  every unbroken session increments the counter, and interrupted
+  sessions don't reset it. The Focus-panel chip shows both stats:
+  "⚡ 2 interruptions today · 🔒 5 unbroken sessions".
+- **✨ AI-polished flashcards** — next to the 🎤 button there's ✨: it
+  sends your draft (spoken or typed) through the app's existing free-AI
+  provider (Pollinations/Puter/offline) with "turn this into a
+  front/back card" and fills the inputs for a manual check before you
+  tap +. Graceful fallbacks: AI busy → your draft stays untouched;
+  unstructured reply → falls back to the built-in parser. 20s timeout,
+  never blocks.
+- **🧠 Exam-day cram mode (`js/70`)** — when an exam is today or
+  tomorrow, the review area grows a "🧠 Cram: Subject (tomorrow)"
+  button. Tapping it makes the review queue show ONLY that subject's
+  cards, hardest first (highest "Again" count at the top) — the exact
+  final-pass cards the night before. Works with the due-only filter;
+  tap again to leave.
+- **🎤 Speak a card (`js/68`)** — in the Cards panel there's a 🎤 button:
+  tap it, talk ("mitochondria: powerhouse of the cell"), and the app
+  parses your words into a draft front/back pair ready to hit +. It
+  understands "front : back", " - ", " — ", " | ", " → ", or splits at
+  the first sentence. Times like 12:30 survive the parser. Reuses the
+  speech recognition the app already shipped — no new infrastructure.
+- **⚡ Focus quality (`js/69`)** — interruptions are now real data: every
+  tab-switch / app-switch / window-blur during a running focus session
+  counts against that session. The Focus panel shows today's count, and
+  the Hive Report adds "⚡ N interruptions this week" (text + share
+  image + mobile box). A 25-minute session with 6 tab-aways no longer
+  counts the same as 25 unbroken minutes.
+- **📝 "Add more cards" nudge** — when the daily plan picks a subject
+  with a high "Again" rate but fewer than 5 cards, the plan card grows a
+  button: "📝 Chemistry has a high 'Again' rate but only 2 cards — add
+  more?" — it opens the Cards panel pre-filtered to that subject with
+  the front input focused. Turns a review problem into a content problem
+  you can act on.
+- **🎯 Hive sync score** — the Hive Report now blends two habits into one
+  headline: days studied this week (50%) + days the plan was followed
+  (50%) → "Hive sync N%", shown in the report, the share image and the
+  mobile stats box.
+- **🐞 Hive Report "days" bug fixed** — the weekly recap counted
+  sessions but always showed "0 days" (a counter that was never
+  incremented). Now it counts the real days studied, which also powers
+  the sync score.
+- **🧪 In-app tests grew 38 → 40** — new checks: voice-cards parser and
+  focus-quality tracker.
+- **🧰 One shared helpers file (`js/00-shared-utils.js`)** — the escape
+  helper (and friends) used to be re-declared in ~15 files. Now there is
+  exactly ONE implementation (`window.shEsc` etc.), and every file's local
+  copy delegates to it with a hoist-safe fallback: a missing file can
+  never break the app. New code should use `shEsc / shGet / shQa /
+  shGetJSON / shSetJSON / shPad / shDateKey` instead of copying bodies.
+- **🎯 Smarter daily plan (SR cross-wire)** — the plan used to rank by
+  exam proximity + minutes logged. Now spaced-repetition **"Again"
+  presses** (the strongest "you're struggling here" signal in the app)
+  boost a subject's priority when there's no exam edge: 5 lapses ≈ a
+  600-minute head start in the ranking. Exam proximity still wins — the
+  countdown is the countdown. When the plan picks a struggling subject it
+  says so: "⚠️ You've rated 4 Chemistry card(s) 'Again' — review them
+  after the recall pass."
+- **💾 Backup nudge** — after real usage (120+ minutes, 5+ sessions) the
+  app gently reminds you every ~3 weeks (right after an achievement
+  unlock) to download a portable backup from the Backup Center —
+  auto-backups live in this browser, the file survives anywhere.
+- **🧪 In-app tests grew 22 → 38** — Admin → Run all tests now also
+  checks: shared utils + esc delegation, SR engine, daily plan + struggle
+  signal, plan streak, deck-import parser, haptics, stable card ids,
+  Hive Report, Backup Center, mobile shell (when mobile mode is on),
+  service worker API, manifest icons + shortcuts (fetched live), and SW
+  registration.
+- **📱 Installable PWA + shortcuts** — the manifest now ships real icons
+  (180/192/512 + maskable) and **home-screen shortcuts**: long-press the
+  installed icon to jump straight to **Start Focus**, **Review Cards** or
+  **Daily Plan**. A network-first service worker (`sw.js`) keeps the app
+  opening offline too — while online you always get the newest files, so
+  updating stays exactly as easy as before.
+- **📥 Deck import (Anki / Quizlet)** — in the Import panel, "📥 Import
+  deck (.txt/.csv)" reads an **Anki "Notes in plain text" export** or a
+  **Quizlet CSV export** and adds every card straight into your deck with
+  spaced-repetition ids. Pure JavaScript — no libraries, no build step.
+- **📋 Plan-streak rewards** — follow the daily plan's subject for
+  **3 days** → unlock **Plan Loyalist**; **7 days** → **Plan Legend**
+  (+25 XP each). Your streak shows in the plan card, the daily
+  notification and the Hive Report image.
+- **🛡️ innerHTML audit finished** — every user-entered value in the app
+  is now escaped at render time. Four late-found sinks (the subject
+  progress list, the Hive Report's "best subject" line, the Awards
+  panel's weekly recap, and the mobile report box) were closed this
+  round, and a live browser probe confirms a hostile subject name can no
+  longer inject markup anywhere — desktop or mobile shell.
 - **🐝 Front page (every visit)** — the app now opens on a welcome screen
   first. Press **🍯 Enter the Hive** to go in. (`js/54-welcome-screen.js`)
 - **🔢 Setup, one question at a time** — the setup card is now 9 easy steps
@@ -159,6 +285,38 @@ This was a real bug hiding in the code, not just a "too-fast" press:
   the hive throws a dance party: they bounce, leap and wiggle (each on its
   own beat), emoji confetti rains down, and a celebration card shows how
   many minutes you locked in.
+- **🧠 Real spaced repetition for flashcards** — SM-2-lite scheduling: rate
+  each card 😵 Again / 😓 Hard / 🙂 Good / 😄 Easy and it's scheduled for
+  the right moment (10 min / 1 day / 2.5× / 3.5×). Cards panel shows a
+  "🐝 Due today" badge and a "Review due cards only" queue. Existing cards
+  are all due immediately. Daily reason to come back.
+- **📱 PWA tags on the app itself** — app.html now has the manifest,
+  theme-color (honey), apple-mobile-web-app-capable, apple-touch-icon and a
+  real `icon.png` — so "Add to Home Screen" works from the app, not just
+  the landing page.
+- **👈👉 Swipe flashcards** — swipe LEFT = Again, swipe RIGHT = Good
+  (Anki/Tinder style). The card follows your finger, then rates itself.
+  Taps still flip the card.
+- **📳 Haptics** — tiny vibration pulses at 5 moments: card rated, focus
+  session finished, achievement unlocked, wasp appears, lock-in done.
+  Safe no-op on desktop.
+- **📊 Hive Report (weekly recap)** — Spotify-Wrapped style: this week's
+  minutes, sessions, days, best subject, streak, cards reviewed, plan-followed
+  days — plus a **shareable PNG image** (streak + level + best subject).
+  Lives in the Awards panel and the mobile Stats tab.
+- **🔔 Daily plan notification** — once per day the app fires "🐝 Today's
+  move: Chemistry, exam in 3d" as a local notification (reuses your
+  existing notification permission). *Works while the app is open in a
+  tab — a true "phone buzzes when the app is closed" reminder needs a
+  server (push infrastructure), not a client tweak.*
+- **🔀 SR + plan cross-wired** — the "Review due cards only" queue surfaces
+  the daily plan's top subject's cards first, so "study Chemistry today"
+  and "review Chemistry cards" line up. Completing a session on the plan
+  subject marks the day as "followed" (feeds the Hive Report).
+- **⏳ Exam-based daily plan** — the app now tells you what to study today:
+  closest exam + furthest-behind subject = today's move (e.g. "⏳ Chemistry
+  in 4d — one 25-min block of active recall"). Shows on the Home card, the
+  Coach screen, and the mobile home. Pure arithmetic, no AI.
 - **📱 THE MOBILE APP (final design) is now live in the app** — the moment
   mobile layout is on, the whole app becomes the new mobile experience:
   welcome-back screen, smart greeting, giant focus timer with Start→Stop

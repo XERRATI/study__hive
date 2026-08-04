@@ -13,7 +13,16 @@
 -->
 <html lang="en">
 <head>
+<script src="js/00-shared-utils.js"></script>
 <script src="js/01-idle-timer-scheduler.js"></script>
+<script src="js/63-safe-storage.js"></script>
+<script src="js/64-spaced-repetition.js"></script>
+<script src="js/65-daily-plan.js"></script>
+<script src="js/66-hive-report.js"></script>
+<script src="js/67-plan-notify-crosswire.js"></script>
+<script src="js/68-voice-cards.js"></script>
+<script src="js/69-focus-quality.js"></script>
+<script src="js/70-cram-mode.js"></script>
 
 <meta charset="UTF-8">
 <meta name="author" content="Omphemetse Mogale">
@@ -23,10 +32,19 @@
 <meta name="rights" content="Proprietary. No copying, cloning, rebranding, resale, redistribution, or derivative works without written permission. See LICENSE.txt.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
 <title>Study Hive — Countdown, Focus & Flashcards</title>
+<!-- PWA / MOBILE META (was missing on the app itself — only on the landing page) -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#f4c430">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Study Hive">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" href="icon.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐝</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Baloo+2:wght@400..800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=11">
+<link rel="stylesheet" href="css/styles.css?v=12">
 
 
 <base target="_blank">
@@ -894,7 +912,7 @@
       </div>
       <div class="unit">
         <div class="num" id="todayHours">00</div>
-        <div class="unit-label">Today's Hrs</div>
+        <div class="unit-label">Total Hrs</div>
       </div>
       <div class="unit">
         <div class="num" id="minutes">00</div>
@@ -1227,7 +1245,51 @@
 <script src="js/56-night-sky.js"></script>
 <script src="js/58-wasp.js"></script>
 <script src="js/59-lockin-mode.js"></script>
-<script src="js/62-mobile-app.js?v=3"></script>
+<script src="js/62-mobile-app.js?v=7"></script>
+
+<script>
+/* Study Hive PWA glue:
+   1. Register the network-first service worker (offline fallback + makes
+      the manifest icons/shortcuts installable on Android).
+   2. Home-screen shortcut deep links (?shortcut=focus | cards | plan). */
+(function () {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js?v=1').catch(function () {});
+    });
+  }
+  var s = new URLSearchParams(window.location.search).get('shortcut');
+  if (!s) return;
+  var attempts = 0;
+  function go() {
+    if (s === 'focus') {
+      var lb = document.getElementById('lockinBtn');
+      if (lb) { lb.click(); return; }
+      var fp = document.getElementById('focusPanel');
+      if (fp) { fp.classList.add('show'); return; }
+    } else if (s === 'cards') {
+      var cb = document.getElementById('cardsBtn');
+      if (cb) { cb.click(); return; }
+    } else if (s === 'plan') {
+      try { if (window.goTab) window.goTab('home'); } catch (e) {}
+      var target = document.getElementById('mobPlanTitle') || document.getElementById('dailyPlanTitle');
+      if (target) {
+        var card = target.closest ? (target.closest('.daily-plan-card') || target.parentNode) : target.parentNode;
+        if (card) {
+          try { card.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) { card.scrollIntoView(); }
+          card.classList.add('plan-flash');
+          setTimeout(function () { card.classList.remove('plan-flash'); }, 2400);
+          return;
+        }
+      }
+    }
+    /* elements may not exist yet (mobile shell builds late) — retry briefly */
+    if (++attempts < 8) setTimeout(go, 1000);
+  }
+  if (document.readyState === 'complete') setTimeout(go, 1200);
+  else window.addEventListener('load', function () { setTimeout(go, 1200); });
+})();
+</script>
 
 </body>
 </html>

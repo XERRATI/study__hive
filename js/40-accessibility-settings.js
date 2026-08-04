@@ -85,8 +85,11 @@
     if(get('studyhive-install-banner-dismissed-v1')==='1') return;
     if(!$('installAppBanner')) document.body.insertAdjacentHTML('beforeend','<div class="install-app-banner" id="installAppBanner"><div><strong>Install Study Hive?</strong><span>Open faster and feel like an app.</span></div><button id="installAppBtn">Install</button><button class="secondary" id="dismissInstallBtn">Later</button></div>');
     $('installAppBanner').classList.add('show');
-    $('dismissInstallBtn').onclick=function(){ set('studyhive-install-banner-dismissed-v1','1'); $('installAppBanner').classList.remove('show'); };
-    $('installAppBtn').onclick=function(){ if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.finally(function(){ deferredPrompt=null; $('installAppBanner').classList.remove('show'); }); } else { toast('Use your browser menu → Add to Home Screen'); } };
+    /* auto-dismiss so it never blocks anything for long (QA round 16) */
+    clearTimeout(showInstallBanner._t);
+    showInstallBanner._t = setTimeout(function(){ var b=$('installAppBanner'); if(b) b.classList.remove('show'); }, 6000);
+    $('dismissInstallBtn').onclick=function(){ clearTimeout(showInstallBanner._t); set('studyhive-install-banner-dismissed-v1','1'); $('installAppBanner').classList.remove('show'); };
+    $('installAppBtn').onclick=function(){ clearTimeout(showInstallBanner._t); if(deferredPrompt){ try{ deferredPrompt.prompt(); }catch(e){ deferredPrompt=null; $('installAppBanner').classList.remove('show'); toast('Could not show the install prompt — use browser menu → Add to Home Screen'); return; } deferredPrompt.userChoice.finally(function(){ deferredPrompt=null; $('installAppBanner').classList.remove('show'); }); } else { toast('Use your browser menu → Add to Home Screen'); } };
   }
 
   /* Service worker registration for GitHub Pages, ignored on file://. */

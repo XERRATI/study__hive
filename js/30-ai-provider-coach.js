@@ -11,7 +11,7 @@
   function get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
   function set(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
   function getJSON(k,f){ try { var r=localStorage.getItem(k); return r?JSON.parse(r):f; } catch(e){ return f; } }
-  function esc(s){ return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function esc(s){ if(window.shEsc) return window.shEsc(s);  return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});  }
   function toast(msg){
     var t=$('featurePolishToast'); if(!t){ document.body.insertAdjacentHTML('beforeend','<div class="feature-polish-toast" id="featurePolishToast"></div>'); t=$('featurePolishToast'); }
     t.textContent=msg; t.classList.add('show'); clearTimeout(t._x); t._x=setTimeout(function(){t.classList.remove('show');},3200);

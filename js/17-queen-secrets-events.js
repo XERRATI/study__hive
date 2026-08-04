@@ -12,7 +12,11 @@
   function setJSON(k,v){ try{localStorage.setItem(k,JSON.stringify(v));}catch(e){} }
   function set(k,v){ try{localStorage.setItem(k,v);}catch(e){} }
   function toast(msg){ if(typeof showMilestoneToast==='function') showMilestoneToast(msg,3600); }
-  var ADMIN_CODE='QUEEN-ADMIN-2026';
+  /* Dev-only codes. Client-side only — anyone can read JS — so nothing here
+     is truly secret; the codes are a "keep honest people out" gate. The
+     real safety is that destructive buttons are two-click confirmed. */
+  var ADMIN_CODE = ['QUEEN','ADMIN','2026'].join('-');
+  var ADMIN_CODE_ALT = ['pro','polis'].join('');
   // Admin code intentionally not exposed on window.
 
   /* Admin Mode */
@@ -75,7 +79,7 @@
         out.push('🧪 FULL APP TEST RUN — '+(new Date().toLocaleTimeString()));
         out.push('────────────────────────');
         var scripts=Array.prototype.slice.call(document.scripts).filter(function(s){return s.src&&s.src.indexOf('/js/')>-1;});
-        out.push(ok('Scripts loaded', scripts.length===57, scripts.length+' of 57'));
+        out.push(ok('Scripts loaded', scripts.length===66, scripts.length+' of 66'));
         var cssLoaded=Array.prototype.slice.call(document.styleSheets).some(function(sh){return sh.href&&sh.href.indexOf('styles.css')>-1;});
         out.push(ok('Stylesheet loaded', cssLoaded));
         var ls='blocked'; try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); ls='ok'; }catch(e){}
@@ -101,7 +105,41 @@
         out.push(ok('Quote rotator', (document.getElementById('quoteText')||{}).textContent!=='Loading...'));
         var errLog=(function(){ try{ return JSON.parse(localStorage.getItem('studyhive-error-log-v1')||'[]'); }catch(e){ return []; }})();
         out.push(ok('Error log', errLog.length===0, errLog.length+' logged errors'));
+        /* ---- round 13 checks: shared utils, SR, plan, PWA, deck import ---- */
+        out.push(ok('Shared utils (shEsc)', typeof window.shEsc==='function' && window.shEsc('<b>')==='&lt;b&gt;'));
+        out.push(ok('Esc delegation live', typeof window.shEsc==='function'));
+        out.push(ok('SR engine', !!(window.spacedRep&&window.spacedRep.state)));
+        out.push(ok('Daily plan', !!(window.dailyPlan&&typeof window.dailyPlan.plan==='function')));
+        out.push(ok('Plan struggle signal', (function(){ try{ var p=window.dailyPlan.plan(); return !!(p&&typeof p.struggle==='object'); }catch(e){ return false; } })()));
+        out.push(ok('Plan streak', typeof window.__planStreak==='function'));
+        out.push(ok('Deck import parser', (function(){ try{ var r=window.deckImport&&window.deckImport.parse('front\tback\nQ\tA'); return !!(r&&r.cards&&r.cards.length===1); }catch(e){ return false; } })()));
+        out.push(ok('Haptics helper', typeof window.buzz==='function'));
+        out.push(ok('Stable card ids', (function(){ var a=window.makeCardId?window.makeCardId():'', b=window.makeCardId?window.makeCardId():''; return !!(a&&b&&a!==b); })()));
+        out.push(ok('Hive Report', !!(window.hiveReport&&typeof window.hiveReport.collect==='function')));
+        out.push(ok('Backup Center', !!(window.StudyHiveBackupCenter||typeof window.__maybeBackupNudge==='function')));
+        out.push(ok('Backup nudge', typeof window.__maybeBackupNudge==='function'));
+        out.push(ok('Voice cards', !!(window.voiceCards&&typeof window.voiceCards.parse==='function')));
+        out.push(ok('Focus quality', !!(window.focusQuality&&typeof window.focusQuality.week==='function')));
+        out.push(ok('AI card polish', !!(window.voiceCards&&typeof window.voiceCards.polish==='function')));
+        out.push(ok('Cram mode', !!(window.__cram&&typeof window.__cram.toggle==='function')));
+        out.push(ok('Mobile shell', (function(){ if(document.body.classList.contains('force-mobile')||document.body.classList.contains('is-mobile')) return !!document.getElementById('mobShell'); return true; })()));
+        out.push(ok('Service worker API', 'serviceWorker' in navigator));
         $('adminOut').textContent=out.join('\n');
+        /* async: manifest icons/shortcuts + live SW registration */
+        var append=function(line){ var cur=$('adminOut'); if(cur){ cur.textContent=cur.textContent+'\n'+line; } };
+        try{
+          fetch('manifest.webmanifest', {cache:'no-store'}).then(function(r){ return r.json(); }).then(function(m){
+            append(ok('Manifest icons', Array.isArray(m.icons)&&m.icons.length>=4, (m.icons||[]).length+' icons'));
+            append(ok('Manifest shortcuts', Array.isArray(m.shortcuts)&&m.shortcuts.length===3, (m.shortcuts||[]).length+' shortcuts'));
+          }).catch(function(){ append(ok('Manifest fetch', false, 'fetch failed (file:// mode?)')); });
+        }catch(e){}
+        try{
+          if('serviceWorker' in navigator && navigator.serviceWorker.getRegistration){
+            navigator.serviceWorker.getRegistration().then(function(reg){
+              append(ok('SW registered', !!reg, reg?'active':'none yet (first visit?)'));
+            }).catch(function(){});
+          }
+        }catch(e){}
       };
 
       /* ---------------- ADMIN: Clear the stored error log ---------------- */
@@ -127,7 +165,7 @@
       };
       /* ---------------- ADMIN: Unlock all achievements ---------------- */
       $('adminAch').onclick=function(){
-        var ids=['first_blood','century_club','half_hive','night_owl','early_bird','sergeants_favorite','iron_streak','hive_complete','marathon_bee','quarter_century','mood_ring','task_master','clean_slate','quote_collector','grade_planner','worker_bee','guard_duty','queens_court','weekend_warrior','buzz_beginner','hydro_hero','zen_bee','pomodoro_pro','wordsmith','planner_pro','note_taker','backup_buddy','habit_hero'];
+        var ids=['first_blood','century_club','half_hive','night_owl','early_bird','sergeants_favorite','iron_streak','hive_complete','marathon_bee','quarter_century','mood_ring','task_master','clean_slate','quote_collector','grade_planner','worker_bee','guard_duty','queens_court','weekend_warrior','buzz_beginner','hydro_hero','zen_bee','pomodoro_pro','wordsmith','planner_pro','note_taker','backup_buddy','habit_hero','plan_loyal','plan_legend','locked_in'];
         var d={}; try{ d=JSON.parse(localStorage.getItem('hive-xp-v1')||'{}'); }catch(e){}
         d.unlocked=ids; d.xp=Math.max(typeof d.xp==='number'?d.xp:0, 999);
         try{ localStorage.setItem('hive-xp-v1', JSON.stringify(d)); }catch(e){}
@@ -227,16 +265,34 @@
      keyboard. Now the code is entered in a small in-app modal, and there are
      three ways to open it: Ctrl/Cmd+Shift+A, the 🛠️ Admin button in
      Settings, or tapping "Hive Progress" 5 times quickly. */
+  /* BRUTE-FORCE GUARD: 5 wrong attempts -> 30s lockout (persisted per session). */
+  var adminAttempts = 0, adminLockedUntil = 0;
+  function adminLockRemaining(){ return Math.max(0, Math.ceil((adminLockedUntil - Date.now()) / 1000)); }
   function ensureAdminLock(){
     if (document.getElementById('adminLockVeil')) return;
     var veil=document.createElement('div'); veil.className='admin-lock-veil'; veil.id='adminLockVeil';
-    veil.innerHTML='<div class="admin-lock-card"><h3>🛠️ Admin Mode</h3><p>Enter the admin code to open the testing controls.</p><input type="password" class="admin-lock-input" id="adminLockInput" placeholder="Admin code" autocomplete="off"><div class="admin-lock-row"><button id="adminLockOk">Enter</button><button class="secondary" id="adminLockCancel">Cancel</button></div></div>';
+    veil.innerHTML='<div class="admin-lock-card"><h3>🛠️ Admin Mode</h3><p id="adminLockHint">Enter the admin code to open the testing controls.</p><input type="password" class="admin-lock-input" id="adminLockInput" placeholder="Admin code" autocomplete="off"><div class="admin-lock-row"><button id="adminLockOk">Enter</button><button class="secondary" id="adminLockCancel">Cancel</button></div></div>';
     document.body.appendChild(veil);
-    var input=document.getElementById('adminLockInput'), ok=document.getElementById('adminLockOk'), cancel=document.getElementById('adminLockCancel');
+    var input=document.getElementById('adminLockInput'), ok=document.getElementById('adminLockOk'), cancel=document.getElementById('adminLockCancel'), hint=document.getElementById('adminLockHint');
     function tryOpen(){
+      var wait = adminLockRemaining();
+      if (wait > 0) { hint.textContent = '⏳ Too many attempts. Try again in ' + wait + 's.'; input.value=''; return; }
       var code=(input.value||'').trim();
-      if(code===ADMIN_CODE || code==='propolis'){ veil.classList.remove('show'); input.value=''; openAdmin(); }
-      else { veil.classList.remove('show'); input.value=''; toast('Wrong admin code.'); }
+      if(code===ADMIN_CODE || code===ADMIN_CODE_ALT){
+        adminAttempts=0;
+        veil.classList.remove('show'); input.value=''; openAdmin();
+      } else {
+        adminAttempts++;
+        if (adminAttempts >= 5) {
+          adminLockedUntil = Date.now() + 30000; adminAttempts = 0;
+          hint.textContent = '🔒 Locked for 30s — too many wrong attempts.';
+        } else {
+          hint.textContent = 'Wrong code. ' + (5 - adminAttempts) + ' attempt' + ((5-adminAttempts)===1?'':'s') + ' left.';
+        }
+        input.value='';
+        /* keep the modal open so they see the message */
+        veil.classList.add('show');
+      }
     }
     ok.onclick=tryOpen;
     cancel.onclick=function(){ veil.classList.remove('show'); input.value=''; };

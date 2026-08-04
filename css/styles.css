@@ -1934,11 +1934,12 @@
 
   /* ===== NEW: Exam Countdown Badge ===== */
   .exam-countdown-badge {
-    position: fixed; top: 18px; left: 910px; z-index: 20;
+    position: fixed; top: 18px; right: 300px; left: auto; z-index: 20;
     background: var(--pearl); border-radius: 14px; padding: 8px 12px;
     font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 12px;
     color: var(--deep-brown); box-shadow: 0 4px 12px rgba(139,111,82,0.2);
-    display: none;
+    display: none; max-width: 380px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .exam-countdown-badge.show { display: block; }
   body.night-mode .exam-countdown-badge { background: #1c2738; color: #cdd6e4; }
@@ -5903,3 +5904,147 @@ body.mobile-pro-ui.night-mode .mob-bottombar { background: rgba(40,32,22,.96); }
 body.mobile-pro-ui.night-mode .mob-bb { color: #b09070; }
 body.mobile-pro-ui.night-mode .mob-hamburger, body.mobile-pro-ui.night-mode .mob-icon-btn { background: #2a1f14; }
 body.mobile-pro-ui.night-mode .mob-hex { background: #3a2c18; }
+
+/* ==========================================================================
+   ROUND 10 — spaced repetition + daily plan UI
+   ========================================================================== */
+
+/* ---- spaced repetition: badge + rating row ---- */
+.sr-wrap { display: flex; align-items: center; gap: 10px; margin: 6px 0 8px; flex-wrap: wrap; }
+.sr-badge {
+  font-size: 12px; font-weight: 800; color: var(--deep-brown);
+  background: rgba(244,196,48,.18); border: 1px solid rgba(226,155,28,.35);
+  padding: 6px 12px; border-radius: 999px;
+}
+.sr-badge b { color: var(--honey3); }
+.sr-toggle {
+  border: 1.5px solid rgba(226,155,28,.35); background: var(--pearl); color: #8a5b12;
+  border-radius: 999px; padding: 6px 12px; font-family: 'Fredoka', sans-serif;
+  font-weight: 800; font-size: 12px; cursor: pointer;
+}
+.sr-toggle.on { background: linear-gradient(135deg, var(--honey1), var(--honey2)); color: #fffaf2; border-color: transparent; }
+.sr-rating-row { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; justify-content: center; }
+.sr-rate {
+  border: none; border-radius: 999px; padding: 8px 14px; font-family: 'Fredoka', sans-serif;
+  font-weight: 800; font-size: 12px; cursor: pointer; color: #fffaf2;
+  transition: transform .12s ease;
+}
+.sr-rate:active { transform: scale(.93); }
+.sr-rate.again { background: #c1392b; }
+.sr-rate.hard  { background: #e08a3c; }
+.sr-rate.good  { background: #5a8a4a; }
+.sr-rate.easy  { background: #3f7fc1; }
+
+/* ---- daily plan ---- */
+.daily-plan-card {
+  background: linear-gradient(135deg, rgba(244,196,48,.16), rgba(226,155,28,.08));
+  border: 1px solid rgba(226,155,28,.3);
+  border-radius: 14px; padding: 10px 14px; margin: 10px auto 0;
+  max-width: 90%;
+}
+.daily-plan-title { font-weight: 900; font-size: 13px; color: var(--deep-brown); }
+.daily-plan-body { font-size: 12px; color: var(--brown); line-height: 1.45; margin-top: 3px; font-weight: 600; }
+.daily-plan-coach {
+  background: linear-gradient(135deg, rgba(244,196,48,.16), rgba(226,155,28,.08));
+  border: 1px solid rgba(226,155,28,.3); border-radius: 16px; padding: 12px 14px; margin-bottom: 10px;
+}
+.daily-plan-coach .daily-plan-title { font-size: 14px; }
+.daily-plan-coach .daily-plan-body { font-size: 12.5px; }
+body.night-mode .daily-plan-title { color: #e8c89a; }
+body.night-mode .daily-plan-body { color: #b09070; }
+
+/* ---- mobile daily plan card ---- */
+.mob-plan-card {
+  background: linear-gradient(135deg, rgba(244,196,48,.16), rgba(226,155,28,.08));
+  border: 1px solid rgba(226,155,28,.3);
+  border-radius: 18px; padding: 12px 14px; margin-top: 12px;
+}
+.mob-plan-title { font-weight: 900; font-size: 14px; color: var(--deep); }
+.mob-plan-body { font-size: 12.5px; color: var(--brown); line-height: 1.45; margin-top: 3px; font-weight: 600; }
+
+/* ==========================================================================
+   ROUND 11 — Hive Report (weekly recap)
+   ========================================================================== */
+.hive-report-box {
+  background: linear-gradient(150deg, rgba(244,196,48,.16), rgba(226,155,28,.08));
+  border: 1px solid rgba(226,155,28,.3); border-radius: 18px; padding: 14px; margin-top: 12px;
+}
+.hive-report-head { font-family: 'Baloo 2', sans-serif; font-weight: 900; font-size: 16px; color: var(--deep-brown); margin-bottom: 8px; }
+.hive-report-body { font-size: 13px; color: var(--brown); line-height: 1.7; }
+.hr-line b { color: var(--deep-brown); }
+.hr-days { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.hr-day { background: rgba(255,250,242,.8); border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 700; color: var(--brown); }
+.hr-day b { color: var(--honey3); }
+body.night-mode .hive-report-head, body.night-mode .hr-line b { color: #e8c89a; }
+body.night-mode .hive-report-body { color: #b09070; }
+body.night-mode .hr-day { background: #2a1f14; color: #b09070; }
+
+/* ---- swipe hint + card swipe styling ---- */
+.sr-swipe-hint {
+  width: 100%; text-align: center; font-size: 10.5px; color: var(--brown);
+  font-weight: 700; margin-top: 6px; opacity: .8;
+}
+#activeFlashcard {
+  transition: transform .18s ease, opacity .18s ease;
+  touch-action: pan-y; /* allow vertical scroll, capture horizontal */
+  user-select: none;
+}
+
+/* ====================== ROUND 12 ======================
+   PWA shortcuts deep link — highlight pulse for the daily
+   plan card when opened via the "Daily Plan" shortcut. */
+.plan-flash {
+  animation: planFlash 2.4s ease;
+  border-radius: 16px;
+}
+@keyframes planFlash {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(244, 196, 48, 0); }
+  30% { box-shadow: 0 0 0 6px rgba(244, 196, 48, .6); }
+  60% { box-shadow: 0 0 0 3px rgba(226, 155, 28, .4); }
+}
+
+/* ====================== ROUND 14 ======================
+   Voice-to-flashcard quick capture + focus-quality chip +
+   "add more cards" nudge on the daily plan card. */
+.voice-card-btn { flex: 0 0 auto; width: 36px; }
+.voice-card-btn.listening { background: var(--honey2); color: #fff; box-shadow: 0 0 0 3px rgba(244, 196, 48, .35); }
+.voice-card-status { display: block; font-size: 10px; color: var(--brown); margin: 2px 0 6px; min-height: 12px; line-height: 1.3; }
+.plan-card-hint { display: block; width: 100%; margin-top: 8px; padding: 8px 10px; border: 1.5px dashed var(--honey2); border-radius: 12px; background: var(--honey-soft); color: var(--deep); font-family: 'Fredoka', sans-serif; font-size: 12.5px; font-weight: 600; cursor: pointer; text-align: left; }
+.plan-card-hint:hover { background: var(--honey-mid); }
+.interrupt-chip { margin-top: 10px; padding: 7px 10px; border-radius: 10px; background: var(--honey-mid); color: var(--deep); font-size: 11.5px; font-weight: 600; text-align: center; }
+
+/* ====================== ROUND 15 ======================
+   Cram-mode button in the SR review area. */
+.cram-btn { margin-left: 6px; border-color: var(--honey3) !important; color: var(--deep) !important; }
+.cram-btn.on { background: var(--honey2) !important; color: #fff !important; border-color: var(--honey2) !important; }
+
+/* ====================== ROUND 16 ======================
+   QA fixes:
+   · install banner used to span the full bottom width and sit
+     on top of the desktop dock / mobile tab bar. Desktop ->
+     bottom-left (the dock is center-bottom, buttons top-right);
+     mobile shell -> below the header so it never covers the
+     tab bar or the hive. It also auto-dismisses after 6s.
+   · the mobile shell has its own layout toggle, so the desktop
+     "Mobile UI on" chip is hidden inside the shell.
+   · the home screen's last stats row must clear the fixed tab
+     bar. */
+.install-app-banner {
+  top: auto; bottom: calc(16px + env(safe-area-inset-bottom));
+  right: auto; left: 14px; width: min(380px, calc(100vw - 28px));
+}
+body.mobile-pro-ui .install-app-banner {
+  bottom: auto; top: calc(64px + env(safe-area-inset-top));
+  right: 12px; left: 12px; width: auto;
+}
+body.mobile-pro-ui #mobileModeChip { display: none; }
+body.mobile-pro-ui .mob-stats { margin-bottom: calc(86px + env(safe-area-inset-bottom)); }
+
+/* ====================== ROUND 17 ======================
+   Proactive cram surfacing on the daily plan card. */
+.plan-card-hint.cram-ready {
+  border-style: solid;
+  border-color: var(--honey3);
+  background: linear-gradient(145deg, var(--honey-soft), var(--honey-mid));
+}
+.plan-card-hint.cram-ready:hover { background: var(--honey-mid); }

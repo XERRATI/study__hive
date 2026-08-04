@@ -3,8 +3,9 @@
 Files load in this exact order from `index.html` — each is one patch layer of the app.
 Renumbering or reordering them will break things.
 
-**New in this version:** `54-welcome-screen.js` (front page) and `55-onboarding-wizard.js` (one-question-at-a-time setup + bee sliders).
+**New in this version:** `00-shared-utils.js` (single implementation of esc/$/qa/getJSON/setJSON/pad/dateKey — every file's local copy now delegates to it with a hoist-safe fallback), SR→daily-plan cross-wire (Again-press struggle signal in `65-daily-plan.js`), backup nudge in `38`, and the in-app test run grew 22 → 38 checks.
 
+- `00-shared-utils.js` (1.2 KB) — shared helpers: `window.shEsc / shGet / shQa / shGetJSON / shSetJSON / shPad / shDateKey`. Loaded FIRST — never reorder.
 - `01-idle-timer-scheduler.js` (3.9 KB)
 - `02-startup-fade.js` (0.4 KB)
 - `05-countdown-hive-core.js` (43.9 KB)
@@ -60,3 +61,16 @@ Renumbering or reordering them will break things.
 - `55-onboarding-wizard.js` — setup is now one question per step with a bee slider; main-screen hive progress bee
 - `56-night-sky.js` — night sky events: shooting stars (every 45s–2.5min) and rare planet collisions while night mode is on
 - `57-sergeant-v2.js` — test feature: Squad Leader Sergeant variant (Settings toggle)
+- `58-wasp.js` (8 KB) — idle wasp: appears after 9h of inactivity and stings (haptic) every 55s until you study; redesigned SVG
+- `59-lockin-mode.js` (12 KB) — full-screen portrait lock-in timer with +5/+10 extensions; bees dance when it finishes
+- `62-mobile-app.js` (52 KB) — the whole mobile shell: 7-tab bottom bar, honeycomb comb, garden, coach, stats, settings, drawer of all tools, spot/word guides, report box, music player
+- `63-safe-storage.js` (4 KB) — safe localStorage read/write + haptics helper `window.buzz()` + stable `window.makeCardId()`
+- `64-spaced-repetition.js` (12 KB) — SM-2-style scheduling, due-queue filter, rating buttons, swipe gestures (left=Again, right=Good)
+- `65-daily-plan.js` (8 KB) — exam-aware daily plan: today's move, injected on Home, Coach and mobile
+- `66-hive-report.js` (8 KB) — weekly Hive Report (minutes/sessions/best subject/streak/cards/plan days) + shareable PNG
+- `67-plan-notify-crosswire.js` (8 KB) — daily plan notification, SR queue plan-first ordering, plan-followed tracking + plan-streak achievements
+
+**Also:** `sw.js` (service worker — network-first, offline fallback, enables PWA install + home-screen shortcuts). `manifest.webmanifest` now ships real icons (180/192/512 + maskable) and three shortcuts: Start Focus, Review Cards, Daily Plan.
+- `68-voice-cards.js` (7 KB) — voice-to-flashcard quick capture: 🎤 button in the Cards panel, transcript → draft front/back (separator / sentence / whole-phrase parsing), `window.voiceCards.parse` unit-tested
+- `69-focus-quality.js` (5 KB) — interruption tracking: visibility/blur events during an active focus session, stored per day in `studyhive-interrupts-v1`, Focus-panel chip, feeds the Hive Report
+- `70-cram-mode.js` (6 KB) — exam-day cram mode: when an exam is today/tomorrow, a "🧠 Cram" button makes the review queue show only that subject's cards, hardest first (lapses desc); window.__cram test hooks

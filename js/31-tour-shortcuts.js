@@ -10,7 +10,7 @@
   function qa(sel){return Array.prototype.slice.call(document.querySelectorAll(sel))}
   function getJSON(k,f){try{var r=localStorage.getItem(k);return r?JSON.parse(r):f}catch(e){return f}}
   function setJSON(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
-  function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function esc(s){ if(window.shEsc) return window.shEsc(s); return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]}) }
   function toast(msg){if(typeof showMilestoneToast==='function')showMilestoneToast(msg,3200)}
   var MORE={'cardsBtn':1,'notesBtn':1,'todoToggleBtn':1,'gardenBtn':1,'musicBtn':1,'heatmapBtn':1,'rivalBtn':1,'freezeBtn':1,'waterBtn':1,'habitsBtn':1,'drawBtn':1,'capsuleBtn':1,'punsBtn':1,'secretsBtn':1,'challengeBtn':1,'feedbackBtn':1,'tipsBtn':1};
   var SHORT=[

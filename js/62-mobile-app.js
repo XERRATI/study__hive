@@ -26,7 +26,7 @@
   function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
   function pad(n) { return (n < 10 ? '0' : '') + n; }
-  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function esc(s){ if(window.shEsc) return window.shEsc(s);  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; });  }
 
   var shell = null;
   var tab = 'home';
@@ -103,6 +103,10 @@
       '      <div class="mob-quote">' +
       '        <div class="mob-quote-text" id="mobQuoteText">"…"</div>' +
       '        <button class="mob-quote-heart" id="mobHeart">🤍</button>' +
+      '      </div>' +
+      '      <div class="mob-plan-card" id="mobPlanCard">' +
+      '        <div class="mob-plan-title" id="mobPlanTitle"></div>' +
+      '        <div class="mob-plan-body" id="mobPlanBody"></div>' +
       '      </div>' +
       '      <div class="mob-stats">' +
       '        <button class="mob-stat s1" data-goto="stats"><b id="mobStatToday">0</b><span>Today min</span></button>' +
@@ -376,7 +380,6 @@
     /* subject select mirrors the real one */
     var ss = $('subjectSelect'), mss = $('mobSubjectSelect');
     if (ss && mss) {
-      function syncSubjects() { mss.innerHTML = ss.innerHTML; mss.value = ss.value; }
       syncSubjects();
       mss.addEventListener('change', function () { if (ss) ss.value = mss.value; });
       setInterval(syncSubjects, 2000);
@@ -451,6 +454,16 @@
     if (name === 'garden') renderGarden();
     if (name === 'focus') syncSubjects();
   }
+  /* hoisted to the IIFE scope: it used to be declared inside an `if` block,
+     which made it block-scoped under 'use strict' — goTab('focus') threw
+     "syncSubjects is not defined" on every Focus-tab tap. (QA round 16) */
+  function syncSubjects() {
+    var ss = $('subjectSelect'), mss = $('mobSubjectSelect');
+    if (!ss || !mss) return;
+    mss.innerHTML = ss.innerHTML;
+    mss.value = ss.value;
+  }
+  window.goTab = goTab; /* used by home-screen shortcut deep links */
 
   /* ============================ TIMER ============================ */
   function activeMins() {
@@ -659,6 +672,31 @@
       '<div class="mob-statrow"><span>Total time</span><b>' + Math.floor((sd.totalMinutes || 0) / 60) + 'h ' + Math.round((sd.totalMinutes || 0) % 60) + 'm</b></div>' +
       '<div class="mob-statrow"><span>Best streak</span><b>' + (sd.bestStreak || 0) + ' days</b></div>' +
       '<div class="mob-statrow"><span>Achievements</span><b>' + ((xpData().unlocked || []).length) + ' unlocked</b></div>';
+
+    /* Hive Report (weekly recap) on the mobile Stats tab */
+    if (window.hiveReport && !document.getElementById('mobReportBox')) {
+      var rb = document.createElement('div');
+      rb.id = 'mobReportBox';
+      rb.className = 'mob-level-card';
+      var rpt = window.hiveReport.collect();
+      rb.innerHTML =
+        '<div class="mob-level-line">📊 Hive Report</div>' +
+        '<div class="mob-xp-sub" style="margin-top:8px;line-height:1.8;">' +
+        '<b>' + window.hiveReport.fmtMin(rpt.weekMinutes) + '</b> this week · <b>' + rpt.weekSessions + '</b> sessions<br>' +
+        '🔥 <b>' + rpt.streak + '</b> streak · 🏆 <b>' + (rpt.best ? esc(rpt.best) : '—') + '</b> best subject<br>' +
+        '🃏 <b>' + rpt.cardsReviewed + '</b> cards · 📋 <b>' + rpt.planDays + '</b> plan days' + (rpt.planStreak >= 2 ? ' · 🔥 <b>' + rpt.planStreak + '</b>-day streak' : '') + '<br>' +
+        '🎯 Hive sync <b>' + rpt.consistency + '%</b> · ⚡ <b>' + rpt.interrupts + '</b> interruption' + (rpt.interrupts === 1 ? '' : 's') + '</div>';
+      var statsPage = document.getElementById('mobScr-stats');
+      if (statsPage) statsPage.appendChild(rb);
+    }
+
+    /* daily plan (from js/65) */
+    if (window.dailyPlan) {
+      var pm = window.dailyPlan.message();
+      var pt = $('mobPlanTitle'), pb = $('mobPlanBody');
+      if (pt) pt.textContent = pm.title;
+      if (pb) pb.textContent = pm.body;
+    }
 
     /* coach line */
     $('mobCoachTitle').textContent = worry ? 'Your main focus: ' + worry : 'Your smart next move';

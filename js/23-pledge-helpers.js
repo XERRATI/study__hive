@@ -7,7 +7,7 @@
 
 (function(){
   function $(id){ return document.getElementById(id); }
-  function esc(s){ return String(s || '').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function esc(s){ if(window.shEsc) return window.shEsc(s);  return String(s || '').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; });  }
   function makeSentence(prefix){
     var action = ($(prefix+'Action') && $(prefix+'Action').value || '').trim();
     var mins = ($(prefix+'Minutes') && $(prefix+'Minutes').value || '').trim();

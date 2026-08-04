@@ -10,7 +10,7 @@
   function qa(sel){ return Array.prototype.slice.call(document.querySelectorAll(sel)); }
   function getJSON(k,f){ try{ var r=localStorage.getItem(k); return r?JSON.parse(r):f; }catch(e){ return f; } }
   function setJSON(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
-  function esc(s){ return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]}); }
+  function esc(s){ if(window.shEsc) return window.shEsc(s);  return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]});  }
   function toast(msg){ if(typeof showMilestoneToast==='function') showMilestoneToast(msg,3600); }
 
   function ensureImportHub(){
@@ -108,7 +108,7 @@
     var parts=text.split(/[.!?\n]+/).map(function(s){return s.trim();}).filter(function(s){return s.length>20;}).slice(0,12);
     if(!parts.length){ $('transcribeStatus').textContent='Need longer sentences to make cards.'; return; }
     var cards=getJSON('hive-flashcards-v1',[]);
-    parts.forEach(function(s,i){ cards.push({front:'Transcript idea '+(i+1)+': what is the key point?', back:s, subject:'Transcript', known:false}); });
+    parts.forEach(function(s,i){ cards.push({id: window.makeCardId ? window.makeCardId() : ('tr' + i), front:'Transcript idea '+(i+1)+': what is the key point?', back:s, subject:'Transcript', known:false}); });
     setJSON('hive-flashcards-v1',cards); $('transcribeStatus').textContent='Created '+parts.length+' flashcard(s) from transcript.'; toast('🧠 Transcript cards created');
   }
   ensureImportHub(); setInterval(function(){ ensureImportHub(); placeImportButton(); },2000);

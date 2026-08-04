@@ -77,4 +77,44 @@
   setInterval(addBackupButtons,4000);
   addBackupButtons();
   window.StudyHiveBackupCenter = { open: openBackupCenter, backup: backupString, restore: restoreBackup };
+
+  /* ============ BACKUP NUDGE (round 13) ============
+     The daily auto-backup (js/37) lives in this browser's localStorage —
+     it dies with a cleared cache like everything else. The only truly
+     portable copy is the downloaded file / copied text. So after real
+     usage (>=120 min, >=5 sessions) we gently remind once every 21 days,
+     right after an achievement unlock, to grab a portable backup. */
+  var NUDGE_KEY = 'studyhive-backup-nudge-v1';
+  function nudgeToday(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  function maybeBackupNudge(){
+    try{
+      var today = nudgeToday();
+      var last = safeGet(NUDGE_KEY);
+      if(last === today) return;                       /* once per day max */
+      if(last){
+        var diff = (new Date(today) - new Date(last)) / 86400000;
+        if(diff < 21) return;                          /* every ~3 weeks */
+      }
+      var raw = safeGet('study-data-v2');
+      if(!raw) return;
+      var sd = JSON.parse(raw);
+      if(!sd || (sd.totalMinutes||0) < 120 || (sd.sessionsTotal||0) < 5) return;
+      safeSet(NUDGE_KEY, today);
+      toast('💾 Your hive is worth backing up — open Settings → Backup Center and download a file. Auto-backups live in this browser; the file survives anywhere.');
+    }catch(e){}
+  }
+  setTimeout(maybeBackupNudge, 9000);
+  var nudgeHooked = false;
+  function hookBackupNudge(){
+    if(nudgeHooked) return;
+    if(!window.unlockAchievement) return;
+    nudgeHooked = true;
+    var orig = window.unlockAchievement;
+    window.unlockAchievement = function(id){
+      try{ maybeBackupNudge(); }catch(e){}
+      return orig.apply(this, arguments);
+    };
+  }
+  setInterval(hookBackupNudge, 1500);
+  window.__maybeBackupNudge = maybeBackupNudge;
 })();

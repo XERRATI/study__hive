@@ -14,7 +14,7 @@
   function set(k,v){ try{localStorage.setItem(k,v);}catch(e){} }
   function today(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
   function toast(msg){ if(typeof showMilestoneToast==='function') showMilestoneToast(msg,3600); }
-  function esc(s){ return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function esc(s){ if(window.shEsc) return window.shEsc(s);  return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});  }
 
   /* Smart next action on main card. */
   function smartSuggestion(){

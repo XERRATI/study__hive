@@ -8,7 +8,7 @@
 (function(){
   function $(id){ return document.getElementById(id); }
   function qa(sel){ return Array.prototype.slice.call(document.querySelectorAll(sel)); }
-  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function esc(s){ if(window.shEsc) return window.shEsc(s);  return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});  }
   function getJSON(k,f){ try { var r=localStorage.getItem(k); return r?JSON.parse(r):f; } catch(e){ return f; } }
   function setJSON(k,v){ try { localStorage.setItem(k,JSON.stringify(v)); } catch(e){} }
   function todayKey(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }

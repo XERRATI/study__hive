@@ -168,6 +168,7 @@
   (function(){ var raw = storageGet('hive-streak-freeze-v1'); if (raw) { try { freezeState = Object.assign(freezeState, JSON.parse(raw)); } catch(e){} } })();
   function saveFreezeState(){ storageSet('hive-streak-freeze-v1', JSON.stringify(freezeState)); }
 
+  function escHtml(s){ if(window.shEsc) return window.shEsc(s);  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; });  }
   function getSubjectPct(subject) {
     return Math.min(100, Math.round((studyData.subjects[subject] / SUBJECT_TARGET_MINUTES) * 100));
   }
@@ -184,7 +185,7 @@
       const remMins = mins % 60;
       const needsAttention = subj === minSubj && mins < 25 * 60;
       html += '<div class="subject-progress-item">' +
-        '<div class="subject-progress-name"><span>' + subj + (needsAttention ? ' <span class="needs-attention-badge">FOCUS</span>' : '') + '</span><span class="subject-progress-pct">' + pct + '% (' + hrs + 'h ' + remMins + 'm)</span></div>' +
+        '<div class="subject-progress-name"><span>' + escHtml(subj) + (needsAttention ? ' <span class="needs-attention-badge">FOCUS</span>' : '') + '</span><span class="subject-progress-pct">' + pct + '% (' + hrs + 'h ' + remMins + 'm)</span></div>' +
         '<div class="subject-progress-track"><div class="subject-progress-fill" style="width:' + pct + '%"></div></div>' +
       '</div>';
     }
@@ -712,14 +713,14 @@
     }
 
     var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    var hours = Math.floor(diff / (1000 * 60 * 60));
-    var todayHours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    var totalHours = Math.floor(diff / (1000 * 60 * 60));
+    var hours = totalHours % 24;
     var minutes = Math.floor((diff / (1000 * 60)) % 60);
     var seconds = Math.floor((diff / 1000) % 60);
 
     document.getElementById('days').textContent = pad(days);
     document.getElementById('hours').textContent = pad(hours);
-    document.getElementById('todayHours').textContent = pad(todayHours);
+    document.getElementById('todayHours').textContent = pad(totalHours);
     document.getElementById('minutes').textContent = pad(minutes);
     document.getElementById('seconds').textContent = pad(seconds);
   }

@@ -154,6 +154,7 @@
   function onDone() {
     if (doneShown) return;
     doneShown = true;
+    if (window.buzz) window.buzz([40, 60, 40, 60, 80]);
     $('lockinDone').style.display = 'block';
     $('lockinTime').textContent = '🎉 00:00';
     var mins = Math.round((window.sessionTotal || 0) / 60);

@@ -12,7 +12,7 @@
   function get(k){ try{return localStorage.getItem(k);}catch(e){return null;} }
   function set(k,v){ try{localStorage.setItem(k,v);}catch(e){} }
   function toast(msg){ if(typeof showMilestoneToast==='function') showMilestoneToast(msg,3600); }
-  function esc(s){ return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function esc(s){ if(window.shEsc) return window.shEsc(s);  return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});  }
   // IMPORTANT: for a real global first-1000 limit, connect this to a backend endpoint.
   // Expected response: { ok:true, number:123, name:"Name", email:"email", lifetime:true }
   var OG_CLAIM_ENDPOINT = localStorage.getItem('studyhive-og-endpoint-v1') || ''; // e.g. https://your-worker.yourname.workers.dev/claim-og

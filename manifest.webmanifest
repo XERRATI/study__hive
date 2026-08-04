@@ -2,9 +2,39 @@
   "name": "Study Hive — Countdown, Focus & Flashcards",
   "short_name": "Study Hive",
   "description": "Countdown, focus sessions, flashcards and a hive full of study bees.",
+  "id": "./",
   "start_url": "./app.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#f4ead9",
-  "theme_color": "#e29b1c",
-  "icons": []
+  "theme_color": "#f4c430",
+  "icons": [
+    { "src": "icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Start Focus",
+      "short_name": "Focus",
+      "description": "Jump straight into a locked-in focus session.",
+      "url": "./app.html?shortcut=focus",
+      "icons": [{ "src": "icon.png", "sizes": "180x180", "type": "image/png" }]
+    },
+    {
+      "name": "Review Cards",
+      "short_name": "Cards",
+      "description": "Open your flashcards and review what is due.",
+      "url": "./app.html?shortcut=cards",
+      "icons": [{ "src": "icon.png", "sizes": "180x180", "type": "image/png" }]
+    },
+    {
+      "name": "Daily Plan",
+      "short_name": "Plan",
+      "description": "See today's move from your daily study plan.",
+      "url": "./app.html?shortcut=plan",
+      "icons": [{ "src": "icon.png", "sizes": "180x180", "type": "image/png" }]
+    }
+  ]
 }

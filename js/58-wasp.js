@@ -98,6 +98,7 @@
     document.body.appendChild(waspEl);
     if (!warned) {
       warned = true;
+      if (window.buzz) window.buzz([40, 30, 40]);
       toast('🐝⚠️ A WASP has entered the hive! You haven\u2019t studied for over 9 hours. Log even 5 minutes and it will flee.');
     }
   }

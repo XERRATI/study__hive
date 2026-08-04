@@ -8,7 +8,7 @@
 (function(){
   function $(id){ return document.getElementById(id); }
   function todayKey(){ return dateKey(new Date()); }
-  function escapeHtml(s){ var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+  function escapeHtml(s){ if(window.shEsc) return window.shEsc(s);  var d = document.createElement('div'); d.textContent = s; return d.innerHTML;  }
 
   /* ================= XP & ACHIEVEMENT SYSTEM ================= */
   var LEVELS = [
@@ -47,7 +47,10 @@
     {id:'planner_pro', name:'Planner Pro', icon:'📅'},
     {id:'note_taker', name:'Note Taker', icon:'📝'},
     {id:'backup_buddy', name:'Backup Buddy', icon:'💾'},
-    {id:'habit_hero', name:'Habit Hero', icon:'✅'}
+    {id:'habit_hero', name:'Habit Hero', icon:'✅'},
+    {id:'plan_loyal', name:'Plan Loyalist', icon:'📋'},
+    {id:'plan_legend', name:'Plan Legend', icon:'📅'},
+    {id:'locked_in', name:'Locked In', icon:'🔒'}
   ];
   var xpState = {xp:0, unlocked:[], weekendDays:[]};
   (function(){ var raw = storageGet('hive-xp-v1'); if (raw) { try { xpState = Object.assign(xpState, JSON.parse(raw)); } catch(e){} } })();
@@ -103,6 +106,7 @@
     xpState.unlocked.push(id); saveXp();
     var a = ACHIEVEMENTS.filter(function(x){ return x.id === id; })[0];
     if (!a) return;
+    if (window.buzz) window.buzz([30, 40, 60]);
     var toast = $('achievementToast');
     toast.textContent = a.icon + ' Achievement Unlocked: ' + a.name;
     toast.classList.add('show');
@@ -111,6 +115,9 @@
     burstAtHive();
     addXp(25);
   }
+  /* expose so later modules (daily-plan cross-wire) can unlock plan
+     achievements when the plan-followed streak grows */
+  window.unlockAchievement = unlockAchievement;
   function checkAchievements(){
     if (studyData.sessionsTotal >= 1) unlockAchievement('first_blood');
     if (studyData.totalMinutes >= 100) unlockAchievement('century_club');
@@ -172,6 +179,7 @@
   /* ================= WRAP recordStudyCompleted (XP + achievements + buddy) ================= */
   var _originalRecordStudyCompleted = recordStudyCompleted;
   recordStudyCompleted = function(subject, minutes){
+    if (window.buzz) window.buzz(60); /* focus session finished */
     var hr = new Date().getHours();
     var wasNight = hr >= 23 || hr < 5;
     var wasEarly = hr >= 4 && hr < 6;
@@ -1532,7 +1540,7 @@
     $('weeklyRecap').innerHTML =
       '📊 <strong>' + totalHrs + 'h</strong> studied all-time · ' +
       '🔥 <strong>' + (studyData.currentStreak || 0) + '</strong> day streak · ' +
-      '🏅 Most time in <strong>' + strongest + '</strong>';
+      '🏅 Most time in <strong>' + escapeHtml(strongest) + '</strong>';
   }
   renderWeeklyRecap();
   var _origRenderAwardsGallery = renderAwardsGallery;
@@ -1551,6 +1559,11 @@
     flashcards.forEach(function(c, i){ if (!c.known) arr.push(i); });
     return arr;
   }
+  /* expose for the spaced-repetition layer (js/64) */
+  window.visibleCardIndices = visibleCardIndices;
+  window.flashcardPosRef = function(){ return flashcardPos; };
+  window.flashcardSetPos = function(n){ flashcardPos = n; };
+  window.renderFlashcards = renderFlashcards;
 
   function renderFlashcards(){
     var stage = $('flashcardStage'), controls = $('flashcardControls'), btnsRow = $('flashcardBtnsRow'),
@@ -1607,7 +1620,7 @@
     var back = $('cardBackInput').value.trim();
     var subject = $('cardSubjectSelect').value;
     if (!front || !back) return;
-    flashcards.push({ front: front, back: back, subject: subject, known: false });
+    flashcards.push({ id: window.makeCardId ? window.makeCardId() : (front + '|' + back), front: front, back: back, subject: subject, known: false });
     saveFlashcards();
     $('cardFrontInput').value = '';
     $('cardBackInput').value = '';
@@ -1754,7 +1767,7 @@
           var front = (c.front || c.question || '').toString().trim();
           var back = (c.back || c.answer || '').toString().trim();
           if (!front || !back) return;
-          flashcards.push({ front: front, back: back, subject: subject, known: false });
+          flashcards.push({ id: window.makeCardId ? window.makeCardId() : (front + '|' + back), front: front, back: back, subject: subject, known: false });
           added++;
         });
         saveFlashcards();
