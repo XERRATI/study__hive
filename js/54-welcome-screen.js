@@ -11,6 +11,15 @@
   var enterBtn = document.getElementById('welcomeEnterBtn');
   if (!screen) return;
 
+  /* Mobile: the shell owns the welcome (welcome-back card) — never show
+     the PC front page on phones, or the two can flash together. The
+     mobile body classes are set by earlier scripts (js/11, js/28). */
+  if (document.body.classList.contains('is-mobile') || document.body.classList.contains('force-mobile')) {
+    screen.classList.add('hidden');
+    screen.style.display = 'none';
+    return;
+  }
+
   /* Show the front page immediately on every visit. */
   screen.classList.remove('hidden');
   document.body.classList.add('welcome-locked');

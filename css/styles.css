@@ -6126,3 +6126,46 @@ body.mobile-pro-ui #mobScr-home {
     radial-gradient(circle at 70% 60%, rgba(244, 196, 48, .10) 0 1.5px, transparent 2px);
   background-size: 26px 26px, 34px 34px;
 }
+
+/* ====================== ROUND 19 ======================
+   Mobile home character pass — reuse the DESKTOP pieces:
+   · the real Sergeant SVG (same markup/classes as
+     #sergeantPersistent incl. rank badge + bob) perched on
+     the Focus card
+   · flying bees using the desktop bee-core CSS art
+   · stat pills unified on the desktop signature honey
+     gradient (the XP-bar system: --honey1 -> --honey3 -> gold) */
+
+/* Sergeant: the desktop rule pins it bottom-left fixed; in the shell it
+   sits inside the hero card instead. Same SVG, same classes, same life. */
+body.mobile-pro-ui #mobSergeant {
+  position: absolute; top: 6px; right: 8px; left: auto;
+  width: 52px; height: 52px; transform: none; z-index: 4;
+  pointer-events: none;
+}
+body.mobile-pro-ui #mobSergeant .sergeant-rank-badge { font-size: 7px; top: -7px; }
+
+/* flying bees: desktop bee-core art inside shell-scoped wanderers */
+.mob-home-grid { position: relative; }
+.mob-flybee { position: absolute; width: 46px; height: 46px; pointer-events: none; z-index: 6; opacity: .95; }
+.mob-flybee-1 { top: 6%; left: -8%; animation: mobBeeFly1 26s ease-in-out infinite; }
+.mob-flybee-2 { top: 58%; left: 92%; animation: mobBeeFly2 31s ease-in-out infinite; }
+@keyframes mobBeeFly1 {
+  0%   { transform: translate(0, 0) scale(.8) rotate(-6deg); }
+  25%  { transform: translate(44vw, -5vh) scale(.8) rotate(4deg); }
+  50%  { transform: translate(80vw, 4vh) scale(.85) rotate(-3deg); }
+  75%  { transform: translate(36vw, 8vh) scale(.8) rotate(5deg); }
+  100% { transform: translate(0, 0) scale(.8) rotate(-6deg); }
+}
+@keyframes mobBeeFly2 {
+  0%   { transform: translate(0, 0) scale(.7) rotate(5deg); }
+  30%  { transform: translate(-42vw, -6vh) scale(.7) rotate(-4deg); }
+  60%  { transform: translate(-78vw, 3vh) scale(.75) rotate(3deg); }
+  100% { transform: translate(0, 0) scale(.7) rotate(5deg); }
+}
+
+/* stat pills: ONE system — the desktop signature honey gradient
+   (same stops as the desktop XP bar), not per-pill random shades */
+.mob-stat.s1, .mob-stat.s2, .mob-stat.s3, .mob-stat.s4 {
+  background: linear-gradient(150deg, var(--honey1) 0%, var(--honey2) 55%, var(--honey3) 100%);
+}
