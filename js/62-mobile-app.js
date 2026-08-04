@@ -76,38 +76,11 @@
       /* HOME */
       '<section class="mob-screen active" id="mobScr-home">' +
       '  <div class="mob-home-grid">' +
-      '    <span class="mob-flybee mob-flybee-1" aria-hidden="true"><span class="bee-core"><span class="bee-wing-art left"></span><span class="bee-wing-art right"></span><span class="bee-stinger-art"></span><span class="bee-body-art"></span><span class="bee-head-art"></span><span class="bee-eye-art"></span><span class="bee-antenna-art"></span><span class="bee-pollen-art"></span><span class="bee-crown-art">👑</span><span class="bee-zzz-art">z</span></span></span>' +
-      '    <span class="mob-flybee mob-flybee-2" aria-hidden="true"><span class="bee-core"><span class="bee-wing-art left"></span><span class="bee-wing-art right"></span><span class="bee-stinger-art"></span><span class="bee-body-art"></span><span class="bee-head-art"></span><span class="bee-eye-art"></span><span class="bee-antenna-art"></span><span class="bee-pollen-art"></span><span class="bee-crown-art">👑</span><span class="bee-zzz-art">z</span></span></span>' +
+      '    <span class="hive-bee-el type-worker mob-flybee mob-flybee-1" aria-hidden="true">🐝</span>' +
+      '    <span class="hive-bee-el type-drone mob-flybee mob-flybee-2" aria-hidden="true">🐝</span>' +
+      '    <span class="hive-bee-el type-guard mob-flybee mob-flybee-3" aria-hidden="true">🐝</span>' +
       '    <div>' +
       '      <div class="mob-hero">' +
-      '        <div class="sergeant-persistent anger-0" id="mobSergeant" aria-hidden="true">' +
-      '          <div class="sergeant-rank-badge" id="mobSgtRank">PVT</div>' +
-      '          <svg class="sergeant-bob" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">' +
-      '            <defs><clipPath id="bee-body-clip"><rect x="9" y="14" width="28" height="22" rx="6"></rect></clipPath></defs>' +
-      '            <ellipse cx="14" cy="18" rx="9" ry="6" fill="rgba(255,255,255,0.75)" stroke="#d3b995" stroke-width="1"></ellipse>' +
-      '            <ellipse cx="32" cy="18" rx="9" ry="6" fill="rgba(255,255,255,0.75)" stroke="#d3b995" stroke-width="1"></ellipse>' +
-      '            <ellipse cx="23" cy="26" rx="12" ry="9" fill="#f4c430"></ellipse>' +
-      '            <g clip-path="url(#bee-body-clip)">' +
-      '              <rect x="11.5" y="17" width="4" height="18" fill="#2b2b2b"></rect>' +
-      '              <rect x="19" y="17" width="4" height="18" fill="#2b2b2b"></rect>' +
-      '              <rect x="26.5" y="17" width="4" height="18" fill="#2b2b2b"></rect>' +
-      '            </g>' +
-      '            <ellipse class="sergeant-muscle left" cx="16" cy="27" rx="4.2" ry="3.2" fill="#e0a838"></ellipse>' +
-      '            <ellipse class="sergeant-muscle right" cx="30" cy="27" rx="4.2" ry="3.2" fill="#e0a838"></ellipse>' +
-      '            <ellipse class="sergeant-cheek" cx="30" cy="25" rx="2.6" ry="1.6" fill="#c1392b"></ellipse>' +
-      '            <circle cx="33" cy="22" r="5" fill="#2b2b2b"></circle>' +
-      '            <circle cx="34.5" cy="20.5" r="1" fill="#fff"></circle>' +
-      '            <path class="sergeant-teeth" d="M30 25.5 L36 25.5 L35 28 L33 26.5 L31 28 Z" fill="#fff"></path>' +
-      '            <path d="M30 17 L27 12" stroke="#2b2b2b" stroke-width="1.4" stroke-linecap="round"></path>' +
-      '            <path d="M35 17 L37 12" stroke="#2b2b2b" stroke-width="1.4" stroke-linecap="round"></path>' +
-      '            <ellipse cx="33" cy="15.5" rx="8.5" ry="2.4" fill="#5a6b3f"></ellipse>' +
-      '            <path d="M27 15 C27 10 39 10 39 15 C39 12.5 27 12.5 27 15 Z" fill="#6d8049"></path>' +
-      '            <ellipse cx="33" cy="12.6" rx="3.2" ry="1.4" fill="#4a5732"></ellipse>' +
-      '            <path class="sergeant-brow" d="M28.5 16.5 L38.5 16.5" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round"></path>' +
-      '            <path class="sergeant-brow-l" d="M28.5 16 L33 17.3" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round"></path>' +
-      '            <path class="sergeant-brow-r" d="M33 17.3 L38.5 16" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round"></path>' +
-      '          </svg>' +
-      '        </div>' +
       '        <div class="mob-hero-label">Focus Timer</div>' +
       '        <div class="mob-hero-clock" id="mobClock"></div>' +
       '        <div class="mob-hero-timer" id="mobTimer">25:00</div>' +
@@ -890,24 +863,6 @@
   function closeGuide() { $('mobGuideOverlay').classList.remove('show'); gIdx = 0; }
 
   /* ============================ WATCH ============================ */
-  /* mobile Sergeant rank mirrors the desktop LEVELS ladder (js/06):
-     Egg 0 · Larva 100 · Worker 300 · Drone 700 · Guard 1300 · Queen 2200 */
-  function mobSgtRankLevel() {
-    var xp = xpData().xp || 0;
-    var lv = [0, 100, 300, 700, 1300, 2200];
-    var i = 0;
-    while (i < lv.length - 1 && xp >= lv[i + 1]) i++;
-    return Math.min(4, i);
-  }
-  function refreshMobSgt() {
-    var badge = $('mobSgtRank');
-    if (!badge) return;
-    var l = mobSgtRankLevel();
-    var abbr = ['PVT', 'CPL', 'SGT', 'CPT', 'CPT'][l];
-    var names = ['Private', 'Corporal', 'Sergeant', 'Captain', 'Captain'][l];
-    if (badge.textContent !== abbr) { badge.textContent = abbr; badge.title = names; }
-  }
-  setInterval(refreshMobSgt, 3000);
   var lastMode = false;
   function check() {
     var on = isMobileOn();

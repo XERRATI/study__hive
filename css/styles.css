@@ -6136,18 +6136,13 @@ body.mobile-pro-ui #mobScr-home {
    · stat pills unified on the desktop signature honey
      gradient (the XP-bar system: --honey1 -> --honey3 -> gold) */
 
-/* Sergeant: the desktop rule pins it bottom-left fixed; in the shell it
-   sits inside the hero card instead. Same SVG, same classes, same life. */
-body.mobile-pro-ui #mobSergeant {
-  position: absolute; top: 6px; right: 8px; left: auto;
-  width: 52px; height: 52px; transform: none; z-index: 4;
-  pointer-events: none;
-}
-body.mobile-pro-ui #mobSergeant .sergeant-rank-badge { font-size: 7px; top: -7px; }
-
-/* flying bees: desktop bee-core art inside shell-scoped wanderers */
+/* flying bees: the DESKTOP bee look — the app's living bees are emoji
+   (hive-bee-el with textContent '🐝' in js/06). The shell uses plain
+   emoji spans (NO hive-bee-el class: js/09's art-upgrade converts that
+   class into the detailed CSS bee, which needs the hive's sized box and
+   renders as scattered parts elsewhere). */
 .mob-home-grid { position: relative; }
-.mob-flybee { position: absolute; width: 46px; height: 46px; pointer-events: none; z-index: 9; opacity: .97; }
+.mob-flybee { position: absolute; font-size: 18px; line-height: 1; pointer-events: none; z-index: 9; filter: drop-shadow(0 2px 3px rgba(91, 63, 25, .35)); }
 .mob-flybee-1 { top: 8%; left: 5%; animation: mobBeeFly1 24s ease-in-out infinite; }
 .mob-flybee-2 { top: 42%; left: 58%; animation: mobBeeFly2 29s ease-in-out infinite; }
 @keyframes mobBeeFly1 {
@@ -6205,3 +6200,30 @@ body.mobile-pro-ui .mob-card::before {
 /* header: rounder icon buttons + hamburger */
 body.mobile-pro-ui .mob-icon-btn,
 body.mobile-pro-ui .mob-hamburger { border-radius: 16px; }
+
+/* ====================== ROUND 21 ======================
+   Use the REAL desktop characters, not copies:
+   · the desktop Sergeant (#sergeantPersistent) was already
+     live on mobile (left edge, real anger wiring) — his
+     voice, fists and steam were hidden, so un-hide them:
+     he nags when you idle and gets angrier by the hour,
+     exactly like PC. */
+
+body.mobile-pro-ui .sergeant-nag-bubble { display: block !important; }
+body.mobile-pro-ui .sergeant-fist,
+body.mobile-pro-ui .sergeant-steam { display: block !important; }
+/* keep the bubble next to the sergeant on small screens */
+body.mobile-pro-ui .sergeant-nag-bubble { left: 74px; max-width: 170px; }
+
+/* ROUND 22 — custom bees via the DESKTOP pipeline:
+   shell bees are .hive-bee-el emoji spans; js/09's own upgrader
+   converts them to the custom art with the correct per-type box
+   (worker 30x24 · drone 27x22 · guard 31x24 · queen 42x34), so
+   the parts can never scatter again. Third bee gets its own lane. */
+.mob-flybee-3 { top: 26%; left: 78%; animation: mobBeeFly3 33s ease-in-out infinite; }
+@keyframes mobBeeFly3 {
+  0%   { transform: translate(0, 0) scale(.8) rotate(4deg); }
+  30%  { transform: translate(-34vw, -6vh) scale(.8) rotate(-5deg); }
+  60%  { transform: translate(-64vw, 4vh) scale(.85) rotate(4deg); }
+  100% { transform: translate(0, 0) scale(.8) rotate(4deg); }
+}
