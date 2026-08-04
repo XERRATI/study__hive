@@ -6143,21 +6143,8 @@ body.mobile-pro-ui #mobScr-home {
    renders as scattered parts elsewhere). */
 .mob-home-grid { position: relative; }
 .mob-flybee { position: absolute; font-size: 18px; line-height: 1; pointer-events: none; z-index: 9; filter: drop-shadow(0 2px 3px rgba(91, 63, 25, .35)); }
-.mob-flybee-1 { top: 8%; left: 5%; animation: mobBeeFly1 24s ease-in-out infinite; }
-.mob-flybee-2 { top: 42%; left: 58%; animation: mobBeeFly2 29s ease-in-out infinite; }
-@keyframes mobBeeFly1 {
-  0%   { transform: translate(0, 0) scale(.85) rotate(-6deg); }
-  25%  { transform: translate(46vw, -4vh) scale(.85) rotate(5deg); }
-  50%  { transform: translate(74vw, 5vh) scale(.9) rotate(-4deg); }
-  75%  { transform: translate(30vw, 8vh) scale(.85) rotate(6deg); }
-  100% { transform: translate(0, 0) scale(.85) rotate(-6deg); }
-}
-@keyframes mobBeeFly2 {
-  0%   { transform: translate(0, 0) scale(.75) rotate(5deg); }
-  30%  { transform: translate(-40vw, -5vh) scale(.75) rotate(-4deg); }
-  60%  { transform: translate(-58vw, 3vh) scale(.8) rotate(3deg); }
-  100% { transform: translate(0, 0) scale(.75) rotate(5deg); }
-}
+.mob-flybee-1 { top: 8%; left: 5%; }
+.mob-flybee-2 { top: 42%; left: 58%; }
 
 /* stat pills: ONE system — the desktop signature honey gradient
    (same stops as the desktop XP bar), not per-pill random shades */
@@ -6220,10 +6207,26 @@ body.mobile-pro-ui .sergeant-nag-bubble { left: 74px; max-width: 170px; }
    converts them to the custom art with the correct per-type box
    (worker 30x24 · drone 27x22 · guard 31x24 · queen 42x34), so
    the parts can never scatter again. Third bee gets its own lane. */
-.mob-flybee-3 { top: 26%; left: 78%; animation: mobBeeFly3 33s ease-in-out infinite; }
-@keyframes mobBeeFly3 {
-  0%   { transform: translate(0, 0) scale(.8) rotate(4deg); }
-  30%  { transform: translate(-34vw, -6vh) scale(.8) rotate(-5deg); }
-  60%  { transform: translate(-64vw, 4vh) scale(.85) rotate(4deg); }
-  100% { transform: translate(0, 0) scale(.8) rotate(4deg); }
+.mob-flybee-3 { top: 26%; left: 78%; }
+
+/* ====================== ROUND 23 ======================
+   Mobile keeps its characters no matter the mode:
+   grind/zen/sleep are desktop chrome-hiders that set the
+   Sergeant/bubble to opacity 0 or display none — on the
+   mobile shell those modes must not eat the cast.
+   (Bees move via JS transitions in js/62 now, so the CSS
+   drift keyframes below are removed — inline transforms
+   would otherwise be overridden by the animation.) */
+body.mobile-pro-ui.grind-mode .sergeant-persistent,
+body.mobile-pro-ui.zen-mode .sergeant-persistent,
+body.mobile-pro-ui.sleep-mode .sergeant-persistent,
+body.mobile-pro-ui.grind-mode .sergeant-nag-bubble,
+body.mobile-pro-ui.zen-mode .sergeant-nag-bubble,
+body.mobile-pro-ui.sleep-mode .sergeant-nag-bubble,
+body.mobile-pro-ui.grind-mode .mob-flybee,
+body.mobile-pro-ui.zen-mode .mob-flybee,
+body.mobile-pro-ui.sleep-mode .mob-flybee {
+  opacity: 1 !important;
+  display: block !important;
+  pointer-events: none !important;
 }

@@ -863,6 +863,29 @@
   function closeGuide() { $('mobGuideOverlay').classList.remove('show'); gIdx = 0; }
 
   /* ============================ WATCH ============================ */
+  /* Shell bees move like the PC swarm: JS picks a new spot every ~2.4s
+     and CSS transitions glide there — lively darting that even works
+     under iOS Reduce Motion (transitions aren't animations, so the
+     blanket .001s rule can't freeze them). */
+  function driftShellBees() {
+    var home = document.getElementById('mobScr-home');
+    if (!home) return;
+    var w = home.clientWidth, h = home.clientHeight;
+    if (!w || !h) return;
+    /* keep bees in the visible part of the home screen (PC's swarm is
+       viewport-fixed; the shell bees roam the first screenful) */
+    var vh = window.innerHeight || 700;
+    var maxY = Math.max(40, Math.min(h, vh) - 90);
+    qa('.mob-flybee').forEach(function (b) {
+      var tx = 8 + Math.random() * Math.max(40, w - 56);
+      var ty = 10 + Math.random() * maxY;
+      var sc = (0.8 + Math.random() * 0.35).toFixed(2);
+      var rot = (Math.random() * 16 - 8).toFixed(1);
+      b.style.transition = 'transform 2.2s ease-in-out';
+      b.style.transform = 'translate(' + tx.toFixed(0) + 'px,' + ty.toFixed(0) + 'px) scale(' + sc + ') rotate(' + rot + 'deg)';
+    });
+  }
+  setInterval(driftShellBees, 2400);
   var lastMode = false;
   function check() {
     var on = isMobileOn();
