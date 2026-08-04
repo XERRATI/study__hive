@@ -6048,3 +6048,81 @@ body.mobile-pro-ui .mob-stats { margin-bottom: calc(86px + env(safe-area-inset-b
   background: linear-gradient(145deg, var(--honey-soft), var(--honey-mid));
 }
 .plan-card-hint.cram-ready:hover { background: var(--honey-mid); }
+
+/* ====================== ROUND 18 ======================
+   Mobile shell character pass:
+   · hero label shows a meaningful status line by default
+     (opt-in clock keeps working via the settings toggle)
+   · stat pills become one intentional honey ramp
+   · SOS Calm restyled to the honey palette; hidden inside the
+     shell (the shell has its own Calm tool) — the old #sosBtn
+     !important override used to defeat the shell's hide rule
+   · a CSS character bee joins the Focus card + honeycomb
+     texture on the home screen */
+
+/* 1. hero label always visible; content switches between status/clock */
+.mob-hero-clock { display: block; }
+
+/* 2. stat pills: monotonic honey ramp, lightest -> deepest */
+.mob-stat.s1 { background: linear-gradient(150deg, #f4c430, #e29b1c); }
+.mob-stat.s2 { background: linear-gradient(150deg, #e29b1c, #c97a12); }
+.mob-stat.s3 { background: linear-gradient(150deg, #c97a12, #a8690e); }
+.mob-stat.s4 { background: linear-gradient(150deg, #a8690e, #7c4a09); }
+
+/* 3. SOS Calm -> honey palette (desktop; literal colors — the shell CSS
+      vars are scoped to body.mobile-pro-ui and don't exist on desktop);
+      hidden inside the shell where the old #sosBtn !important override
+      used to defeat the hide rule */
+.sos-btn {
+  background: linear-gradient(150deg, #f4c430, #e29b1c);
+  color: #4a3316;
+  box-shadow: 0 6px 14px rgba(201, 122, 18, .35);
+}
+.sos-btn:hover { box-shadow: 0 8px 18px rgba(201, 122, 18, .45); }
+body.mobile-pro-ui #sosBtn { display: none !important; }
+
+/* 4. character bee on the Focus card */
+.mob-hero-bee {
+  position: absolute; top: 4px; right: 10px; width: 46px; height: 42px;
+  pointer-events: none; z-index: 3;
+  animation: mobBeeBob 3.2s ease-in-out infinite;
+}
+.mhb-body {
+  position: absolute; left: 6px; top: 14px; width: 28px; height: 21px;
+  border-radius: 50%;
+  background: repeating-linear-gradient(90deg, #f4c430 0 7px, #3b2b12 7px 11px);
+  box-shadow: 0 3px 6px rgba(90, 50, 0, .35);
+}
+.mhb-head {
+  position: absolute; right: 1px; top: 7px; width: 13px; height: 13px;
+  border-radius: 50%; background: #3b2b12;
+}
+.mhb-eye { position: absolute; width: 3px; height: 4px; border-radius: 50%; background: #fffaf2; }
+.mhb-eye.l { left: 3px; top: 5px; }
+.mhb-eye.r { right: 3px; top: 5px; }
+.mhb-sting {
+  position: absolute; left: 0; top: 21px; width: 7px; height: 4px;
+  background: #3b2b12; border-radius: 3px 0 0 3px;
+}
+.mhb-wing {
+  position: absolute; width: 13px; height: 19px;
+  border-radius: 55% 55% 45% 45% / 60% 60% 40% 40%;
+  background: rgba(255, 255, 255, .55); border: 1px solid rgba(255, 255, 255, .75);
+}
+.mhb-wl { left: 2px; top: -3px; animation: mhbFlapL .45s ease-in-out infinite; }
+.mhb-wr { right: 4px; top: -5px; animation: mhbFlapR .45s ease-in-out infinite; }
+@keyframes mhbFlapL { 0%, 100% { transform: rotate(-16deg) scaleY(1); } 50% { transform: rotate(-10deg) scaleY(.68); } }
+@keyframes mhbFlapR { 0%, 100% { transform: rotate(16deg) scaleY(1); } 50% { transform: rotate(10deg) scaleY(.68); } }
+.mhb-ant { position: absolute; width: 9px; height: 1.5px; background: #3b2b12; }
+.mhb-antl { right: 3px; top: 2px; transform: rotate(-32deg); }
+.mhb-antr { right: 9px; top: 0; transform: rotate(32deg); }
+.mhb-ant::after { content: ''; position: absolute; right: -1px; top: -2px; width: 3px; height: 3px; border-radius: 50%; background: #3b2b12; }
+@keyframes mobBeeBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+/* 5. subtle honeycomb texture on the home screen */
+body.mobile-pro-ui #mobScr-home {
+  background:
+    radial-gradient(circle at 30% 30%, rgba(244, 196, 48, .13) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 70% 60%, rgba(244, 196, 48, .10) 0 1.5px, transparent 2px);
+  background-size: 26px 26px, 34px 34px;
+}

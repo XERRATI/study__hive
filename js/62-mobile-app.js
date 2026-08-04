@@ -30,7 +30,7 @@
 
   var shell = null;
   var tab = 'home';
-  var clockOn = get('studyhive-mob-clock-v1') !== '0';
+  var clockOn = get('studyhive-mob-clock-v1') === '1'; /* opt-in now: default shows the status line, not the live clock */
   var hcOn = get('studyhive-high-contrast-v1') === '1';
   var audioCtx = null, musicNodes = [], musicTimer = null, musicOn = false, musicTrack = 'hive', musicVol = 0.3;
   var breatheInt = null, breatheOn = false;
@@ -78,6 +78,12 @@
       '  <div class="mob-home-grid">' +
       '    <div>' +
       '      <div class="mob-hero">' +
+      '        <div class="mob-hero-bee" aria-hidden="true">' +
+      '          <span class="mhb-wing mhb-wl"></span><span class="mhb-wing mhb-wr"></span>' +
+      '          <span class="mhb-ant mhb-antl"></span><span class="mhb-ant mhb-antr"></span>' +
+      '          <span class="mhb-sting"></span><span class="mhb-body"></span>' +
+      '          <span class="mhb-head"><span class="mhb-eye l"></span><span class="mhb-eye r"></span></span>' +
+      '        </div>' +
       '        <div class="mob-hero-label">Focus Timer</div>' +
       '        <div class="mob-hero-clock" id="mobClock"></div>' +
       '        <div class="mob-hero-timer" id="mobTimer">25:00</div>' +
@@ -604,6 +610,7 @@
   }
 
   /* ============================ STATS / SYNC ============================ */
+  var greetSug = '', greetSugKey = ''; /* stable daily greeting line */
   function syncAll() {
     if (!shell) return;
     /* white-out guard: PC high-contrast must never sit on the shell */
@@ -616,12 +623,24 @@
     var g = hr < 12 ? 'Good morning' : hr < 18 ? 'Good afternoon' : 'Good evening';
     var worry = (get('studyhive-main-worry-v1') || '').trim();
     var weakest = worry ? worry : 'your weakest topic';
-    var sug = SUGGESTIONS[Math.floor(Math.random() * SUGGESTIONS.length)].replace('{topic}', weakest);
+    /* greeting line must NOT re-roll every 1s sync — pick once per day
+       (or when the weakest topic changes) so the text is stable. */
+    var sugKey = dk + '|' + weakest;
+    if (!greetSug || greetSugKey !== sugKey) {
+      greetSugKey = sugKey;
+      greetSug = SUGGESTIONS[Math.floor(Math.random() * SUGGESTIONS.length)].replace('{topic}', weakest);
+    }
+    var sug = greetSug;
     $('mobGreet').textContent = g + (name ? ', ' + name : ', Bee') + ' — ' + sug;
 
-    /* clock */
+    /* hero label: opt-in live clock, or the meaningful status line */
     var d = new Date();
-    $('mobClock').textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+    var sessionLive = !!(window.isSessionActive && window.isSessionActive());
+    $('mobClock').textContent = clockOn
+      ? (pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds()))
+      : (sessionLive
+          ? '🎯 Focusing — stay with it'
+          : '🍯 ' + Math.round(todayMin) + ' min today · 🔥 ' + (sd.currentStreak || 0) + '-day streak');
 
     /* days/goal from the real DOM */
     var daysEl = $('days'), goalEl = $('mainTitle'), subEl = $('mainSubtitle');
