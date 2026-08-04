@@ -6147,21 +6147,21 @@ body.mobile-pro-ui #mobSergeant .sergeant-rank-badge { font-size: 7px; top: -7px
 
 /* flying bees: desktop bee-core art inside shell-scoped wanderers */
 .mob-home-grid { position: relative; }
-.mob-flybee { position: absolute; width: 46px; height: 46px; pointer-events: none; z-index: 6; opacity: .95; }
-.mob-flybee-1 { top: 6%; left: -8%; animation: mobBeeFly1 26s ease-in-out infinite; }
-.mob-flybee-2 { top: 58%; left: 92%; animation: mobBeeFly2 31s ease-in-out infinite; }
+.mob-flybee { position: absolute; width: 46px; height: 46px; pointer-events: none; z-index: 9; opacity: .97; }
+.mob-flybee-1 { top: 8%; left: 5%; animation: mobBeeFly1 24s ease-in-out infinite; }
+.mob-flybee-2 { top: 42%; left: 58%; animation: mobBeeFly2 29s ease-in-out infinite; }
 @keyframes mobBeeFly1 {
-  0%   { transform: translate(0, 0) scale(.8) rotate(-6deg); }
-  25%  { transform: translate(44vw, -5vh) scale(.8) rotate(4deg); }
-  50%  { transform: translate(80vw, 4vh) scale(.85) rotate(-3deg); }
-  75%  { transform: translate(36vw, 8vh) scale(.8) rotate(5deg); }
-  100% { transform: translate(0, 0) scale(.8) rotate(-6deg); }
+  0%   { transform: translate(0, 0) scale(.85) rotate(-6deg); }
+  25%  { transform: translate(46vw, -4vh) scale(.85) rotate(5deg); }
+  50%  { transform: translate(74vw, 5vh) scale(.9) rotate(-4deg); }
+  75%  { transform: translate(30vw, 8vh) scale(.85) rotate(6deg); }
+  100% { transform: translate(0, 0) scale(.85) rotate(-6deg); }
 }
 @keyframes mobBeeFly2 {
-  0%   { transform: translate(0, 0) scale(.7) rotate(5deg); }
-  30%  { transform: translate(-42vw, -6vh) scale(.7) rotate(-4deg); }
-  60%  { transform: translate(-78vw, 3vh) scale(.75) rotate(3deg); }
-  100% { transform: translate(0, 0) scale(.7) rotate(5deg); }
+  0%   { transform: translate(0, 0) scale(.75) rotate(5deg); }
+  30%  { transform: translate(-40vw, -5vh) scale(.75) rotate(-4deg); }
+  60%  { transform: translate(-58vw, 3vh) scale(.8) rotate(3deg); }
+  100% { transform: translate(0, 0) scale(.75) rotate(5deg); }
 }
 
 /* stat pills: ONE system — the desktop signature honey gradient
@@ -6169,3 +6169,39 @@ body.mobile-pro-ui #mobSergeant .sergeant-rank-badge { font-size: 7px; top: -7px
 .mob-stat.s1, .mob-stat.s2, .mob-stat.s3, .mob-stat.s4 {
   background: linear-gradient(150deg, var(--honey1) 0%, var(--honey2) 55%, var(--honey3) 100%);
 }
+
+/* ====================== ROUND 20 ======================
+   Top region -> the PC card system (from the "50 days to go"
+   card upward): the PC main card is a 40px-radius pearl panel
+   with an inner gold ring and honeycomb texture. Apply the
+   same system to the mobile hero + goal card, round the
+   header buttons, and keep the bees on-screen. */
+
+/* hero (Focus Timer): PC roundness + inner ring + comb texture */
+body.mobile-pro-ui .mob-hero {
+  border-radius: 38px;
+  background:
+    radial-gradient(circle at 22% 18%, rgba(255, 255, 255, .16) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 64% 42%, rgba(255, 255, 255, .11) 0 1.5px, transparent 2px),
+    linear-gradient(150deg, var(--honey), var(--honey2) 55%, var(--honey3));
+  background-size: 24px 24px, 30px 30px, auto;
+  box-shadow: 0 18px 44px rgba(201, 122, 18, .4), inset 0 0 0 2px rgba(255, 255, 255, .28);
+}
+
+/* goal card ("50 days to go"): the PC main-card system */
+body.mobile-pro-ui .mob-card {
+  border-radius: 36px;
+  position: relative; overflow: hidden;
+  box-shadow: 0 20px 50px rgba(139, 111, 82, .25), inset 0 0 0 2px rgba(201, 168, 124, .3);
+}
+body.mobile-pro-ui .mob-card::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .55;
+  background-image:
+    radial-gradient(circle at 30% 30%, rgba(244, 196, 48, .30) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 70% 60%, rgba(244, 196, 48, .24) 0 1.5px, transparent 2px);
+  background-size: 26px 26px, 34px 34px;
+}
+
+/* header: rounder icon buttons + hamburger */
+body.mobile-pro-ui .mob-icon-btn,
+body.mobile-pro-ui .mob-hamburger { border-radius: 16px; }

@@ -16,7 +16,16 @@
   }
   /* OLD BEES ARE NOW RARE (as requested): 1 at the start, and only grows
      slowly — a second at 90 XP, a third at 180 XP, max 4 in total. */
-  function wanted(){return Math.min(4,1+Math.floor(Math.max(0,xp())/90));}
+  function wanted(){
+    var w = Math.min(4, 1 + Math.floor(Math.max(0, xp()) / 90));
+    /* mobile spawns HALF the PC count (round: 4->2, 3->2, 2->1, 1->1) */
+    if (document.body.classList.contains('mobile-pro-ui') ||
+        document.body.classList.contains('is-mobile') ||
+        document.body.classList.contains('force-mobile')) {
+      w = Math.max(1, Math.round(w / 2));
+    }
+    return w;
+  }
   function makeClone(template,index){
     var clone=template.cloneNode(true);
     clone.className='bee-wrap bonus-old-bee';
