@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<!--
+  Study Hive — Proprietary Source Code
+  Copyright © 2026 Omphemetse Mogale. All rights reserved.
+
+  Sole owner / copyright holder: Omphemetse Mogale
+  Contact: omphemetse.mogale0409@gmail.com
+
+  This file and the Study Hive project may not be copied, cloned, rebranded,
+  resold, redistributed, hosted, mirrored, sublicensed, or used to create
+  derivative works without written permission from Omphemetse Mogale.
+  See LICENSE.txt and COPYRIGHT_NOTICE.txt in this repository.
+-->
+<html lang="en">
+<head>
+<script src="js/00-shared-utils.js"></script>
+<script src="js/01-idle-timer-scheduler.js"></script>
+<script src="js/63-safe-storage.js"></script>
+<script src="js/64-spaced-repetition.js"></script>
+<script src="js/65-daily-plan.js"></script>
+<script src="js/66-hive-report.js"></script>
+<script src="js/67-plan-notify-crosswire.js"></script>
+<script src="js/68-voice-cards.js"></script>
+<script src="js/69-focus-quality.js"></script>
+<script src="js/70-cram-mode.js"></script>
+
+<meta charset="UTF-8">
+<meta name="author" content="Omphemetse Mogale">
+<meta name="copyright" content="Copyright © 2026 Omphemetse Mogale. All rights reserved.">
+<meta name="owner" content="Omphemetse Mogale">
+<meta name="contact" content="omphemetse.mogale0409@gmail.com">
+<meta name="rights" content="Proprietary. No copying, cloning, rebranding, resale, redistribution, or derivative works without written permission. See LICENSE.txt.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<title>Study Hive — Countdown, Focus & Flashcards</title>
+<!-- PWA / MOBILE META (was missing on the app itself — only on the landing page) -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#f4c430">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Study Hive">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" href="icon.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐝</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Baloo+2:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css?v=12">
+
+
+<base target="_blank">
+</head>
+<body class="startup-soft">
+<div class="startup-honey-glow" id="startupHoneyGlow" aria-hidden="true"><span>🐝</span></div>
+<!-- ===== FRONT PAGE: welcome screen (shows first on every visit) ===== -->
+<div class="welcome-screen" id="welcomeScreen" role="dialog" aria-label="Welcome to Study Hive">
+  <div class="welcome-honeycomb" aria-hidden="true"></div>
+  <div class="welcome-card">
+    <div class="welcome-bee" id="welcomeBee">🐝</div>
+    <h1 class="welcome-title">Study Hive</h1>
+    <p class="welcome-tagline">Your personal hive of focus, flashcards and friendly discipline.</p>
+    <div class="welcome-bullets">
+      <div class="welcome-bullet"><span>⏳</span><p><b>One countdown that matters</b> — keep your goal day in sight, every single day.</p></div>
+      <div class="welcome-bullet"><span>🍅</span><p><b>A focus timer that coaches you</b> — the Sergeant keeps you honest, the Buddy keeps you kind.</p></div>
+      <div class="welcome-bullet"><span>🗂️</span><p><b>Cards, notes, garden and more</b> — everything a studying bee needs lives in one hive.</p></div>
+    </div>
+    <button class="welcome-enter-btn" id="welcomeEnterBtn">🍯 Enter the Hive</button>
+    <p class="welcome-footnote">Every session you finish makes the hive grow. Start buzzing.</p>
+  </div>
+</div>
+<script src="js/02-startup-fade.js"></script>
+<div class="onboard-veil" id="onboardVeil">
+  <div class="onboard-card">
+    <div class="onboard-bee">🐝</div>
+    <h2>Welcome to Study Hive</h2>
+    <p class="onboard-sub">A few short questions and your hive is built around you. One at a time — no rush.</p>
+
+    <!-- Bee slider: shows how far through setup you are -->
+    <div class="onboard-slider-wrap">
+      <div class="onboard-slider-track">
+        <div class="onboard-slider-fill" id="onboardSliderFill"></div>
+        <span class="onboard-slider-bee" id="onboardSliderBee">🐝</span>
+      </div>
+      <div class="onboard-slider-label" id="onboardSliderLabel">Step 1 of 9</div>
+    </div>
+
+    <div class="onboard-step" data-step="1">
+      <label class="onboard-label" for="onboardName">What should we call you?</label>
+      <input type="text" id="onboardName" class="onboard-input" placeholder="e.g. Sam" maxlength="24">
+      <p class="onboard-step-hint">Your name personalises your hive — the Sergeant and Buddy Bee will use it. You can skip this if you like.</p>
+    </div>
+    <div class="onboard-step" data-step="2">
+      <label class="onboard-label" for="onboardGoal">What are you counting down to?</label>
+      <input type="text" id="onboardGoal" class="onboard-input" placeholder="e.g. Finals, Graduation, SATs" maxlength="40">
+      <p class="onboard-step-hint">This becomes the big goal on your countdown card. Pick something that will feel amazing to reach.</p>
+    </div>
+    <div class="onboard-step" data-step="3">
+      <label class="onboard-label" for="onboardDate">When is it?</label>
+      <input type="date" id="onboardDate" class="onboard-input">
+      <p class="onboard-step-hint">Your countdown counts down to this day. Already set to 90 days from now — change it if yours is sooner or later.</p>
+    </div>
+    <div class="onboard-step" data-step="4">
+      <label class="onboard-label" for="onboardSubjects">What subjects should the hive track?</label>
+      <textarea id="onboardSubjects" class="onboard-input" rows="2" placeholder="Maths, Biology, English..." style="resize:vertical;"></textarea>
+      <p class="onboard-step-hint">Separate with commas. Each subject gets its own progress so you can see where the effort is going.</p>
+    </div>
+    <div class="onboard-step" data-step="5">
+      <label class="onboard-label" for="onboardDailyGoal">Daily study goal (minutes)</label>
+      <input type="number" id="onboardDailyGoal" class="onboard-input" min="10" max="480" value="60">
+      <p class="onboard-step-hint">A realistic daily target keeps the hive honest. Start smaller than you think — 60 minutes done well beats 3 hours done badly.</p>
+    </div>
+    <div class="onboard-step" data-step="6">
+      <label class="onboard-label" for="onboardVibe">How should the hive coach you?</label>
+      <select id="onboardVibe" class="onboard-input">
+        <option value="balanced" selected>Balanced — supportive but honest</option>
+        <option value="calm">Calm — gentle reminders</option>
+        <option value="strict">Strict — drill-sergeant energy</option>
+        <option value="fun">Fun — jokes and tiny challenges</option>
+      </select>
+      <p class="onboard-step-hint">This sets the coaching tone across the whole hive. You can change it anytime in Settings.</p>
+    </div>
+    <div class="onboard-step" data-step="7">
+      <label style="display:flex; align-items:flex-start; gap:8px; text-align:left; font-size:12px; color:var(--brown); margin-top:12px; line-height:1.35;">
+        <input type="checkbox" id="onboardMobileMode" style="margin-top:2px;"> Use the simplified mobile layout on this device
+      </label>
+      <p class="onboard-step-hint">Recommended if you study on a phone — it keeps the hive tidy on small screens. Tick it and the layout adapts.</p>
+    </div>
+    <div class="onboard-step" data-step="8">
+      <label class="onboard-label" for="onboardWorry">Biggest thing you want help with</label>
+      <textarea id="onboardWorry" class="onboard-input" rows="2" placeholder="e.g. procrastination, exam panic, staying consistent..." style="resize:vertical;"></textarea>
+      <p class="onboard-step-hint">The hive coach reads this and aims its advice at your real struggle. Be honest — nobody else sees it.</p>
+    </div>
+    <div class="onboard-step" data-step="9">
+      <label class="onboard-label" for="onboardPledge">Write a pledge to yourself</label>
+      <textarea id="onboardPledge" class="onboard-input" rows="2" placeholder="I promise to show up honestly, one focused session at a time." style="resize:vertical;"></textarea>
+      <p class="onboard-step-hint">Finish the sentence below — it becomes your pledge. It stays under your countdown as a quiet reminder of why you started.</p>
+    </div>
+
+    <div class="onboard-nav">
+      <button type="button" class="onboard-nav-btn" id="onboardPrevBtn">← Back</button>
+      <button type="button" class="onboard-nav-btn primary" id="onboardNextBtn">Next →</button>
+    </div>
+    <button class="onboard-start-btn" id="onboardStartBtn" style="display:none;">Start my hive 🍯</button>
+    <button class="onboard-skip-btn" id="onboardSkipBtn">Skip for now</button>
+  </div>
+</div>
+<div class="tour-overlay" id="tourOverlay">
+  <div class="tour-catcher"></div>
+  <div class="tour-spotlight hidden" id="tourSpotlight"></div>
+  <div class="tour-card" id="tourCard">
+    <div class="tour-card-icon" id="tourIcon">🍯</div>
+    <div class="tour-card-progress" id="tourProgress">Step 1 of 21</div>
+    <h3 id="tourTitle">Welcome</h3>
+    <p id="tourBody">Loading…</p>
+    <div class="tour-card-actions">
+      <button class="tour-btn tour-btn-back" id="tourBackBtn">Back</button>
+      <button class="tour-btn tour-btn-next" id="tourNextBtn">Next</button>
+    </div>
+    <button class="tour-skip-link" id="tourSkipBtn">Skip tour</button>
+  </div>
+</div>
+<div class="mobile-bar" id="mobileTopBar"></div>
+<div class="mobile-bar" id="mobileDockBar"></div>
+<div class="tools-dock-bar" id="toolsDockBar"></div>
+  <button class="zen-exit-btn" id="zenExitBtn" title="Exit Zen Mode (Esc)">🧘 Exit Zen Mode</button>
+  <div class="sleep-veil" id="sleepVeil"></div>
+  <div class="night-veil-dim" id="nightVeilDim"></div>
+  <div class="hive-swarm" id="hiveSwarm"></div>
+  <div class="hive-population-badge" id="hivePopulationBadge">🐝 0 bees working</div>
+  <div class="xp-bar-track"><div class="xp-bar-fill" id="xpBarFill"></div></div>
+  <div class="level-badge" id="levelBadge">🥚 Egg <span class="xp-count" id="xpCount">0 XP</span></div>
+  <div class="achievement-toast" id="achievementToast"></div>
+
+  <div class="weather-tint" id="weatherTint"></div>
+  <div class="weather-widget" id="weatherWidget" title="Click the city to change it">
+    <div class="weather-icon" id="weatherIcon"><div class="weather-sun"></div></div>
+    <div>
+      <div class="weather-temp" id="weatherTemp">--°</div>
+      <div class="weather-desc" id="weatherDesc">Loading weather…</div>
+      <input type="text" class="weather-city-input" id="weatherCityInput" placeholder="Change city…">
+    </div>
+  </div>
+
+  <button class="fullscreen-btn" id="fsBtn" title="Toggle fullscreen" aria-label="Toggle fullscreen">
+    <svg id="fsIcon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 3H5a2 2 0 0 0-2 2v3"></path>
+      <path d="M21 8V5a2 2 0 0 0-2-2h-3"></path>
+      <path d="M3 16v3a2 2 0 0 0 2 2h3"></path>
+      <path d="M16 21h3a2 2 0 0 0 2-2v-3"></path>
+    </svg>
+  </button>
+
+  <div class="goal-wrap">
+    <div class="goal-number">
+      <div class="goal-back">90%</div>
+      <div class="goal-front" id="goalFront">90%</div>
+    </div>
+    <div class="goal-label">My Goal</div>
+  </div>
+
+  <button class="grade-btn" id="gradeBtn">📊 Grades</button>
+  <div class="grade-panel" id="gradePanel">
+    <h4>Grade Predictor</h4>
+    <select class="grade-subject-select" id="gradeSubjectSelect">
+      <option value="">Add a subject in Settings</option>
+    </select>
+    <div class="grade-row">
+      <label>Current Mark (%)</label>
+      <input type="number" id="gradeCurrent" min="0" max="100" placeholder="e.g. 62">
+    </div>
+    <div class="grade-row">
+      <label>Weight Completed So Far (%)</label>
+      <input type="number" id="gradeWeightSoFar" min="0" max="100" placeholder="e.g. 60">
+    </div>
+    <div class="grade-row">
+      <label>Target Grade (%)</label>
+      <input type="number" id="gradeTarget" min="0" max="100" placeholder="e.g. 75">
+    </div>
+    <div class="grade-result" id="gradeResult">Fill in the fields above to see what you need on what's left.</div>
+    <div class="grade-trend" id="gradeTrend">
+      <div class="grade-trend-header">
+        <span>Mark History</span>
+        <div class="grade-trend-add">
+          <input type="number" id="gradeTrendInput" min="0" max="100" placeholder="%">
+          <button id="gradeTrendAddBtn">+</button>
+        </div>
+      </div>
+      <svg viewBox="0 0 240 70" class="grade-trend-chart" id="gradeTrendChart"></svg>
+      <div class="grade-trend-empty" id="gradeTrendEmpty">No marks logged yet for this subject.</div>
+    </div>
+  </div>
+
+  <button class="breathing-btn" id="breathingBtn">🌬️ Breathe</button>
+  <div class="breathing-panel" id="breathingPanel">
+    <h4>Breathing Break</h4>
+    <div class="breathing-presets">
+      <button class="breathing-preset-btn active" data-pattern="4-4-4-4" data-label="Box Breathing">Box</button>
+      <button class="breathing-preset-btn" data-pattern="4-7-8-0" data-label="Calming 4-7-8">4-7-8</button>
+      <button class="breathing-preset-btn" data-pattern="4-0-4-0" data-label="Simple Breathing">Simple</button>
+    </div>
+    <div class="breathing-orb-wrap">
+      <div class="breathing-orb" id="breathingOrb"></div>
+      <div class="breathing-orb-label" id="breathingOrbLabel">Ready?</div>
+    </div>
+    <div class="breathing-count" id="breathingCount">0 cycles this session</div>
+    <div class="breathing-btns">
+      <button class="breathing-action-btn" id="breathingStartBtn">Start</button>
+      <button class="breathing-action-btn secondary" id="breathingStopBtn">Stop</button>
+    </div>
+    <button class="breathing-tip-btn" id="breathingTipBtn">🎲 Give me a break idea</button>
+    <div class="breathing-tip" id="breathingTip"></div>
+  </div>
+
+  <button class="misc-btn" id="awardsBtn">🏆 Awards</button>
+  <div class="misc-panel" id="awardsPanel">
+    <h4>Achievement Gallery</h4>
+    <div class="weekly-recap" id="weeklyRecap"></div>
+    <div class="awards-progress" id="awardsProgress">0 / 0 unlocked</div>
+    <div class="awards-grid" id="awardsGrid"></div>
+    <button class="share-progress-btn" id="shareProgressBtn">📤 Share My Progress</button>
+  </div>
+
+  <button class="misc-btn" id="vocabBtn">🔤 Vocab</button>
+  <div class="misc-panel" id="vocabPanel">
+    <h4>Word of the Day</h4>
+    <div class="vocab-word" id="vocabWord">—</div>
+    <div class="vocab-pos" id="vocabPos"></div>
+    <div class="vocab-def" id="vocabDef">Loading…</div>
+    <div class="vocab-example" id="vocabExample"></div>
+    <div class="vocab-btns">
+      <button class="vocab-action-btn" id="vocabLearnedBtn">✓ I know this one</button>
+      <button class="vocab-action-btn secondary" id="vocabNextBtn">Next word</button>
+    </div>
+    <div class="vocab-count" id="vocabCount">0 words learned</div>
+  </div>
+
+  <button class="misc-btn" id="examBtn">📅 Exams</button>
+  <div class="misc-panel" id="examPanel">
+    <h4>Exam Countdown</h4>
+    <div class="exam-add-row">
+      <select class="exam-subject-select" id="examSubjectSelect">
+        <option value="">Add a subject in Settings</option>
+      </select>
+      <input type="date" class="exam-date-input" id="examDateInput">
+      <button class="exam-add-btn" id="examAddBtn">+</button>
+    </div>
+    <ul class="exam-list" id="examList"></ul>
+  </div>
+
+  <button class="misc-btn dock-item" id="notesBtn">📝 Notes</button>
+  <div class="misc-panel" id="notesPanel">
+    <h4>Quick Notes</h4>
+    <textarea class="notes-textarea" id="notesTextarea" placeholder="Jot down anything — a formula, a reminder, a thought…"></textarea>
+    <div class="notes-footer">
+      <span class="notes-count" id="notesCount">0 characters · saved</span>
+      <button class="notes-clear-btn" id="notesClearBtn">Clear</button>
+    </div>
+  </div>
+
+  <button class="misc-btn" id="settingsBtn">⚙️ Settings</button>
+  <div class="misc-panel" id="settingsPanel">
+    <h4>Settings</h4>
+    <div class="settings-row-label" style="margin-bottom:8px;">❔ Help</div>
+    <button class="settings-action-btn" id="replayTourBtn" style="width:100%;">🐝 Replay Guided Tour</button>
+    <div class="settings-divider"></div>
+    <div class="settings-row-label" style="margin-bottom:8px;">🎯 Your goal</div>
+    <div class="settings-btn-row">
+      <input type="text" id="goalTitleInput" placeholder="Title (e.g. 🎓 The Grind)" style="flex:1;padding:8px 10px;border-radius:10px;border:1px solid var(--taupe);font-family:'Fredoka',sans-serif;">
+    </div>
+    <div class="settings-btn-row" style="margin-top:6px;">
+      <input type="text" id="goalLabelInput" placeholder="Subtitle (e.g. Countdown to finals)" style="flex:1;padding:8px 10px;border-radius:10px;border:1px solid var(--taupe);font-family:'Fredoka',sans-serif;">
+    </div>
+    <div class="settings-btn-row" style="margin-top:6px;">
+      <input type="date" id="goalDateInput" style="flex:1;padding:8px 10px;border-radius:10px;border:1px solid var(--taupe);font-family:'Fredoka',sans-serif;">
+    </div>
+    <button class="settings-action-btn" id="saveGoalBtn" style="width:100%; margin-top:6px;">💾 Save Goal</button>
+    <div class="settings-divider"></div>
+    <div class="settings-row-label" style="margin-bottom:8px;">📚 Your subjects</div>
+    <ul class="exam-list" id="manageSubjectsList" style="list-style:none; padding:0; margin:0 0 8px;"></ul>
+    <div class="settings-btn-row">
+      <input type="text" id="newSubjectInput" placeholder="Add a subject (e.g. Biology)" style="flex:1;padding:8px 10px;border-radius:10px;border:1px solid var(--taupe);font-family:'Fredoka',sans-serif;">
+      <button class="exam-add-btn" id="addSubjectBtn">+</button>
+    </div>
+    <div class="settings-row-label" style="margin:8px 0 4px; font-size:10.5px;">Or paste a list (one per line, or comma-separated)</div>
+    <textarea class="notes-textarea" id="bulkSubjectTextarea" style="min-height:50px;" placeholder="Biology, Chemistry, History..."></textarea>
+    <button class="settings-action-btn" id="bulkAddSubjectsBtn" style="width:100%; margin-top:6px;">➕ Add All</button>
+    <div class="settings-divider"></div>
+    <div class="settings-row-label" style="margin-bottom:8px;">Theme</div>
+    <div class="theme-swatches" id="themeSwatches">
+      <div class="theme-swatch active" data-theme="honey" style="background:linear-gradient(135deg,#f4c430,#e0a838);" title="Honey"></div>
+      <div class="theme-swatch" data-theme="lavender" style="background:linear-gradient(135deg,#b39ddb,#7e57c2);" title="Lavender"></div>
+      <div class="theme-swatch" data-theme="mint" style="background:linear-gradient(135deg,#80cbc4,#26a69a);" title="Mint"></div>
+      <div class="theme-swatch" data-theme="ocean" style="background:linear-gradient(135deg,#64b5f6,#1976d2);" title="Ocean"></div>
+      <div class="theme-swatch" data-theme="rose" style="background:linear-gradient(135deg,#f48fb1,#d81b60);" title="Rose"></div>
+    </div>
+    <div class="settings-divider"></div>
+    <div class="settings-row">
+      <span class="settings-row-label">👀 Eye-break reminders</span>
+      <div class="settings-toggle" id="eyeBreakToggle"></div>
+    </div>
+    <div class="settings-row">
+      <span class="settings-row-label">🔔 Pomodoro chime</span>
+      <div class="settings-toggle" id="soundToggle"></div>
+    </div>
+    <div class="settings-row">
+      <span class="settings-row-label">🐝 Cursor pollen trail</span>
+      <div class="settings-toggle" id="pollenTrailToggle"></div>
+    </div>
+    <div class="settings-row">
+      <span class="settings-row-label">📱 Milestone notifications</span>
+      <div class="settings-toggle" id="browserNotifToggle"></div>
+    </div>
+    <div class="settings-divider"></div>
+    <div class="settings-row-label" style="margin-bottom:8px;">🌙 Night dimness</div>
+    <input type="range" id="nightDimSlider" min="40" max="100" value="100" style="width:100%;">
+    <div class="settings-btn-row" style="margin-top:8px;">
+      <button class="settings-action-btn" id="previewNightBtn">🌘 Preview Night Mode</button>
+      <button class="settings-action-btn" id="dndSergeantBtn">🤫 Mute Sergeant 1h</button>
+    </div>
+    <div class="settings-divider"></div>
+    <div class="settings-row-label" style="margin-bottom:8px;">Name your bees</div>
+    <div class="settings-btn-row">
+      <input type="text" id="sergeantNameInput" placeholder="Sergeant's name" style="flex:1;padding:8px 10px;border-radius:10px;border:1px solid var(--taupe);font-family:'Fredoka',sans-serif;">
+      <input type="text" id="buddyNameInput" placeholder="Buddy's name" style="flex:1;padding:8px 10px;border-radius:10px;border:1px solid var(--taupe);font-family:'Fredoka',sans-serif;">
+    </div>
+    <button class="settings-action-btn" id="saveBeeNamesBtn" style="width:100%; margin-top:6px;">💾 Save Names</button>
+    <div class="settings-divider"></div>
+    <div class="settings-row-label" style="margin-bottom:8px;">Backup your progress</div>
+    <div class="settings-btn-row">
+      <button class="settings-action-btn" id="exportDataBtn">⬇️ Export</button>
+      <button class="settings-action-btn" id="importDataBtn">⬆️ Import</button>
+    </div>
+    <input type="file" id="importDataFile" accept="application/json" style="display:none;">
+    <button class="settings-action-btn" id="printSummaryBtn" style="width:100%; margin-bottom:4px;">🖨️ Print Summary</button>
+    <button class="settings-danger-btn" id="resetDataBtn">🗑️ Reset All Progress</button>
+  </div>
+
+  <div class="eye-break-toast" id="eyeBreakToast"></div>
+  <div class="print-summary" id="printSummary"></div>
+  <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
+
+  <button class="misc-btn dock-item" id="cardsBtn" style="bottom:14px; top:auto; left:410px; position:fixed;">🗂️ Cards</button>
+  <div class="misc-panel" id="cardsPanel" style="bottom:58px; top:auto; left:410px;">
+    <h4>Flashcards</h4>
+    <div class="cards-add-row">
+      <select class="exam-subject-select" id="cardSubjectSelect">
+        <option value="">Add a subject in Settings</option>
+      </select>
+    </div>
+    <div class="cards-add-row">
+      <input type="text" class="card-input" id="cardFrontInput" placeholder="Front (question)">
+    </div>
+    <div class="cards-add-row">
+      <input type="text" class="card-input" id="cardBackInput" placeholder="Back (answer)">
+      <button class="exam-add-btn" id="cardAddBtn">+</button>
+    </div>
+    <div class="ai-import-box">
+      <div class="settings-row-label" style="margin:8px 0 4px;">✨ Or paste your notes and let AI make cards</div>
+      <textarea class="notes-textarea" id="aiImportTextarea" style="min-height:70px;" placeholder="Paste notes, a summary, or upload a .txt file below…"></textarea>
+      <div class="cards-add-row" style="margin-top:6px;">
+        <input type="file" id="aiImportFile" accept=".txt,.md,text/plain" style="flex:1; font-size:10px;">
+        <button class="settings-action-btn" id="aiGenerateBtn" style="flex:1; margin:0;">🤖 Generate Flashcards</button>
+      </div>
+      <div class="ai-import-status" id="aiImportStatus" style="font-size:10px; color:var(--brown); margin-top:4px;"></div>
+    </div>
+    <div class="flashcard-progress" id="flashcardProgress"></div>
+    <div class="flashcard-stage" id="flashcardStage">
+      <div class="flashcard-empty" id="flashcardEmpty">Add a card above to start your deck.</div>
+    </div>
+    <div class="flashcard-mastery-row" id="flashcardMasteryRow" style="display:none;">
+      <button class="flashcard-mastery-btn got-it" id="cardGotItBtn">😀 Got it</button>
+      <button class="flashcard-mastery-btn again" id="cardAgainBtn">🔁 Still learning</button>
+    </div>
+    <div class="flashcard-controls" id="flashcardControls" style="display:none;">
+      <button class="breathing-action-btn secondary" id="cardPrevBtn">◀ Prev</button>
+      <span class="flashcard-counter" id="flashcardCounter">1 / 1</span>
+      <button class="breathing-action-btn secondary" id="cardNextBtn">Next ▶</button>
+    </div>
+    <div class="flashcard-btns-row" id="flashcardBtnsRow" style="display:none;">
+      <button class="breathing-action-btn" id="cardShuffleBtn">🔀 Shuffle</button>
+      <button class="breathing-action-btn secondary" id="cardFilterBtn">🎯 Unmastered Only</button>
+      <button class="settings-danger-btn" id="cardDeleteBtn" style="width:auto; flex:1; margin-top:0;">🗑️ Delete</button>
+    </div>
+  </div>
+
+  <button class="misc-btn dock-item" id="habitsBtn" style="bottom:14px; top:auto; left:520px; position:fixed;">✅ Habits</button>
+  <div class="misc-panel" id="habitsPanel" style="bottom:58px; top:auto; left:520px;">
+    <h4>Habit Tracker</h4>
+    <div class="habit-add-row">
+      <input type="text" class="habit-input" id="habitInput" placeholder="New habit e.g. Read 10 pages">
+      <button class="exam-add-btn" id="habitAddBtn">+</button>
+    </div>
+    <div id="habitList"></div>
+  </div>
+
+  <button class="misc-btn dock-item" id="drawBtn" style="bottom:14px; top:auto; left:630px; position:fixed;">🎴 Draw</button>
+  <div class="misc-panel" id="drawPanel" style="bottom:58px; top:auto; left:630px; text-align:center;">
+    <h4>Draw a Card</h4>
+    <div class="draw-card-stage" id="drawCardStage">
+      <div class="draw-card" id="drawCard">
+        <div class="draw-card-face draw-card-back">🐝</div>
+        <div class="draw-card-face draw-card-front" id="drawCardFront"></div>
+      </div>
+    </div>
+    <div class="breathing-count" id="drawCount">0 cards drawn</div>
+    <button class="breathing-action-btn" id="drawAgainBtn" style="width:100%;">Draw a Card</button>
+  </div>
+
+  <button class="misc-btn" id="shortcutsBtn" style="top:18px; right:250px; position:fixed;">⌨️</button>
+  <div class="misc-panel" id="shortcutsPanel" style="top:68px; right:250px; width:220px;">
+    <h4>Keyboard Shortcuts</h4>
+    <div class="shortcut-row"><kbd>Space</kbd><span>Start / pause Pomodoro</span></div>
+    <div class="shortcut-row"><kbd>B</kbd><span>Toggle Breathing panel</span></div>
+    <div class="shortcut-row"><kbd>N</kbd><span>Toggle Notes panel</span></div>
+    <div class="shortcut-row"><kbd>W</kbd><span>Toggle Awards panel</span></div>
+    <div class="shortcut-row"><kbd>Z</kbd><span>Toggle Zen Focus Mode</span></div>
+    <div class="shortcut-row"><kbd>Esc</kbd><span>Close all panels / exit Zen mode</span></div>
+  </div>
+
+  <button class="focus-btn" id="focusBtn">🎯 Focus</button>
+  <div class="focus-panel" id="focusPanel">
+    <h4>Study Timer</h4>
+    <div class="daily-goal-box" id="dailyGoalBox">
+      <div class="daily-goal-header">
+        <span>Today's Goal</span>
+        <span class="daily-goal-edit" id="dailyGoalEdit">✏️ <span id="dailyGoalMinsLabel">60</span>m</span>
+      </div>
+      <div class="daily-goal-track"><div class="daily-goal-fill" id="dailyGoalFill"></div></div>
+      <div class="daily-goal-status" id="dailyGoalStatus">0 / 60 min today</div>
+    </div>
+    <select class="subject-select" id="subjectSelect">
+      <option value="">Add a subject in Settings</option>
+    </select>
+    <div class="subject-progress-list" id="subjectProgressList"></div>
+    <div class="focus-presets">
+      <button class="focus-preset-btn" data-mins="15">15m</button>
+      <button class="focus-preset-btn" data-mins="25">25m</button>
+      <button class="focus-preset-btn" data-mins="45">45m</button>
+    </div>
+    <div class="focus-session" id="focusSession">
+      <div class="focus-session-time" id="focusSessionTime">00:00</div>
+      <div class="focus-session-track"><div class="focus-session-fill" id="focusSessionFill"></div></div>
+      <button class="focus-stop-btn" id="focusStopBtn">Stop</button>
+    </div>
+    <div class="focus-meter-label">Focus Meter</div>
+    <div class="focus-meter-track"><div class="focus-meter-fill" id="focusMeterFill"></div></div>
+    <div class="focus-meter-pct" id="focusMeterPct">0%</div>
+
+    <div class="streak-label">🔥 Study Streak</div>
+    <div class="streak-row">
+      <div class="streak-count" id="streakCount">0</div>
+      <div class="streak-unit" id="streakUnit">days</div>
+    </div>
+    <div class="streak-best" id="streakBest">Best: 0 days</div>
+
+    <div class="settings-divider"></div>
+    <button class="settings-action-btn" id="zenModeBtn" style="width:100%;">🧘 Enter Zen Focus Mode</button>
+    <div class="focus-meter-label" style="margin-top:10px;">📊 Last 7 Days</div>
+    <div class="weekly-chart" id="weeklyChart"></div>
+
+    <div class="settings-divider"></div>
+    <div class="settings-row-label" style="margin-bottom:8px;">🎧 Ambient Focus Sound</div>
+    <div class="focus-presets" id="ambientSoundBtns">
+      <button class="focus-preset-btn" data-sound="rain">🌧️ Rain</button>
+      <button class="focus-preset-btn" data-sound="waves">🌊 Waves</button>
+      <button class="focus-preset-btn" data-sound="outside">🐝 Outside</button>
+      <button class="focus-preset-btn" data-sound="white">🤫 White</button>
+    </div>
+    <button class="breathing-action-btn secondary" id="ambientStopBtn" style="width:100%; margin-top:6px;">⏹ Stop Sound</button>
+  </div>
+
+  <button class="todo-toggle-btn dock-item" id="todoToggleBtn">✅ Tasks</button>
+  <div class="todo-panel" id="todoPanel">
+    <h4>Smart Todo List</h4>
+    <div class="todo-add-row">
+      <input type="text" class="todo-input" id="todoInput" placeholder="Add a task...">
+      <select class="todo-priority-select" id="todoPrioritySelect">
+        <option value="high">High</option>
+        <option value="medium" selected>Med</option>
+        <option value="low">Low</option>
+      </select>
+      <button class="todo-add-btn" id="todoAddBtn">+</button>
+    </div>
+    <ul class="todo-list" id="todoList"></ul>
+  </div>
+
+  <div class="mood-tracker" id="moodTracker">
+    <div class="mood-tracker-label">Mood</div>
+    <button class="mood-btn" data-mood="1" title="Sleepy">😴</button>
+    <button class="mood-btn" data-mood="2" title="Meh">😐</button>
+    <button class="mood-btn" data-mood="3" title="Okay">🙂</button>
+    <button class="mood-btn" data-mood="4" title="Frustrated">😤</button>
+    <button class="mood-btn" data-mood="5" title="Pumped">🤩</button>
+    <div class="mood-sparkline" id="moodSparkline"></div>
+  </div>
+
+  <div class="buddy-bee-wrap" id="buddyBeeWrap">
+    <div class="buddy-bubble" id="buddyBubble">You just crushed it! 🍯</div>
+    <svg viewBox="0 0 46 46" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="14" cy="18" rx="9" ry="6" fill="rgba(255,255,255,0.8)" stroke="#f2c9dc" stroke-width="1"></ellipse>
+      <ellipse cx="32" cy="18" rx="9" ry="6" fill="rgba(255,255,255,0.8)" stroke="#f2c9dc" stroke-width="1"></ellipse>
+      <ellipse cx="23" cy="26" rx="12" ry="9" fill="#f7c9dd"></ellipse>
+      <g clip-path="url(#bee-body-clip)">
+        <rect x="11.5" y="17" width="4" height="18" fill="#c76f95"></rect>
+        <rect x="19" y="17" width="4" height="18" fill="#c76f95"></rect>
+        <rect x="26.5" y="17" width="4" height="18" fill="#c76f95"></rect>
+      </g>
+      <circle cx="33" cy="22" r="5" fill="#5a3d4a"></circle>
+      <circle cx="34.5" cy="20.5" r="1" fill="#fff"></circle>
+      <path d="M30 17 L27 12" stroke="#c76f95" stroke-width="1.4" stroke-linecap="round"></path>
+      <path d="M35 17 L37 12" stroke="#c76f95" stroke-width="1.4" stroke-linecap="round"></path>
+    </svg>
+  </div>
+
+  <div class="pomodoro-widget" id="pomodoroWidget">
+    <h5>Pomodoro</h5>
+    <div class="tomato-ring-wrap">
+      <svg viewBox="0 0 84 84">
+        <circle class="tomato-ring-bg" cx="42" cy="42" r="36"></circle>
+        <circle class="tomato-ring-fill" id="pomodoroRing" cx="42" cy="42" r="36"></circle>
+      </svg>
+      <div class="tomato-leaf">🍅</div>
+      <div class="pomodoro-time" id="pomodoroTime">25:00</div>
+    </div>
+    <div class="pomodoro-state" id="pomodoroState">Focus Time</div>
+    <div class="pomodoro-sessions" id="pomodoroSessions">Session 1 · 0 done</div>
+    <select class="pomodoro-subject-select" id="pomodoroSubjectSelect">
+      <option value="">Add a subject in Settings</option>
+    </select>
+    <div class="pomodoro-btns">
+      <button class="pomodoro-btn" id="pomodoroStartBtn">Start</button>
+      <button class="pomodoro-btn secondary" id="pomodoroResetBtn">Reset</button>
+    </div>
+  </div>
+
+  <button class="misc-btn dock-item" id="waterBtn" style="bottom:14px; top:auto; left:1620px; position:fixed;">💧 Water</button>
+  <div class="misc-panel" id="waterPanel" style="bottom:58px; top:auto; left:1620px; text-align:center;">
+    <h4>Water Intake</h4>
+    <div class="water-glasses" id="waterGlasses"></div>
+    <div class="water-count" id="waterCount">0 / 8</div>
+  </div>
+
+  <button class="misc-btn dock-item" id="musicBtn" style="bottom:14px; top:auto; left:1730px; position:fixed;">🎵 Music</button>
+  <div class="misc-panel" id="musicPanel" style="bottom:58px; top:auto; left:1730px;">
+    <h4>Lofi Player</h4>
+    <p class="lofi-description">New: “Calm Bee Outside” blends soft garden ambience, distant bees, birds, and gentle study chords.</p>
+    <div class="lofi-player" id="lofiPlayer" style="position:static; width:auto; box-shadow:none; background:none; padding:0;">
+      <div class="vinyl" id="vinylSpinner"></div>
+      <div class="lofi-tracks">
+        <button class="lofi-track-btn" data-track="hive">🎹 Hive Hum</button>
+        <button class="lofi-track-btn" data-track="rain">🌧️ Study Rain</button>
+        <button class="lofi-track-btn" data-track="dawn">🎸 Dawn Focus</button>
+        <button class="lofi-track-btn" data-track="ocean">🌊 Ocean Waves</button>
+        <button class="lofi-track-btn" data-track="forest">🌲 Forest</button>
+        <button class="lofi-track-btn" data-track="outside">🌿 Calm Bee Outside</button>
+        <button class="lofi-track-btn" data-track="white">📻 White Noise</button>
+      </div>
+    </div>
+  </div>
+
+  <button class="misc-btn dock-item" id="feedbackBtn">💬 Feedback</button>
+  <div class="misc-panel" id="feedbackPanel">
+    <h4>Talk to the Hive</h4>
+    <p style="font-size:12px; color:var(--brown); margin-bottom:10px; line-height:1.4;">Send a bug, idea, praise, or “this feels confusing” note. The hive packages it clearly so it is easy to act on.</p>
+    <select id="feedbackCategory" style="width:100%; border-radius:12px; border:1.5px solid var(--taupe); padding:9px 10px; font-family:'Fredoka',sans-serif; font-size:13px; margin-bottom:8px;">
+      <option value="Bug">🐞 Bug / glitch</option>
+      <option value="Idea">💡 Feature idea</option>
+      <option value="Design">🎨 Design / usability</option>
+      <option value="Study">📚 Study help request</option>
+      <option value="Love">🍯 Something I love</option>
+    </select>
+    <select id="feedbackRating" style="width:100%; border-radius:12px; border:1.5px solid var(--taupe); padding:9px 10px; font-family:'Fredoka',sans-serif; font-size:13px; margin-bottom:8px;">
+      <option value="5">★★★★★ Amazing</option>
+      <option value="4">★★★★ Good</option>
+      <option value="3">★★★ Okay</option>
+      <option value="2">★★ Needs work</option>
+      <option value="1">★ Frustrating</option>
+    </select>
+    <textarea id="feedbackText" placeholder="What happened? What should feel better?" rows="5" style="width:100%; border-radius:12px; border:1.5px solid var(--taupe); padding:10px; font-family:'Fredoka',sans-serif; font-size:13px; resize:vertical; margin-bottom:8px;"></textarea>
+    <input type="email" id="feedbackEmail" placeholder="Your email (optional, so we can reply)" style="width:100%; border-radius:12px; border:1.5px solid var(--taupe); padding:9px 10px; font-family:'Fredoka',sans-serif; font-size:13px; margin-bottom:8px;">
+    <label style="display:flex; gap:8px; align-items:flex-start; font-size:11.5px; color:var(--brown); margin-bottom:8px; line-height:1.3;"><input type="checkbox" id="feedbackIncludeStats" checked> Include non-sensitive app context (screen size, theme, current tool) to help debug.</label>
+    <div style="display:flex; gap:6px; margin-bottom:8px;"><button class="breathing-action-btn" id="feedbackSendBtn" style="flex:1;">Prepare Feedback 🐝</button><button class="breathing-action-btn secondary" id="feedbackCopyBtn" style="flex:1;">Copy</button></div>
+    <button class="breathing-action-btn secondary" id="feedbackDraftBtn" style="width:100%;">Save Draft</button>
+    <div id="feedbackPreview" style="display:none; white-space:pre-wrap; background:var(--cream); border-radius:12px; padding:10px; font-size:11.5px; color:var(--deep-brown); margin-top:8px; max-height:140px; overflow:auto;"></div>
+    <div id="feedbackStatus" style="font-size:11px; color:var(--brown); margin-top:8px; text-align:center;"></div>
+  </div>
+
+  <button class="misc-btn dock-item" id="tipsBtn">💡 Study Tips</button>
+  <div class="misc-panel" id="tipsPanel" style="text-align:center;">
+    <h4>Hive Wisdom</h4>
+    <div id="tipText" style="font-size:14px; color:var(--deep-brown); font-weight:600; line-height:1.5; min-height:70px; display:flex; align-items:center; justify-content:center; padding:6px 4px;"></div>
+    <button class="breathing-action-btn secondary" id="tipNextBtn" style="width:100%; margin-top:8px;">Another one 🔄</button>
+  </div>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <clipPath id="bee-body-clip" clipPathUnits="userSpaceOnUse">
+        <ellipse cx="23" cy="26" rx="12" ry="9"></ellipse>
+      </clipPath>
+    </defs>
+  </svg>
+
+  <div class="bee-wrap bee-1">
+    <svg class="bee-bob" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
+      <ellipse class="wing" cx="14" cy="18" rx="9" ry="6" fill="rgba(255,255,255,0.75)" stroke="#d3b995" stroke-width="1"></ellipse>
+      <ellipse class="wing wing-right" cx="32" cy="18" rx="9" ry="6" fill="rgba(255,255,255,0.75)" stroke="#d3b995" stroke-width="1"></ellipse>
+      <ellipse cx="23" cy="26" rx="12" ry="9" fill="#f4c430"></ellipse>
+      <g clip-path="url(#bee-body-clip)">
+        <rect x="11.5" y="17" width="4" height="18" fill="#2b2b2b"></rect>
+        <rect x="19" y="17" width="4" height="18" fill="#2b2b2b"></rect>
+        <rect x="26.5" y="17" width="4" height="18" fill="#2b2b2b"></rect>
+      </g>
+      <circle cx="33" cy="22" r="5" fill="#2b2b2b"></circle>
+      <circle cx="34.5" cy="20.5" r="1" fill="#fff"></circle>
+      <path d="M30 17 L27 12" stroke="#2b2b2b" stroke-width="1.4" stroke-linecap="round"></path>
+      <path d="M35 17 L37 12" stroke="#2b2b2b" stroke-width="1.4" stroke-linecap="round"></path>
+    </svg>
+  </div>
+
+  <div class="bee-wrap bee-2">
+    <svg class="bee-bob" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
+      <ellipse class="wing" cx="14" cy="18" rx="9" ry="6" fill="rgba(255,255,255,0.75)" stroke="#d3b995" stroke-width="1"></ellipse>
+      <ellipse class="wing wing-right" cx="32" cy="18" rx="9" ry="6" fill="rgba(255,255,255,0.75)" stroke="#d3b995" stroke-width="1"></ellipse>
+      <ellipse cx="23" cy="26" rx="12" ry="9" fill="#f4c430"></ellipse>
+      <g clip-path="url(#bee-body-clip)">
+        <rect x="11.5" y="17" width="4" height="18" fill="#2b2b2b"></rect>
+        <rect x="19" y="17" width="4" height="18" fill="#2b2b2b"></rect>
+        <rect x="26.5" y="17" width="4" height="18" fill="#2b2b2b"></rect>
+      </g>
+      <circle cx="33" cy="22" r="5" fill="#2b2b2b"></circle>
+      <circle cx="34.5" cy="20.5" r="1" fill="#fff"></circle>
+      <path d="M30 17 L27 12" stroke="#2b2b2b" stroke-width="1.4" stroke-linecap="round"></path>
+      <path d="M35 17 L37 12" stroke="#2b2b2b" stroke-width="1.4" stroke-linecap="round"></path>
+    </svg>
+  </div>
+
+  <div class="bee-wrap bee-3">
+    <svg class="bee-bob" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
+      <ellipse class="wing" cx="14" cy="18" rx="9" ry="6" fill="rgba(255,255,255,0.75)" stroke="#d3b995" stroke-width="1"></ellipse>
+      <ellipse class="wing wing-right" cx="32" cy="18" rx="9" ry="6" fill="rgba(255,255,255,0.75)" stroke="#d3b995" stroke-width="1"></ellipse>
+      <ellipse cx="23" cy="26" rx="12" ry="9" fill="#f4c430"></ellipse>
+      <g clip-path="url(#bee-body-clip)">
+        <rect x="11.5" y="17" width="4" height="18" fill="#2b2b2b"></rect>
+        <rect x="19" y="17" width="4" height="18" fill="#2b2b2b"></rect>
+        <rect x="26.5" y="17" width="4" height="18" fill="#2b2b2b"></rect>
+      </g>
+      <circle cx="33" cy="22" r="5" fill="#2b2b2b"></circle>
+      <circle cx="34.5" cy="20.5" r="1" fill="#fff"></circle>
+      <path d="M30 17 L27 12" stroke="#2b2b2b" stroke-width="1.4" stroke-linecap="round"></path>
+      <path d="M35 17 L37 12" stroke="#2b2b2b" stroke-width="1.4" stroke-linecap="round"></path>
+    </svg>
+  </div>
+
+  <!-- ===== NEW FEATURES MARKUP ===== -->
+  <button class="sleep-toggle-btn" id="shareCountdownBtn" style="right:218px;" title="Copy countdown summary to share">📋</button>
+
+  <button class="misc-btn dock-item" id="capsuleBtn" style="bottom:14px; top:auto; left:740px; position:fixed;">⏳ Capsule</button>
+  <div class="misc-panel" id="capsulePanel" style="bottom:58px; top:auto; left:740px;">
+    <h4>Time Capsule ✉️</h4>
+    <div id="capsuleLockedView">
+      <textarea class="notes-textarea" id="capsuleTextarea" placeholder="Write a message to your future self... it unlocks on the last day of school."></textarea>
+      <button class="settings-action-btn" id="capsuleSaveBtn" style="width:100%;">🔒 Seal It Until The Last Day</button>
+      <div class="breathing-count" id="capsuleStatus">No capsule sealed yet.</div>
+    </div>
+    <div id="capsuleUnlockedView" style="display:none;">
+      <div class="capsule-reveal-text" id="capsuleRevealText"></div>
+      <button class="settings-danger-btn" id="capsuleClearBtn">🗑️ Clear Capsule</button>
+    </div>
+  </div>
+
+  <button class="misc-btn dock-item" id="punsBtn" style="bottom:14px; top:auto; left:850px; position:fixed;">😂 Puns</button>
+  <div class="misc-panel" id="punsPanel" style="bottom:58px; top:auto; left:850px; text-align:center;">
+    <h4>Bee Puns 🐝</h4>
+    <div class="grade-result" id="punText">Tap the button for some bee-rilliant humor.</div>
+    <button class="breathing-action-btn" id="punNextBtn" style="width:100%;">🎲 Another one</button>
+  </div>
+
+  <div class="clicker-overlay" id="clickerOverlay">
+    <div class="clicker-box">
+      <h4>🐝 Bee Clicker!</h4>
+      <div class="clicker-stats">
+        <span id="clickerScore">Score: 0</span>
+        <span id="clickerTime">10s</span>
+        <span id="clickerBest">Best: 0</span>
+      </div>
+      <div class="clicker-arena" id="clickerArena">
+        <button class="clicker-target" id="clickerTarget">🐝</button>
+      </div>
+      <button class="breathing-action-btn secondary" id="clickerCloseBtn" style="width:100%;">Close</button>
+    </div>
+  </div>
+
+  <div class="milestone-toast" id="milestoneToast"></div>
+  <div class="god-mode-toast" id="godModeToast"></div>
+  <div class="god-mode-veil" id="godModeVeil"></div>
+  <div class="bee-fact-popup" id="beeFactPopup"></div>
+
+  <button class="misc-btn dock-item" id="secretsBtn" style="bottom:14px; top:auto; left:960px; position:fixed;">🕵️ Secrets</button>
+  <div class="misc-panel" id="secretsPanel" style="bottom:58px; top:auto; left:960px;">
+    <h4>Secrets Found</h4>
+    <div class="secrets-progress" id="secretsProgress">0 / 0 found</div>
+    <div id="secretsList"></div>
+  </div>
+
+  <button class="misc-btn dock-item" id="challengeBtn" style="bottom:14px; top:auto; left:1070px; position:fixed;">🎯 Challenge</button>
+
+  <button class="misc-btn dock-item" id="heatmapBtn" style="bottom:14px; top:auto; left:1180px; position:fixed;">🗓️ Heatmap</button>
+  <div class="misc-panel" id="heatmapPanel" style="bottom:58px; top:auto; left:1180px; width:260px;">
+    <h4>Study Heatmap 🗓️</h4>
+    <div class="heatmap-legend">Less <span class="heatmap-cell"></span><span class="heatmap-cell lvl-1"></span><span class="heatmap-cell lvl-2"></span><span class="heatmap-cell lvl-3"></span><span class="heatmap-cell lvl-4"></span> More</div>
+    <div class="heatmap-grid" id="heatmapGrid"></div>
+    <div class="heatmap-stats" id="heatmapStats"></div>
+  </div>
+
+  <button class="misc-btn dock-item" id="rivalBtn" style="bottom:14px; top:auto; left:1290px; position:fixed;">🐝⚔️ Rival Hive</button>
+  <div class="misc-panel" id="rivalPanel" style="bottom:58px; top:auto; left:1290px; width:250px;">
+    <h4>Rival Hive Race 🐝⚔️</h4>
+    <div class="rival-rate-row">
+      <button class="rival-rate-btn" data-rate="15">🐌 Chill<br>15m/day</button>
+      <button class="rival-rate-btn" data-rate="30">🚶 Steady<br>30m/day</button>
+      <button class="rival-rate-btn" data-rate="60">🚀 Turbo<br>60m/day</button>
+    </div>
+    <div class="race-track-wrap">
+      <div class="race-track-label">You</div>
+      <div class="race-track"><div class="race-track-fill you" id="raceYouFill" style="width:0%;"></div></div>
+      <div class="race-track-label">Rival Hive</div>
+      <div class="race-track"><div class="race-track-fill rival" id="raceRivalFill" style="width:0%;"></div></div>
+    </div>
+    <div class="race-status" id="raceStatus"></div>
+  </div>
+
+  <button class="misc-btn dock-item" id="gardenBtn" style="bottom:14px; top:auto; left:1400px; position:fixed;">🌷 Garden</button>
+  <div class="misc-panel" id="gardenPanel" style="bottom:58px; top:auto; left:1400px; width:260px;">
+    <h4>Bee Garden 🌷</h4>
+    <div class="garden-grid" id="gardenGrid"></div>
+    <div class="garden-stats" id="gardenStats"></div>
+  </div>
+
+  <button class="misc-btn dock-item" id="freezeBtn" style="bottom:14px; top:auto; left:1510px; position:fixed;">❄️ Freeze <span class="freeze-count-badge" id="freezeCount">0</span></button>
+  <div class="misc-panel" id="freezePanel" style="bottom:58px; top:auto; left:1510px;">
+    <h4>Streak Freeze ❄️</h4>
+    <div class="breathing-count" id="freezeExplainer">You have 0 streak freezes saved.</div>
+    <div class="breathing-tip">Earn one every 7-day streak milestone (max 3 stored). Miss a day and a freeze automatically protects your streak instead of resetting it.</div>
+  </div>
+
+  <div class="exam-countdown-badge" id="examCountdownBadge"></div>
+
+  <button class="dock-toggle-btn" id="dockToggleBtn" title="Show/hide extra tools">🧰 More Tools</button>
+  <div class="misc-panel" id="challengePanel" style="bottom:58px; top:auto; left:1070px; text-align:center;">
+    <h4>Daily Challenge</h4>
+    <div class="challenge-card" id="challengeCard">Tap "New Challenge" to get one.</div>
+    <button class="breathing-action-btn" id="challengeDoneBtn" style="width:100%; margin-bottom:6px;">✓ Mark Done</button>
+    <button class="breathing-action-btn secondary" id="challengeNewBtn" style="width:100%;">🎲 New Challenge</button>
+  </div>
+
+  <button class="sos-btn" id="sosBtn" title="Feeling overwhelmed? Tap for a calm reset">🆘 Calm</button>
+  <div class="sos-veil" id="sosVeil"></div>
+  <div class="sos-message" id="sosMessage">
+    <div id="sosMessageText">Take a breath. You're doing better than you think. 🐝</div>
+    <button class="breathing-action-btn secondary" id="sosCloseBtn" style="width:100%; margin-top:12px;">I'm okay now</button>
+  </div>
+
+  <div class="sergeant-shadow anger-0" id="sergeantShadow"></div>
+  <div class="rage-meter anger-0" id="rageMeter" title="Sergeant's rage level">
+    <div class="rage-meter-fill"></div>
+  </div>
+  <div class="sergeant-persistent anger-0" id="sergeantPersistent" title="Your drill sergeant bee is watching">
+    <div class="sergeant-rank-badge" id="sergeantRankBadge">PVT</div>
+    <div class="sergeant-steam s1"></div>
+    <div class="sergeant-steam s2"></div>
+    <div class="sergeant-fist left"></div>
+    <div class="sergeant-fist right"></div>
+    <svg class="sergeant-bob" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
+      <defs><clipPath id="bee-body-clip"><rect x="9" y="14" width="28" height="22" rx="6"></rect></clipPath></defs>
+      <ellipse cx="14" cy="18" rx="9" ry="6" fill="rgba(255,255,255,0.75)" stroke="#d3b995" stroke-width="1"></ellipse>
+      <ellipse cx="32" cy="18" rx="9" ry="6" fill="rgba(255,255,255,0.75)" stroke="#d3b995" stroke-width="1"></ellipse>
+      <ellipse cx="23" cy="26" rx="12" ry="9" fill="#f4c430"></ellipse>
+      <g clip-path="url(#bee-body-clip)">
+        <rect x="11.5" y="17" width="4" height="18" fill="#2b2b2b"></rect>
+        <rect x="19" y="17" width="4" height="18" fill="#2b2b2b"></rect>
+        <rect x="26.5" y="17" width="4" height="18" fill="#2b2b2b"></rect>
+      </g>
+      <ellipse class="sergeant-muscle left" cx="16" cy="27" rx="4.2" ry="3.2" fill="#e0a838"></ellipse>
+      <ellipse class="sergeant-muscle right" cx="30" cy="27" rx="4.2" ry="3.2" fill="#e0a838"></ellipse>
+      <ellipse class="sergeant-cheek" cx="30" cy="25" rx="2.6" ry="1.6" fill="#c1392b"></ellipse>
+      <circle cx="33" cy="22" r="5" fill="#2b2b2b"></circle>
+      <circle cx="34.5" cy="20.5" r="1" fill="#fff"></circle>
+      <path class="sergeant-teeth" d="M30 25.5 L36 25.5 L35 28 L33 26.5 L31 28 Z" fill="#fff"></path>
+      <path d="M30 17 L27 12" stroke="#2b2b2b" stroke-width="1.4" stroke-linecap="round"></path>
+      <path d="M35 17 L37 12" stroke="#2b2b2b" stroke-width="1.4" stroke-linecap="round"></path>
+      <ellipse cx="33" cy="15.5" rx="8.5" ry="2.4" fill="#5a6b3f"></ellipse>
+      <path d="M27 15 C27 10 39 10 39 15 C39 12.5 27 12.5 27 15 Z" fill="#6d8049"></path>
+      <ellipse cx="33" cy="12.6" rx="3.2" ry="1.4" fill="#4a5732"></ellipse>
+      <path class="sergeant-brow" d="M28.5 16.5 L38.5 16.5" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round"></path>
+      <path class="sergeant-brow-l" d="M28.5 16 L33 17.3" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round"></path>
+      <path class="sergeant-brow-r" d="M33 17.3 L38.5 16" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round"></path>
+    </svg>
+  </div>
+  <div class="sergeant-nag-bubble" id="sergeantNagBubble">
+    <span class="sergeant-nag-text" id="sergeantNagText"></span>
+    <div class="voice-wave" id="voiceWave"><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+
+  <div class="hive-wrap" id="hiveWrap" role="button" aria-label="Tap the hive for motivation" tabindex="0">
+    <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="36" cy="64" rx="26" ry="5" fill="rgba(139,111,82,0.2)"></ellipse>
+      <path d="M36 8 C20 8 14 24 14 38 C14 54 24 66 36 66 C48 66 58 54 58 38 C58 24 52 8 36 8 Z" fill="#e8ab3c"></path>
+      <path class="layer1" d="M14 38 C14 42 15 46 17 50 L55 50 C57 46 58 42 58 38 Z" fill="#d99420"></path>
+      <path class="layer2" d="M15 46 C17 54 25 62 36 62 C47 62 55 54 57 46 Z" fill="#c97a12"></path>
+      <ellipse cx="36" cy="38" rx="7" ry="9" fill="#5a3d1f" class="layer3"></ellipse>
+      <g class="layer4">
+        <circle cx="20" cy="20" r="2" fill="#fff2c9"></circle>
+        <circle cx="50" cy="18" r="2" fill="#fff2c9"></circle>
+        <circle cx="46" cy="52" r="2" fill="#fff2c9"></circle>
+        <circle cx="26" cy="56" r="2" fill="#fff2c9"></circle>
+      </g>
+    </svg>
+  </div>
+
+  <div class="motivation-bubble" id="motivationBubble"></div>
+
+  <div class="hive-progress-wrap">
+    <div class="hive-progress-label">Hive Progress</div>
+    <div class="hive-progress-track"><div class="hive-progress-fill" id="hiveFill"></div><span class="hive-progress-bee" id="hiveProgressBee">🐝</span></div>
+    <div class="hive-progress-pct" id="hivePct">0%</div>
+  </div>
+
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+
+  <div class="card">
+    <div class="clock-label">Right Now</div>
+    <div class="current-time" id="currentTime">--:--:--</div>
+    <div class="current-date" id="currentDate">Loading...</div>
+
+    <div class="quote-rotator" id="quoteRotator">
+      <div class="quote-text" id="quoteText">Loading...</div>
+      <div class="quote-author" id="quoteAuthor">
+        <span id="quoteAuthorName"></span>
+        <button class="quote-fav-btn" id="quoteFavBtn" title="Save to favorites">🤍</button>
+      </div>
+      <button class="quote-fav-list-btn" id="quoteFavListBtn">❤️ Favorites (<span id="quoteFavCount">0</span>)</button>
+      <div class="quote-fav-popover" id="quoteFavPopover"></div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="title-wrap">
+      <div class="title" id="mainTitle">🎓 The Grind</div>
+      <span class="drip"></span>
+      <span class="drip"></span>
+      <span class="drip"></span>
+      <span class="drip"></span>
+    </div>
+    <div class="subtitle" id="mainSubtitle">Countdown to your goal</div>
+
+    <div class="days-block">
+      <div class="num" id="days">00</div>
+      <div class="unit-label">Days To Go</div>
+    </div>
+
+    <div class="time-elapsed-wrap">
+      <div class="time-elapsed-label"><span>Countdown Progress</span><span id="timeElapsedPct">0%</span></div>
+      <div class="time-elapsed-track"><div class="time-elapsed-fill" id="timeElapsedFill"></div></div>
+    </div>
+
+    <div class="countdown">
+      <div class="unit">
+        <div class="num" id="hours">00</div>
+        <div class="unit-label">Hours</div>
+      </div>
+      <div class="unit">
+        <div class="num" id="todayHours">00</div>
+        <div class="unit-label">Total Hrs</div>
+      </div>
+      <div class="unit">
+        <div class="num" id="minutes">00</div>
+        <div class="unit-label">Mins</div>
+      </div>
+      <div class="unit">
+        <div class="num" id="seconds">00</div>
+        <div class="unit-label">Secs</div>
+      </div>
+    </div>
+
+    <div class="footer-note" id="footerNote">✨ almost there ✨</div>
+    <div class="legal-links">
+      <a href="study-hive-privacy-policy.html">Privacy Policy</a>
+      &nbsp;·&nbsp;
+      <a href="study-hive-terms-of-service.html">Terms of Service</a> ·
+      <!-- The old host (Cloudflare) rewrote this to a /cdn-cgi/ email-protection
+           URL that only worked there. On GitHub Pages a plain mailto: works. -->
+      <a href="mailto:omphemetse.mogale0409@gmail.com">Meet the Creator</a>
+    </div>
+
+  </div>
+
+  <div class="celebration-overlay" id="celebrationOverlay">
+    <div class="confetti"></div><div class="confetti"></div><div class="confetti"></div>
+    <div class="confetti"></div><div class="confetti"></div><div class="confetti"></div>
+    <div class="confetti"></div><div class="confetti"></div><div class="confetti"></div>
+    <div class="confetti"></div><div class="confetti"></div><div class="confetti"></div>
+    <div class="celebration-message">🎉🍯 THE HIVE IS COMPLETE! 🍯🎉<br>You made it!</div>
+  </div>
+
+  <div class="sergeant-wrap" id="sergeantWrap">
+    <div class="sergeant-bee" id="sergeantBee">
+      <div class="sergeant-bubble" id="sergeantBubble">AT EASE, SOLDIER! 🫡 YOU MADE IT!</div>
+      <div class="sergeant-arm left"></div>
+      <div class="sergeant-arm right"></div>
+      <svg viewBox="0 0 46 46" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="14" cy="18" rx="9" ry="6" fill="rgba(255,255,255,0.75)" stroke="#d3b995" stroke-width="1"></ellipse>
+        <ellipse cx="32" cy="18" rx="9" ry="6" fill="rgba(255,255,255,0.75)" stroke="#d3b995" stroke-width="1"></ellipse>
+        <ellipse cx="23" cy="26" rx="12" ry="9" fill="#f4c430"></ellipse>
+        <g clip-path="url(#bee-body-clip)">
+          <rect x="11.5" y="17" width="4" height="18" fill="#2b2b2b"></rect>
+          <rect x="19" y="17" width="4" height="18" fill="#2b2b2b"></rect>
+          <rect x="26.5" y="17" width="4" height="18" fill="#2b2b2b"></rect>
+        </g>
+        <circle cx="33" cy="22" r="5" fill="#2b2b2b"></circle>
+        <circle cx="34.5" cy="20.5" r="1" fill="#fff"></circle>
+        <path d="M30 17 L27 12" stroke="#2b2b2b" stroke-width="1.4" stroke-linecap="round"></path>
+        <path d="M35 17 L37 12" stroke="#2b2b2b" stroke-width="1.4" stroke-linecap="round"></path>
+        <ellipse cx="33" cy="15.5" rx="8.5" ry="2.4" fill="#5a6b3f"></ellipse>
+        <path d="M27 15 C27 10 39 10 39 15 C39 12.5 27 12.5 27 15 Z" fill="#6d8049"></path>
+        <ellipse cx="33" cy="12.6" rx="3.2" ry="1.4" fill="#4a5732"></ellipse>
+        <ellipse cx="31" cy="22" rx="3.4" ry="2.6" fill="#1a1a1a"></ellipse>
+        <ellipse cx="36.5" cy="22" rx="3.4" ry="2.6" fill="#1a1a1a"></ellipse>
+        <rect x="33.8" y="21.2" width="1.6" height="1.2" fill="#1a1a1a"></rect>
+      </svg>
+    </div>
+  </div>
+
+<script src="js/05-countdown-hive-core.js"></script>
+
+<script src="js/06-xp-achievements-buddy.js"></script>
+
+<!-- ===================================================================
+     NEW FEATURES: tab-title countdown, milestone celebrations + browser
+     notifications, time capsule, pollen cursor trail, "honey" word easter
+     egg, bee-clicker mini-game, bee puns, custom bee names, share/copy
+     countdown, secret bee-fact popup.
+     =================================================================== -->
+<script src="js/07-milestones-tips-clicker.js"></script>
+
+<!-- ================================================================
+     STUDY HIVE HIVE STUDIO PACK: 20 study tools + app-wide polish layer
+     ================================================================ -->
+
+<script src="js/08-study-data-core.js"></script>
+
+
+<!-- ================================================================
+     HIVE COACH + BEE ART UPGRADE
+     A larger adaptive study system plus upgraded visual bees.
+     ================================================================ -->
+
+
+<button id="hiveCoachBtn">🐝 Hive Coach</button>
+<div class="hive-coach-panel" id="hiveCoachPanel" role="dialog" aria-label="Hive Coach">
+  <div class="coach-side">
+    <div class="coach-logo">🐝 Hive Coach</div>
+    <div class="coach-sub">Adaptive topic mastery, quizzes and study planning in one place.</div>
+    <button class="coach-tab-btn active" data-coach-tab="dashboard">📊 Dashboard</button>
+    <button class="coach-tab-btn" data-coach-tab="topics">🍯 Topic Mastery</button>
+    <button class="coach-tab-btn" data-coach-tab="quiz">🧠 Adaptive Quiz</button>
+    <button class="coach-tab-btn" data-coach-tab="plan">🗓️ Coach Plan</button>
+    <button class="coach-tab-btn" data-coach-tab="review">🪞 Review Log</button>
+  </div>
+  <div class="coach-main">
+    <div class="coach-top"><div><div class="coach-title" id="coachTitle">Dashboard</div><div class="coach-sub" id="coachSub">Your smartest next move, chosen from your weak topics.</div></div><button class="coach-close" id="coachCloseBtn">×</button></div>
+    <div id="coachBody"></div>
+  </div>
+</div>
+<div class="coach-toast" id="coachToast"></div>
+
+<script src="js/09-coach-focus-intention.js"></script>
+
+
+<script src="js/10-real-hive-builder.js"></script>
+
+<!-- ================================================================
+     MOBILE, NO-TOUCH FOCUS, GRIND MODE, NIGHT MODE, GARDEN WORLD
+     ================================================================ -->
+
+<script src="js/11-settings-toggles.js"></script>
+
+
+<!-- ================================================================
+     FINAL POLISH: CLEAN HIVE MENU, BACKGROUND MUSIC, PLEDGE, GOAL %, QUEEN VISIT
+     ================================================================ -->
+
+<script src="js/12-volume-pledge-goal.js"></script>
+
+
+<!-- ================================================================
+     REQUESTED REFINEMENTS: MORE TOOLS BACK, QUEEN TOUR CHOICE,
+     RELIABLE MUSIC + UI SOUNDS, WEATHER CHANGE BEHAVIOUR, EASTER-EGG BEE LINES
+     ================================================================ -->
+
+<script src="js/13-sounds-tour-swarm.js"></script>
+
+
+<!-- ================================================================
+     REFINEMENT PATCH: HIVE MENU POSITION, CLASSIC SERGEANT,
+     CONTEXT LINES, REAL LONG QUEEN GUIDE, PROGRESS BEE MODELS,
+     POMODORO IN HIVE MENU, BETTER SETTINGS
+     ================================================================ -->
+
+<script src="js/14-tour-onboarding.js"></script>
+
+
+<!-- ================================================================
+     FIX PASS: MOBILE RESTORE, BEE STYLE, QUEEN MAP, MUSIC V4,
+     WEATHER/TOUR/MORE TOOLS STABILITY, BEE FLIGHT NORMALIZER
+     ================================================================ -->
+
+<script src="js/15-bee-styles-clean-ui.js"></script>
+
+
+<!-- ================================================================
+     QUEEN STORY GUIDE + NATURAL BEE SWARM FIXES + HIVE CONTROLS POSITION
+     ================================================================ -->
+
+<script src="js/16-bee-styles-queen.js"></script>
+
+
+<!-- ADMIN MODE + MASSIVE SERGEANT CONTEXT BANK + EXTRA VOCAB SUPPORT -->
+
+<script src="js/17-queen-secrets-events.js"></script>
+
+
+<!-- FINAL POLISH PACK: NaN fix, privacy setup, design consistency, admin secrecy, +100 dialogue -->
+
+<script src="js/18-privacy-notifications.js"></script>
+
+
+
+
+
+<!-- EXTERNAL CUSTOM BACKGROUND MUSIC: keeps GitHub file small -->
+<script src="js/19-background-music.js"></script>
+
+<!-- OWNERSHIP MARKER: repeated in-code copyright notice -->
+<script src="js/20-owner-contact.js"></script>
+
+
+<!-- FINAL STACK FIX: prevent Hive Controls / Hive Studio / Grind Mode overlap -->
+
+
+<!-- FINAL VISIBILITY FIX: queen guide clarity + hive motivation bubble position -->
+
+
+<!-- QUEEN GUIDE DOCK CONTROL: auto-open More Tools only for More Tools steps -->
+<script src="js/21-more-tools-dock.js"></script>
+
+<!-- FINAL TOP BAR SPACING FIX -->
+
+
+<!-- FINAL MOBILE TOP OVERLAP FIX: keep top buttons clear of the clock label -->
+
+
+<!-- HARD MOBILE HEADER FIX: fixed top bar must never cover the main card -->
+
+
+<!-- REQUIRED PLEDGE PATCH: users must write a pledge during setup -->
+
+<script src="js/22-pledge-onboarding.js"></script>
+
+<!-- FILL-IN-THE-BLANK PLEDGE PATCH -->
+
+<script src="js/23-pledge-helpers.js"></script>
+
+<!-- LONGER FILL-IN-THE-BLANK PLEDGE PATCH -->
+
+<script src="js/24-pledge-upgrade-fill.js"></script>
+
+<!-- ONBOARDING SHAPE FIX: square on desktop, vertical on mobile -->
+
+
+<!-- MOBILE ONBOARDING TYPING VISIBILITY FIX -->
+
+<script src="js/25-onboard-field-guard.js"></script>
+
+<!-- HARD FIX: mobile onboarding typing mirror + forced inline readable fields -->
+
+<script src="js/26-setup-field-guard.js"></script>
+
+<!-- MOBILE ONBOARDING SCROLL WHEEL / SCROLL CONTROLS -->
+
+<script src="js/27-onboard-scroll.js"></script>
+
+<!-- MOBILE POLISH PACK: cleaner phone layout, better panels, safer spacing -->
+
+<script src="js/28-mobile-layout.js"></script>
+
+<!-- HARD MOBILE SCROLL FIX: Safari / Brave touch scrolling -->
+
+<script src="js/29-mobile-layout-more.js"></script>
+
+<!-- AI BEE / SERGEANT BRAIN + FEATURE POLISH PASS -->
+
+<script src="js/30-ai-provider-coach.js"></script>
+
+<!-- FEATURE POLISH SUITE + QUEEN EXPLAINER 2.0 -->
+
+<script src="js/31-tour-shortcuts.js"></script>
+
+<!-- IMPORT HUB: calendar, photo notes/subjects, transcription -->
+
+<script src="js/32-exams-notes-flashcards.js"></script>
+
+<!-- IMPORT HUB REFINEMENT + GLITCH FIX PASS -->
+
+<script src="js/33-flashcards-import.js"></script>
+
+<!-- MOBILE FEATURE LAUNCHER + START LANGUAGE + PROMINENT PHONE MODE -->
+
+<script src="js/34-language-speech.js"></script>
+
+<!-- MOBILE FULLSCREEN + ASIA LANGUAGES + SMOOTHER EXPLAINER TRANSITIONS -->
+
+<script src="js/35-language-tts.js"></script>
+
+<!-- RECENT FEATURES POLISH PASS: Import Hub, Bee AI, Mobile Launcher, Explainer, Wake Lock -->
+
+<script src="js/36-session-summary-data.js"></script>
+
+<!-- 11/10 POLISH PACK: smart next action, session summary, health doctor, backups, app modes -->
+
+<script src="js/37-sessions-heatmap.js"></script>
+
+<!-- BACKUP CENTER: download backup, copy backup text, paste restore -->
+
+<script src="js/38-whispers-easter-eggs.js"></script>
+
+<!-- LAUNCH STABILIZATION PASS 1: panel manager, overlap guard, launch checklist -->
+
+<script src="js/39-backup-export.js"></script>
+
+<!-- 20/10 FINAL LAUNCH PACK: PWA, error shield, accessibility modes, final app doctor -->
+
+<script src="js/40-accessibility-settings.js"></script>
+
+<!-- OG FOUNDER CARD: first 1000 user system (frontend + backend-ready hook) -->
+
+<script src="js/41-og-cards.js"></script>
+
+<!-- OG CARD REMOVAL / FUTURE MILESTONE NOTICE -->
+
+<script src="js/42-og-cleanup.js"></script>
+
+<!-- FIX: desync bees, clearer music volume, testing tools admin-only -->
+
+<script src="js/43-master-volume-audio.js"></script>
+
+
+<!-- FINAL QUEEN/SERGEANT/MUSIC BALANCE PATCH -->
+
+<script src="js/44-music-softening.js"></script>
+
+<!-- HARD QUEEN REVERT FIX: force emoji queen everywhere, block image replacer -->
+
+<script src="js/45-queen-image.js"></script>
+
+
+<!-- CLEAN RECOVERY PATCH: removes conflicting add-on behaviour, keeps native panels -->
+
+<script src="js/46-garden-todos-zen.js"></script>
+
+
+
+<!-- CLEAN RECOVERY PASS 2: timer clearance, real actions, simple bees -->
+
+<script src="js/47-milestone-motivation.js"></script>
+
+
+<!-- BEE BEHAVIOUR FINAL: slower old bees, independent XP swarm, useful feature tips -->
+
+<script src="js/48-flashcards-garden-tasks.js"></script>
+
+<!-- BALANCED BEE COUNTS: 2 old + 2 new, then one of each per XP tier -->
+
+<script src="js/49-bee-xp.js"></script>
+
+<!-- FINAL INTERACTION REPAIR: no hive double-click game, working next move, persistent Calm -->
+
+<script src="js/50-sos-calm-focus.js"></script>
+
+<!-- TEN EXTRA SECRETS -->
+
+<script src="js/51-secrets-admin.js"></script>
+
+
+<!-- PERFORMANCE + SAFARI STABILITY PATCH -->
+
+<script src="js/52-admin-status-report.js"></script>
+
+<!-- STARTUP DIAGNOSTICS: reports only real local JavaScript errors -->
+
+<script src="js/53-error-log.js"></script>
+<script src="js/54-welcome-screen.js"></script>
+<script src="js/55-onboarding-wizard.js"></script>
+<script src="js/56-night-sky.js"></script>
+<script src="js/58-wasp.js"></script>
+<script src="js/59-lockin-mode.js"></script>
+<script src="js/62-mobile-app.js?v=14"></script>
+
+<script>
+/* Study Hive PWA glue:
+   1. Register the network-first service worker (offline fallback + makes
+      the manifest icons/shortcuts installable on Android).
+   2. Home-screen shortcut deep links (?shortcut=focus | cards | plan). */
+(function () {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js?v=1').catch(function () {});
+    });
+  }
+  var s = new URLSearchParams(window.location.search).get('shortcut');
+  if (!s) return;
+  var attempts = 0;
+  function go() {
+    if (s === 'focus') {
+      var lb = document.getElementById('lockinBtn');
+      if (lb) { lb.click(); return; }
+      var fp = document.getElementById('focusPanel');
+      if (fp) { fp.classList.add('show'); return; }
+    } else if (s === 'cards') {
+      var cb = document.getElementById('cardsBtn');
+      if (cb) { cb.click(); return; }
+    } else if (s === 'plan') {
+      try { if (window.goTab) window.goTab('home'); } catch (e) {}
+      var target = document.getElementById('mobPlanTitle') || document.getElementById('dailyPlanTitle');
+      if (target) {
+        var card = target.closest ? (target.closest('.daily-plan-card') || target.parentNode) : target.parentNode;
+        if (card) {
+          try { card.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) { card.scrollIntoView(); }
+          card.classList.add('plan-flash');
+          setTimeout(function () { card.classList.remove('plan-flash'); }, 2400);
+          return;
+        }
+      }
+    }
+    /* elements may not exist yet (mobile shell builds late) — retry briefly */
+    if (++attempts < 8) setTimeout(go, 1000);
+  }
+  if (document.readyState === 'complete') setTimeout(go, 1200);
+  else window.addEventListener('load', function () { setTimeout(go, 1200); });
+})();
+</script>
+
+</body>
+</html>
