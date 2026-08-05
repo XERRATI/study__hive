@@ -1,0 +1,95 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-fredoka), 'Fredoka Fallback', sans-serif;
+  --font-display: var(--font-fredoka), 'Fredoka Fallback', sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-honey: var(--honey);
+  --color-honey-deep: var(--honey-deep);
+  --color-greeting: var(--greeting);
+  --color-greeting-foreground: var(--greeting-foreground);
+  --color-tile: var(--tile);
+  --color-tile-foreground: var(--tile-foreground);
+  --color-brown: var(--brown);
+  --color-red: var(--red);
+  --color-track: var(--track);
+  --color-hex-line: var(--hex-line);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+}
+
+:root {
+  color-scheme: light;
+  --radius: 0.9rem;
+
+  /* pale honey / cream page background */
+  --background: #faf1cf;
+  --foreground: #171717;
+
+  /* white content sheet */
+  --card: #ffffff;
+  --card-foreground: #171717;
+
+  /* honey accents */
+  --honey: #edb84a;
+  --honey-deep: #c9962f;
+
+  /* yellow greeting bubble */
+  --greeting: #f4d67e;
+  --greeting-foreground: #8a7a4e;
+
+  /* beige stat tiles */
+  --tile: #ddd2bb;
+  --tile-foreground: #2b2620;
+
+  --brown: #8a7a55;
+  --red: #ef4a2f;
+
+  --track: #efe6c9;
+  --hex-line: #d8c9a0;
+
+  --primary: #edb84a;
+  --primary-foreground: #ffffff;
+  --muted-foreground: #8a7a55;
+  --border: #ece3cd;
+  --ring: #edb84a;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Gentle float used by the default custom-bee placeholder.
+   A custom animated bee can ignore this and use its own animation. */
+@keyframes bee-float {
+  0%,
+  100% {
+    transform: rotate(-12deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-12deg) translateY(-10px);
+  }
+}
