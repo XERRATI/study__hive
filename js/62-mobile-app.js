@@ -80,28 +80,31 @@
       '    <span class="hive-bee-el type-drone mob-flybee mob-flybee-2" aria-hidden="true">🐝</span>' +
       '    <span class="hive-bee-el type-guard mob-flybee mob-flybee-3" aria-hidden="true">🐝</span>' +
       '    <div>' +
+      '      <div class="mob-chips-row" id="mobChipsRow">' +
+      '        <button class="mob-hero-chip" data-mins="15">15</button>' +
+      '        <button class="mob-hero-chip active" data-mins="25">25</button>' +
+      '        <button class="mob-hero-chip" data-mins="45">45</button>' +
+      '      </div>' +
       '      <div class="mob-hero">' +
       '        <div class="mob-hero-label">Focus Timer</div>' +
       '        <div class="mob-hero-clock" id="mobClock"></div>' +
       '        <div class="mob-hero-timer" id="mobTimer">25:00</div>' +
       '        <div class="mob-hero-timer-label" id="mobTimerLabel">Ready when you are</div>' +
       '        <div class="mob-hero-progress"><div class="mob-hero-fill" id="mobHeroFill"></div></div>' +
-      '        <div class="mob-hero-chips">' +
-      '          <button class="mob-hero-chip" data-mins="15">15</button>' +
-      '          <button class="mob-hero-chip active" data-mins="25">25</button>' +
-      '          <button class="mob-hero-chip" data-mins="45">45</button>' +
-      '        </div>' +
       '        <div class="mob-hero-btns">' +
       '          <button class="mob-hero-btn" id="mobHeroPlay">▶ Start</button>' +
       '          <button class="mob-hero-btn" id="mobHeroPlus5">+5</button>' +
       '          <button class="mob-hero-btn dark" id="mobHeroLockin">🔒 Lock in</button>' +
       '        </div>' +
       '      </div>' +
-      '      <div class="mob-card">' +
-      '        <div class="mob-card-row"><span class="mob-card-days" id="mobDays">90</span><span class="mob-card-label">days to go</span></div>' +
-      '        <div class="mob-card-goal" id="mobGoal">🎓 The Grind</div>' +
-      '        <div class="mob-card-progress"><div class="mob-card-fill" id="mobGoalFill"></div></div>' +
-      '        <div class="mob-card-meta"><span id="mobGoalPct">62% there</span><span id="mobTodayLine">Today: 0 min</span></div>' +
+      '      <div class="mob-duo">' +
+      '        <div class="mob-card">' +
+      '          <div class="mob-card-row"><span class="mob-card-days" id="mobDays">90</span><span class="mob-card-label">days to go</span></div>' +
+      '          <div class="mob-card-goal" id="mobGoal">🎓 The Grind</div>' +
+      '          <div class="mob-card-progress"><div class="mob-card-fill" id="mobGoalFill"></div></div>' +
+      '          <div class="mob-card-meta"><span id="mobGoalPct">62% there</span><span id="mobTodayLine">Today: 0 min</span></div>' +
+      '        </div>' +
+      '        <button class="mob-hive-circle" id="mobHiveCircle" data-goto="hive" aria-label="Open the hive">🍯</button>' +
       '      </div>' +
       '      <div class="mob-quote">' +
       '        <div class="mob-quote-text" id="mobQuoteText">"…"</div>' +
@@ -117,21 +120,18 @@
       '        <button class="mob-stat s3" data-goto="stats"><b id="mobStatXP">0</b><span>XP</span></button>' +
       '        <button class="mob-stat s4" data-goto="stats"><b id="mobStatBees">0</b><span>Bees</span></button>' +
       '      </div>' +
-      '      <div class="mob-music-card">' +
-      '        <div class="mob-music-head"><h3>🎵 Focus Music</h3><span class="mob-music-state" id="mobMusicState">Stopped</span></div>' +
-      '        <div class="mob-music-tracks">' +
-      '          <button class="mob-music-track active" data-track="hive">🎹 Hive Hum</button>' +
-      '          <button class="mob-music-track" data-track="rain">🌧️ Rain</button>' +
-      '          <button class="mob-music-track" data-track="forest">🌲 Forest</button>' +
-      '          <button class="mob-music-track" data-track="waves">🌊 Waves</button>' +
-      '        </div>' +
-      '        <div class="mob-music-controls">' +
-      '          <button class="mob-music-play" id="mobMusicPlay">▶</button>' +
-      '          <div class="mob-music-vol"><span>🔉</span><input type="range" min="0" max="100" value="30" id="mobMusicVol"><em id="mobMusicVolPct">30%</em></div>' +
-      '        </div>' +
-      '      </div>' +
+      '      <div class="mob-appstrip" id="mobAppStrip"></div>' +
       '    </div>' +
       '    <div class="mob-side">' +
+      '      <div class="mob-section-label">Quick Tools</div>' +
+      '      <div class="mob-tools">' +
+      '        <button class="mob-tool" data-goto="focus"><span>🎯</span><em>Focus</em><small>Start a block</small></button>' +
+      '        <button class="mob-tool calm" data-goto="calm"><span>🆘</span><em>Calm</em><small>Reset & breathe</small></button>' +
+      '        <button class="mob-tool breathe" data-goto="breathe"><span>🌬️</span><em>Breathe</em><small>Slow it down</small></button>' +
+      '        <button class="mob-tool" data-goto="garden"><span>🌷</span><em>Garden</em><small>Grow your field</small></button>' +
+      '        <button class="mob-tool" data-goto="hive"><span>🍯</span><em>The Hive</em><small>See the comb</small></button>' +
+      '        <button class="mob-tool" data-goto="coach"><span>🐝</span><em>Coach</em><small>Smart next move</small></button>' +
+      '      </div>' +
       '      <div class="mob-section-label">The Hive</div>' +
       '      <div class="mob-hive-zone" data-goto="hive">' +
       '        <span class="mob-hive-drip d1">🍯</span><span class="mob-hive-drip d2">🍯</span><span class="mob-hive-drip d3">🍯</span>' +
@@ -144,14 +144,18 @@
       '        <span class="mob-hive-arrow">›</span>' +
       '      </div>' +
       '      <button class="mob-enter-hive" data-goto="hive">🍯 Enter the Hive</button>' +
-      '      <div class="mob-section-label">Quick Tools</div>' +
-      '      <div class="mob-tools">' +
-      '        <button class="mob-tool" data-goto="focus"><span>🎯</span><em>Focus</em><small>Start a block</small></button>' +
-      '        <button class="mob-tool calm" data-goto="calm"><span>🆘</span><em>Calm</em><small>Reset & breathe</small></button>' +
-      '        <button class="mob-tool breathe" data-goto="breathe"><span>🌬️</span><em>Breathe</em><small>Slow it down</small></button>' +
-      '        <button class="mob-tool" data-goto="garden"><span>🌷</span><em>Garden</em><small>Grow your field</small></button>' +
-      '        <button class="mob-tool" data-goto="hive"><span>🍯</span><em>The Hive</em><small>See the comb</small></button>' +
-      '        <button class="mob-tool" data-goto="coach"><span>🐝</span><em>Coach</em><small>Smart next move</small></button>' +
+      '    </div>' +
+      '    <div class="mob-music-card">' +
+      '      <div class="mob-music-head"><h3>🎵 Focus Music</h3><span class="mob-music-state" id="mobMusicState">Stopped</span></div>' +
+      '      <div class="mob-music-tracks">' +
+      '        <button class="mob-music-track active" data-track="hive">🎹 Hive Hum</button>' +
+      '        <button class="mob-music-track" data-track="rain">🌧️ Rain</button>' +
+      '        <button class="mob-music-track" data-track="forest">🌲 Forest</button>' +
+      '        <button class="mob-music-track" data-track="waves">🌊 Waves</button>' +
+      '      </div>' +
+      '      <div class="mob-music-controls">' +
+      '        <button class="mob-music-play" id="mobMusicPlay">▶</button>' +
+      '        <div class="mob-music-vol"><span>🔉</span><input type="range" min="0" max="100" value="30" id="mobMusicVol"><em id="mobMusicVolPct">30%</em></div>' +
       '      </div>' +
       '    </div>' +
       '  </div>' +
@@ -754,6 +758,7 @@
       '<button class="mob-set-item" id="mobOpenSettingsPanel"><span>⚙️</span><em>Open full settings</em><i>›</i></button>' +
       '<button class="mob-set-item" id="mobOpenBackup"><span>💾</span><em>Backup & export</em><i>›</i></button>' +
       '<button class="mob-set-item" id="mobOpenMusic"><span>🔊</span><em>Music & sounds</em><i>›</i></button>' +
+      '<div class="mob-set-item"><span>🔒</span><em>Your data stays on this device</em><i>accounts + sync coming</i></div>' +
       '<button class="mob-set-item" id="mobReplayTour"><span>🎬</span><em>Replay tour</em><i>›</i></button>' +
       '<button class="mob-set-item" id="mobEditPledge"><span>✍️</span><em>Edit pledge</em><i>›</i></button>';
     $('mobClockToggle').addEventListener('click', function () {
@@ -863,6 +868,36 @@
   function closeGuide() { $('mobGuideOverlay').classList.remove('show'); gIdx = 0; }
 
   /* ============================ WATCH ============================ */
+  /* the apps + hive slider: built once, wired to tabs/panels */
+  function buildAppStrip() {
+    var strip = $('mobAppStrip');
+    if (!strip || strip.dataset.built) return;
+    strip.dataset.built = '1';
+    var items = [
+      ['🍯', 'Hive', 'hive', 'goto'],
+      ['🗂️', 'Cards', 'cardsBtn', 'click'],
+      ['📝', 'Notes', 'notesBtn', 'click'],
+      ['✅', 'Tasks', 'todoToggleBtn', 'click'],
+      ['📅', 'Exams', 'examBtn', 'click'],
+      ['📊', 'Grades', 'gradeBtn', 'click'],
+      ['🎵', 'Music', 'musicBtn', 'click'],
+      ['💧', 'Water', 'waterBtn', 'click'],
+      ['🌷', 'Garden', 'gardenBtn', 'click'],
+      ['🐝', 'Coach', 'hiveCoachBtn', 'click']
+    ];
+    items.forEach(function (it) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'mob-strip-pill' + (it[0] === '🍯' ? ' hive' : '');
+      b.textContent = it[0] + ' ' + it[1];
+      b.addEventListener('click', function () {
+        if (it[3] === 'goto') goTab(it[2]);
+        else clickReal(it[2]);
+      });
+      strip.appendChild(b);
+    });
+  }
+  setInterval(function () { if (isMobileOn()) buildAppStrip(); }, 2000);
   /* Shell bees move like the PC swarm: JS picks a new spot every ~2.4s
      and CSS transitions glide there — lively darting that even works
      under iOS Reduce Motion (transitions aren't animations, so the
