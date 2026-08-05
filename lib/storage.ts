@@ -13,6 +13,7 @@ export type Vocab = { id: string; word: string; meaning: string; known: boolean 
 
 export type AppData = {
   name: string
+  goalName: string
   dailyGoal: number
   finals: string // YYYY-MM-DD
   city: string
@@ -35,6 +36,7 @@ export type AppData = {
   punsFav: string[]
   secretsFound: string[]
   music: { track: string; vol: number }
+  wallpaper: number
 }
 
 const KEY = 'beefocus-data-v1'
@@ -47,6 +49,7 @@ export function dateKey(d: Date = new Date()): string {
 export function defaultData(): AppData {
   return {
     name: '',
+    goalName: 'Finals',
     dailyGoal: 60,
     finals: '2026-10-26',
     city: 'Pretoria',
@@ -69,6 +72,7 @@ export function defaultData(): AppData {
     punsFav: [],
     secretsFound: [],
     music: { track: 'hive', vol: 30 },
+    wallpaper: 3,
   }
 }
 

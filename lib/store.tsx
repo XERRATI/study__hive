@@ -20,6 +20,8 @@ import { loadData, saveData, type AppData } from './storage'
 
 export type Screen =
   | 'home'
+  | 'hive'
+  | 'goals'
   | 'focus'
   | 'garden'
   | 'stats'

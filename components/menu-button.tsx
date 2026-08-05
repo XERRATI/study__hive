@@ -1,8 +1,8 @@
 'use client'
 
 /**
- * The ☰ menu button — EXACT same look as the original page.tsx version,
- * now wired to open the menu drawer.
+ * ☰ menu button — exactly your original look, now wired to open the
+ * menu drawer with all the tools.
  */
 import { useApp } from '@/lib/store'
 

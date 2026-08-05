@@ -63,6 +63,16 @@ export function SettingsScreen() {
           </label>
 
           <label className="block">
+            <span className="text-sm font-bold text-foreground">Goal name (countdown)</span>
+            <input
+              value={data.goalName}
+              onChange={(e) => patch({ goalName: e.target.value })}
+              placeholder="e.g. Finals"
+              className="mt-1 w-full rounded-2xl border border-border bg-card px-4 py-3 text-base font-medium text-foreground outline-none"
+            />
+          </label>
+
+          <label className="block">
             <span className="text-sm font-bold text-foreground">Daily goal (minutes)</span>
             <input
               type="number"
@@ -104,6 +114,37 @@ export function SettingsScreen() {
               className="mt-2 w-full accent-[#edb84a]"
             />
             <p className="text-xs font-semibold text-brown">{data.music.vol}%</p>
+          </div>
+
+          {/* wallpaper picker — the island wallpapers sit under the white sheet */}
+          <div>
+            <span className="text-sm font-bold text-foreground">Wallpaper</span>
+            <p className="text-xs font-semibold text-brown">
+              Shows under the main sheet. Drop your own (e.g. a night-mode one) into public/wallpapers/ as wallpaper-11.png.
+            </p>
+            <div className="mt-2 grid grid-cols-5 gap-2">
+              {Array.from({ length: 10 }).map((_, i) => {
+                const n = i + 1
+                const active = data.wallpaper === n
+                return (
+                  <button
+                    key={n}
+                    type="button"
+                    aria-label={`Wallpaper ${n}`}
+                    onClick={() => patch({ wallpaper: n })}
+                    className={`overflow-hidden rounded-xl border-2 transition-transform active:scale-95 ${
+                      active ? 'border-honey' : 'border-border'
+                    }`}
+                  >
+                    <img
+                      src={`/wallpapers/wallpaper-${n}.png`}
+                      alt=""
+                      className="aspect-[3/4] w-full object-cover"
+                    />
+                  </button>
+                )
+              })}
+            </div>
           </div>
         </div>
 

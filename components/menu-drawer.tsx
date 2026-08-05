@@ -17,6 +17,8 @@ const SECTIONS: Section[] = [
     title: 'Screens',
     items: [
       { s: 'home', icon: '🏠', label: 'Home' },
+      { s: 'hive', icon: '🍯', label: 'The Hive' },
+      { s: 'goals', icon: '🎯', label: 'Goals' },
       { s: 'focus', icon: '🎯', label: 'Focus Timer' },
       { s: 'garden', icon: '🌷', label: 'Garden World' },
       { s: 'stats', icon: '📈', label: 'Progress & Stats' },

@@ -1,41 +1,43 @@
 'use client'
 
-/**
- * PLACEHOLDER component — swap in your real components/live-clock.tsx.
- * Shows the current time (updates every second) in the Bubblegum font.
- */
 import { useEffect, useState } from 'react'
 
+function format(now: Date) {
+  let h = now.getHours()
+  const m = now.getMinutes()
+  const s = now.getSeconds()
+  const ampm = h >= 12 ? 'PM' : 'AM'
+  h = h % 12
+  if (h === 0) h = 12
+  const pad = (n: number) => n.toString().padStart(2, '0')
+  const time = `${pad(h)}:${pad(m)}:${pad(s)}`
+
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December',
+  ]
+  const date = `${days[now.getDay()]},${months[now.getMonth()]} ${now.getDate()} ,${now.getFullYear()}`
+  return { time, ampm, date }
+}
+
 export function LiveClock() {
-  const [now, setNow] = useState<Date>(() => new Date())
+  // Fixed initial value avoids hydration mismatch; updates on mount.
+  const [{ time, ampm, date }, setNow] = useState(() => format(new Date('2026-08-05T09:24:21')))
 
   useEffect(() => {
-    const t = setInterval(() => setNow(new Date()), 1000)
-    return () => clearInterval(t)
+    const tick = () => setNow(format(new Date()))
+    tick()
+    const id = setInterval(tick, 1000)
+    return () => clearInterval(id)
   }, [])
 
-  const hh = String(now.getHours()).padStart(2, '0')
-  const mm = String(now.getMinutes()).padStart(2, '0')
-  const ss = String(now.getSeconds()).padStart(2, '0')
-  const day = now.toLocaleDateString('en-GB', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-  })
-
   return (
-    <div className="text-center">
-      <p
-        className="text-6xl font-bold leading-none text-foreground"
-        style={{ fontFamily: 'var(--font-bubblegum)' }}
-      >
-        {hh}
-        <span className="text-honey">:</span>
-        {mm}
-      </p>
-      <p className="mt-2 text-base font-semibold text-brown">
-        {ss} · {day}
-      </p>
+    <div>
+      <h1 className="text-[3.4rem] font-bold leading-none tracking-tight text-foreground tabular-nums">
+        {time} <span className="align-top">{ampm}</span>
+      </h1>
+      <p className="mt-3 text-lg font-semibold text-foreground">{date}</p>
     </div>
   )
 }

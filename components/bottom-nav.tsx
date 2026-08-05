@@ -1,17 +1,19 @@
 'use client'
 
 /**
- * Bottom nav — sticky, so it follows the person as they scroll and is
- * always visible. Switches between the main screens.
+ * Bottom nav — your original design (Home · Honey · Goals · Garden ·
+ * Coach · Stats), now WIRED: tapping switches screens, and the current
+ * one is highlighted with a soft honey pill. Sticky so it follows you.
  */
 import { useApp, type Screen } from '@/lib/store'
 
-const ITEMS: { id: Screen; icon: string; label: string }[] = [
-  { id: 'home', icon: '🏠', label: 'Home' },
-  { id: 'focus', icon: '🎯', label: 'Focus' },
-  { id: 'garden', icon: '🌷', label: 'Garden' },
-  { id: 'stats', icon: '📈', label: 'Stats' },
-  { id: 'settings', icon: '⚙️', label: 'Settings' },
+const ITEMS: { emoji: string; label: string; screen: Screen }[] = [
+  { emoji: '🏠', label: 'Home', screen: 'home' },
+  { emoji: '🍯', label: 'Honey', screen: 'hive' },
+  { emoji: '🎯', label: 'Goals', screen: 'goals' },
+  { emoji: '🌷', label: 'Garden', screen: 'garden' },
+  { emoji: '🐝', label: 'Coach', screen: 'coach' },
+  { emoji: '📈', label: 'Stats', screen: 'stats' },
 ]
 
 export function BottomNav() {
@@ -19,26 +21,24 @@ export function BottomNav() {
 
   return (
     <nav
-      aria-label="Bottom navigation"
-      className="mx-3 flex items-center justify-around rounded-3xl bg-card px-2 py-2 shadow-[0_10px_30px_rgba(0,0,0,0.08)] ring-1 ring-border"
+      aria-label="Primary"
+      className="mx-4 mb-4 flex items-center justify-between rounded-3xl bg-card px-5 py-4 shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
     >
-      {ITEMS.map(({ id, icon, label }) => {
-        const active = screen === id
+      {ITEMS.map((item) => {
+        const active = screen === item.screen
         return (
           <button
-            key={id}
+            key={item.label}
             type="button"
-            aria-label={label}
+            aria-label={item.label}
             aria-current={active ? 'page' : undefined}
-            onClick={() => go(id)}
-            className={`flex flex-col items-center gap-0.5 rounded-2xl px-3 py-1.5 transition-all active:scale-90 ${
-              active ? 'bg-greeting text-greeting-foreground' : 'text-brown'
+            onClick={() => go(item.screen)}
+            className={`flex flex-col items-center gap-0.5 rounded-2xl px-2 py-1 text-2xl leading-none transition-transform hover:-translate-y-0.5 active:scale-90 ${
+              active ? 'bg-greeting text-greeting-foreground' : 'text-foreground'
             }`}
           >
-            <span className="text-lg leading-none" aria-hidden="true">
-              {icon}
-            </span>
-            <span className="text-[10px] font-semibold">{label}</span>
+            <span aria-hidden="true">{item.emoji}</span>
+            <span className="text-[10px] font-semibold">{item.label}</span>
           </button>
         )
       })}

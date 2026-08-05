@@ -1,11 +1,18 @@
 'use client'
 
 /**
- * Screen router — swaps the visible screen. The top bar and bottom nav
- * stay put; only the content between them changes.
+ * Screen router — swaps the visible screen. Home keeps your exact full
+ * layout; every other screen gets the same frame: ☰ menu header,
+ * content card, and the sticky bottom nav (so you never lose them).
  */
+import type { ReactNode } from 'react'
 import { useApp } from '@/lib/store'
+import { MenuButton } from './menu-button'
+import { GoalIndicator } from './goal-indicator'
+import { BottomNav } from './bottom-nav'
 import { HomeScreen } from './screens/home-screen'
+import { HiveScreen } from './screens/hive-screen'
+import { GoalsScreen } from './screens/goals-screen'
 import { FocusScreen } from './screens/focus-screen'
 import { GardenScreen } from './screens/garden-screen'
 import { StatsScreen } from './screens/stats-screen'
@@ -30,63 +37,113 @@ import { CapsuleScreen } from './screens/capsule-screen'
 import { SecretsScreen } from './screens/secrets-screen'
 import { LegalScreen } from './screens/legal-screen'
 
+function ScreenFrame({ children }: { children: ReactNode }) {
+  return (
+    <div className="mx-auto w-full max-w-[430px]">
+      <header className="sticky top-0 z-30 flex items-start justify-between bg-background/85 px-5 pb-2 pt-6 backdrop-blur-sm">
+        <MenuButton />
+        <GoalIndicator />
+      </header>
+      {children}
+      <div className="sticky bottom-0 z-30 mt-5 pb-[env(safe-area-inset-bottom)]">
+        <BottomNav />
+      </div>
+    </div>
+  )
+}
+
 export function ScreenRouter() {
   const { screen } = useApp()
 
+  let body: ReactNode
   switch (screen) {
     case 'home':
-      return <HomeScreen />
+      body = <HomeScreen />
+      break
+    case 'hive':
+      body = <HiveScreen />
+      break
+    case 'goals':
+      body = <GoalsScreen />
+      break
     case 'focus':
-      return <FocusScreen />
+      body = <FocusScreen />
+      break
     case 'garden':
-      return <GardenScreen />
+      body = <GardenScreen />
+      break
     case 'stats':
-      return <StatsScreen />
+      body = <StatsScreen />
+      break
     case 'settings':
-      return <SettingsScreen />
+      body = <SettingsScreen />
+      break
     case 'coach':
-      return <CoachScreen />
+      body = <CoachScreen />
+      break
     case 'cards':
-      return <CardsScreen />
+      body = <CardsScreen />
+      break
     case 'notes':
-      return <NotesScreen />
+      body = <NotesScreen />
+      break
     case 'tasks':
-      return <TasksScreen />
+      body = <TasksScreen />
+      break
     case 'exams':
-      return <ExamsScreen />
+      body = <ExamsScreen />
+      break
     case 'grades':
-      return <GradesScreen />
+      body = <GradesScreen />
+      break
     case 'vocab':
-      return <VocabScreen />
+      body = <VocabScreen />
+      break
     case 'heatmap':
-      return <HeatmapScreen />
+      body = <HeatmapScreen />
+      break
     case 'music':
-      return <MusicScreen />
+      body = <MusicScreen />
+      break
     case 'breathe':
-      return <BreatheScreen />
+      body = <BreatheScreen />
+      break
     case 'calm':
-      return <CalmScreen />
+      body = <CalmScreen />
+      break
     case 'pomodoro':
-      return <PomodoroScreen />
+      body = <PomodoroScreen />
+      break
     case 'freeze':
-      return <FreezeScreen />
+      body = <FreezeScreen />
+      break
     case 'puns':
-      return <PunsScreen />
+      body = <PunsScreen />
+      break
     case 'challenge':
-      return <ChallengeScreen />
+      body = <ChallengeScreen />
+      break
     case 'rival':
-      return <RivalScreen />
+      body = <RivalScreen />
+      break
     case 'capsule':
-      return <CapsuleScreen />
+      body = <CapsuleScreen />
+      break
     case 'secrets':
-      return <SecretsScreen />
+      body = <SecretsScreen />
+      break
     case 'privacy':
-      return <LegalScreen page="privacy" />
+      body = <LegalScreen page="privacy" />
+      break
     case 'terms':
-      return <LegalScreen page="terms" />
+      body = <LegalScreen page="terms" />
+      break
     case 'creator':
-      return <LegalScreen page="creator" />
+      body = <LegalScreen page="creator" />
+      break
     default:
-      return <HomeScreen />
+      body = <HomeScreen />
   }
+
+  return screen === 'home' ? body : <ScreenFrame>{body}</ScreenFrame>
 }
