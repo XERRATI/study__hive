@@ -7,6 +7,7 @@
 import { useRef, useState } from 'react'
 import { useApp } from '@/lib/store'
 import { defaultData, type AppData } from '@/lib/storage'
+import { asset } from '@/lib/paths'
 
 const PC_SITE = 'https://studyhive.co.za' // 👈 set your real site URL here
 
@@ -137,7 +138,7 @@ export function SettingsScreen() {
                     }`}
                   >
                     <img
-                      src={`/wallpapers/wallpaper-${n}.png`}
+                      src={asset(`/wallpapers/wallpaper-${n}.png`)}
                       alt=""
                       className="aspect-[3/4] w-full object-cover"
                     />

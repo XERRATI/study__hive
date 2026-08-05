@@ -21,6 +21,7 @@ import { GoalIndicator } from '@/components/goal-indicator'
 import { BottomNav } from '@/components/bottom-nav'
 import { useApp } from '@/lib/store'
 import { QUOTES, weakestSubject } from '@/lib/storage'
+import { asset } from '@/lib/paths'
 
 const DEFAULT_QUOTE = QUOTES[0]
 
@@ -153,7 +154,7 @@ export function HomeScreen() {
             </button>
           )}
           <img
-            src="/images/bee-flower.png"
+            src={asset('/images/bee-flower.png')}
             alt="Bee resting on a hand-drawn flower"
             className="pointer-events-none absolute right-6 top-2 h-28 w-auto"
           />

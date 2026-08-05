@@ -7,6 +7,7 @@
  * public/wallpapers/ (e.g. your night-mode one) and it appears here.
  */
 import { useApp } from '@/lib/store'
+import { asset } from '@/lib/paths'
 
 export function WallpaperBg() {
   const { data } = useApp()
@@ -14,7 +15,7 @@ export function WallpaperBg() {
 
   return (
     <img
-      src={`/wallpapers/wallpaper-${n}.png`}
+      src={asset(`/wallpapers/wallpaper-${n}.png`)}
       alt=""
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 z-0 h-full w-full object-cover"

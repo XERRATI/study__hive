@@ -9,6 +9,7 @@
 import { useEffect, useState } from 'react'
 import { useApp } from '@/lib/store'
 import { totalMinutes } from '@/lib/storage'
+import { asset } from '@/lib/paths'
 
 const DAY_SPAN = 90 // the bar assumes a 90-day run-up to finals
 
@@ -33,7 +34,7 @@ export function FinalsCountdown() {
             <p className="mt-2 text-base font-medium text-foreground/90">Countdown to finals</p>
           </div>
           <img
-            src="/images/beehive.png"
+            src={asset('/images/beehive.png')}
             alt="Hanging beehive"
             className="h-24 w-auto shrink-0 -translate-y-1"
           />
@@ -84,7 +85,7 @@ export function FinalsCountdown() {
           <p className="mt-2 text-base font-medium text-foreground/90">Countdown to finals</p>
         </div>
         <img
-          src="/images/beehive.png"
+          src={asset('/images/beehive.png')}
           alt="Hanging beehive"
           className="h-24 w-auto shrink-0 -translate-y-1"
         />
